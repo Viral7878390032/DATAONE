@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
+  <title>DATAONE</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 12px 0 32px;
+    }
+    .logo {
+      background: #2563eb;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    h1 { margin: 0; font-size: 27px; }
+    .subtitle { color: #94a3b8; margin-top: 6px; }
+    h2 { font-size: 20px; margin-bottom: 18px; }
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      color: #334155;
+      padding: 16px;
+      border-radius: 30px;
+      text-decoration: none;
+      margin-bottom: 30px;
+    }
+    .search img { width: 25px; height: 25px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: #17243a;
+      color: white;
+      text-decoration: none;
+      border-radius: 18px;
+      padding: 22px 16px;
+      min-height: 125px;
+    }
+    .emoji { font-size: 30px; margin-bottom: 15px; }
+    .card strong { display: block; margin-bottom: 7px; }
+    .card small { color: #94a3b8; }
+    footer {
+      color: #64748b;
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">D</div>
+    <div>
+      <h1>DATAONE</h1>
+      <div class="subtitle">Your simple digital space</div>
+    </div>
+  </header>
+
+  <h2>Search &amp; Explore</h2>
+
+  <a class="search" href="https://www.google.com">
+    <img src="https://www.google.com/favicon.ico" alt="Google">
+    <span>Search with Google</span>
+  </a>
+
+  <div class="grid">
+    <a class="card" href="https://www.google.com">
+      <div class="emoji">🌐</div>
+      <strong>Google Search</strong>
+      <small>Find anything online</small>
+    </a>
+
+    <a class="card" href="https://mail.google.com">
+      <div class="emoji">✉️</div>
+      <strong>Gmail</strong>
+      <small>Open your email</small>
+    </a>
+  </div>
+
+  <footer>DATAONE • Version 1.0</footer>
+</body>
+</html>
+  
