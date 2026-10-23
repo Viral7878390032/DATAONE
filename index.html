@@ -66,9 +66,182 @@
       margin-top: 40px;
       font-size: 12px;
     }
+    
+.menu-toggle {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #17243a;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 1003;
+  width: 280px;
+  padding: 20px;
+  background: #101b2e;
+  border-right: 1px solid #263650;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  visibility: hidden;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1002;
+  background: #0009;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #263650;
+}
+
+.sidebar-brand strong,
+.sidebar-brand small {
+  display: block;
+}
+
+.sidebar-brand small {
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.sidebar-brand .logo {
+  padding: 10px;
+  color: white;
+}
+
+.menu-close {
+  margin-left: auto;
+  background: transparent;
+  border: 0;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.sidebar-nav {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.sidebar-nav a,
+.sidebar-nav button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #e2e8f0;
+  font: inherit;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav button:hover {
+  background: #203553;
+  color: #93c5fd;
+}
+
+#settingsPanel {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #17243a;
+  color: #e2e8f0;
+}
+
+#settingsPanel[hidden] {
+  display: none;
+}
+
+#settingsPanel p {
+  font-weight: bold;
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
+body {
+  padding-top: 80px;
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: min(280px, 85vw);
+  }
+}
+
   </style>
 </head>
 <body>
+  
+<button id="menuToggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+
+<div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+<aside id="sidebar" class="sidebar" aria-label="Main menu">
+  <div class="sidebar-brand">
+    <div class="logo">D</div>
+    <div>
+      <strong>DATAONE</strong>
+      <small>Your digital space</small>
+    </div>
+    <button id="menuClose" class="menu-close" aria-label="Close menu">×</button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="#home" data-page="home">🏠 <span>Home</span></a>
+    <a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">🌐 <span>Google Search</span></a>
+    <a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">✉️ <span>Gmail</span></a>
+    <button id="settingsToggle" type="button">⚙️ <span>Settings</span></button>
+  </nav>
+
+  <div id="settingsPanel" hidden>
+    <p>DATAONE Settings</p>
+    <label>
+      <input id="compactMode" type="checkbox">
+      Compact cards
+    </label>
+  </div>
+</aside>
+
   <header>
     <div class="logo">D</div>
     <div>
@@ -99,6 +272,54 @@
   </div>
 
   <footer>DATAONE • Version 1.0</footer>
+  
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const backdrop = document.getElementById("sidebarBackdrop");
+  const menuToggle = document.getElementById("menuToggle");
+  const menuClose = document.getElementById("menuClose");
+  const settingsToggle = document.getElementById("settingsToggle");
+  const settingsPanel = document.getElementById("settingsPanel");
+  const compactMode = document.getElementById("compactMode");
+
+  function setSidebar(open) {
+    sidebar.classList.toggle("open", open);
+    backdrop.classList.toggle("open", open);
+    document.body.classList.toggle("sidebar-open", open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+
+  menuToggle.addEventListener("click", () => {
+    setSidebar(!sidebar.classList.contains("open"));
+  });
+
+  menuClose.addEventListener("click", () => setSidebar(false));
+  backdrop.addEventListener("click", () => setSidebar(false));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setSidebar(false);
+  });
+
+  settingsToggle.addEventListener("click", () => {
+    settingsPanel.hidden = !settingsPanel.hidden;
+  });
+
+  compactMode.addEventListener("change", () => {
+    document.querySelectorAll(".card").forEach((card) => {
+      card.style.minHeight = compactMode.checked ? "90px" : "";
+      card.style.padding = compactMode.checked ? "14px" : "";
+    });
+  });
+
+  document.querySelector('[data-page="home"]').addEventListener("click", (event) => {
+    event.preventDefault();
+    setSidebar(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
+</body>
+
 </body>
 </html>
   
