@@ -369,6 +369,28 @@ body {
 </head>
 <body>
   
+<div id="authScreen" style="max-width:400px;margin:40px auto;padding:28px;background:#17243a;border:1px solid #334155;border-radius:20px;color:white;font-family:Arial,sans-serif;">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="display:inline-block;background:#2563eb;padding:14px 18px;border-radius:14px;font-size:24px;font-weight:bold;">D</div>
+    <h2 style="margin-bottom:8px;">DATAONE</h2>
+    <p style="color:#94a3b8;">Sign in to your digital space</p>
+  </div>
+
+  <form id="authForm">
+    <label for="authEmail">Email address</label>
+    <input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white;">
+
+    <label for="authPassword">Password</label>
+    <input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Enter password" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white;">
+
+    <button id="authSubmit" type="submit" style="width:100%;padding:13px;background:#2563eb;color:white;border:0;border-radius:10px;font-weight:bold;cursor:pointer;">Sign In</button>
+  </form>
+
+  <button id="authSwitch" type="button" style="width:100%;margin-top:14px;padding:12px;background:transparent;color:#93c5fd;border:1px solid #334155;border-radius:10px;cursor:pointer;">Create Account</button>
+
+  <p id="authMessage" role="status" style="color:#cbd5e1;font-size:14px;text-align:center;"></p>
+</div>
+
 <button id="menuToggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
 
 <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
@@ -469,6 +491,108 @@ body {
   });
 </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // Replace these two placeholders with your Supabase project details.
+  const SUPABASE_URL = "https://pmzvekfshhgipjxwlwiq.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const authScreen = document.getElementById("authScreen");
+  const authForm = document.getElementById("authForm");
+  const authEmail = document.getElementById("authEmail");
+  const authPassword = document.getElementById("authPassword");
+  const authSubmit = document.getElementById("authSubmit");
+  const authSwitch = document.getElementById("authSwitch");
+  const authMessage = document.getElementById("authMessage");
+
+  let creatingAccount = false;
+
+  // Hide the existing DATAONE app until Supabase confirms a session.
+  document.querySelectorAll("body > *").forEach((element) => {
+    if (element.id !== "authScreen" &&
+        element.tagName !== "SCRIPT") {
+      element.dataset.authHidden = "true";
+      element.style.display = "none";
+    }
+  });
+
+  function showMessage(message) {
+    authMessage.textContent = message;
+  }
+
+  authSwitch.addEventListener("click", () => {
+    creatingAccount = !creatingAccount;
+    authSubmit.textContent = creatingAccount ? "Create Account" : "Sign In";
+    authSwitch.textContent = creatingAccount
+      ? "Back to Sign In"
+      : "Create Account";
+    authPassword.autocomplete = creatingAccount
+      ? "new-password"
+      : "current-password";
+    showMessage("");
+  });
+
+  authForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    authSubmit.disabled = true;
+    showMessage("Please wait...");
+
+    try {
+      const email = authEmail.value.trim();
+      const password = authPassword.value;
+
+      const result = creatingAccount
+        ? await supabaseClient.auth.signUp({ email, password })
+        : await supabaseClient.auth.signInWithPassword({ email, password });
+
+      if (result.error) throw result.error;
+
+      if (creatingAccount && !result.data.session) {
+        showMessage("Account created. Check your email to confirm it, then sign in.");
+        return;
+      }
+
+      showMessage("Signed in successfully.");
+      await updateAuthView();
+    } catch (error) {
+      showMessage(error.message || "Something went wrong.");
+    } finally {
+      authSubmit.disabled = false;
+    }
+  });
+
+  async function updateAuthView() {
+    const { data, error } = await supabaseClient.auth.getSession();
+
+    if (error) {
+      showMessage("Could not check your session. Please refresh.");
+      return;
+    }
+
+    const signedIn = Boolean(data.session);
+
+    authScreen.style.display = signedIn ? "none" : "block";
+
+    document.querySelectorAll("[data-auth-hidden='true']").forEach((element) => {
+      element.style.display = signedIn ? "" : "none";
+    });
+
+    if (!signedIn) {
+      authSubmit.textContent = creatingAccount ? "Create Account" : "Sign In";
+    }
+  }
+
+  supabaseClient.auth.onAuthStateChange(() => {
+    updateAuthView();
+  });
+
+  updateAuthView();
+</script>
 
 </body>
 </html>
