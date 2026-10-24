@@ -586,22 +586,75 @@ if (entry.fileName) {
   });
 }
 
-addDataButton.addEventListener("click", () => {
+addDataButton.addEventListener("click", async () => {
   const title = dataTitle.value.trim();
-const selectedFile = document.getElementById("dataFile").files[0];
+  const selectedFile = document.getElementById("dataFile").files[0];
+
   if (!title) {
     alert("Please enter a name.");
     dataTitle.focus();
     return;
   }
 
-myDataEntries.push({
-  title,
-  type: dataType.value,
-  note: dataNote.value.trim(),
-  fileName: selectedFile ? selectedFile.name : "",
-  fileType: selectedFile ? selectedFile.type : "",
-  fileSize: selectedFile ? selectedFile.size : 0
+  if (!selectedFile) {
+    alert("Please choose a file to upload.");
+    return;
+  }
+
+  if (selectedFile.size > 50 * 1024 * 1024) {
+    alert("Please choose a file smaller than 50 MB.");
+    return;
+  }
+
+  addDataButton.disabled = true;
+  addDataButton.textContent = "Uploading...";
+
+  try {
+    const { data: userData, error: userError } =
+      await supabaseClient.auth.getUser();
+
+    if (userError || !userData.user) {
+      throw new Error("Please sign in again.");
+    }
+
+    const userId = userData.user.id;
+    const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const filePath = userId + "/" + crypto.randomUUID() + "_" + safeName;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from("dataone-files")
+      .upload(filePath, selectedFile);
+
+    if (uploadError) throw uploadError;
+
+    myDataEntries.push({
+      title,
+      type: dataType.value,
+      note: dataNote.value.trim(),
+      fileName: selectedFile.name,
+      fileType: selectedFile.type,
+      fileSize: selectedFile.size,
+      filePath
+    });
+
+    localStorage.setItem(
+      "dataoneMyData",
+      JSON.stringify(myDataEntries)
+    );
+
+    dataTitle.value = "";
+    dataNote.value = "";
+    document.getElementById("dataFile").value = "";
+
+    renderDataEntries();
+    alert("File uploaded successfully!");
+  } catch (error) {
+    console.error("DATAONE upload error:", error);
+    alert("Upload failed: " + error.message);
+  } finally {
+    addDataButton.disabled = false;
+    addDataButton.textContent = "+ Add Entry";
+  }
 });
 
   localStorage.setItem("dataoneMyData", JSON.stringify(myDataEntries));
