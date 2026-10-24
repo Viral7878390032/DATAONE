@@ -503,37 +503,6 @@ body {
   });
     // Show the signed-in email in Settings
 
-async function updateSettingsEmail() {
-  const emailElement = document.getElementById("settingsEmail");
-
-  if (!emailElement) return;
-
-  try {
-    const client = window.supabaseClient;
-
-    if (!client || !client.auth) {
-      emailElement.textContent = "Supabase is not available.";
-      return;
-    }
-
-    const { data, error } = await client.auth.getUser();
-
-    if (error) throw error;
-
-    emailElement.textContent = data.user?.email ||
-      "Please sign in to view your email.";
-  } catch (error) {
-    console.error("Settings email error:", error);
-    emailElement.textContent = "Could not load email.";
-  }
-}
-updateSettingsEmail();
-
-if (window.supabaseClient && window.supabaseClient.auth) {
-  window.supabaseClient.auth.onAuthStateChange(() => {
-    updateSettingsEmail();
-  });
-}
 </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -636,6 +605,28 @@ const supabaseClient = window.supabaseClient;
   });
 
   updateAuthView();
+    async function updateSettingsEmail() {
+    const emailElement = document.getElementById("settingsEmail");
+    if (!emailElement) return;
+
+    try {
+      const { data, error } = await supabaseClient.auth.getUser();
+
+      if (error) throw error;
+
+      emailElement.textContent = data.user?.email ||
+        "Please sign in to view your email.";
+    } catch (error) {
+      console.error("Settings email error:", error);
+      emailElement.textContent = "Could not load email.";
+    }
+  }
+
+  supabaseClient.auth.onAuthStateChange(() => {
+    updateSettingsEmail();
+  });
+
+  updateSettingsEmail();
 </script>
 <button id="signOutButton"
   style="position:fixed;bottom:20px;right:20px;z-index:9999;
