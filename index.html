@@ -530,7 +530,7 @@ async function updateSettingsEmail() {
 
   updateSettingsEmail();
 
-  supabaseClient.auth.onAuthStateChange(() => {
+ window.supabaseClient.auth.onAuthStateChange(() => {
     updateSettingsEmail();
   });
 </script>
@@ -540,11 +540,11 @@ async function updateSettingsEmail() {
   // Replace these two placeholders with your Supabase project details.
   const SUPABASE_URL = "https://pmzvekfshhgipjxwlwiq.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
-
-  const supabaseClient = window.supabase.createClient(
+window.supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
+const supabaseClient = window.supabaseClient;
 
   const authScreen = document.getElementById("authScreen");
   const authForm = document.getElementById("authForm");
