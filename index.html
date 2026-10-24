@@ -551,7 +551,17 @@ function renderDataEntries() {
 
     const title = document.createElement("strong");
     title.textContent = entry.title;
+if (entry.fileName) {
+  const fileInfo = document.createElement("p");
+  const sizeKB = (entry.fileSize / 1024).toFixed(1);
 
+  fileInfo.textContent =
+    "📎 File: " + entry.fileName +
+    " (" + sizeKB + " KB)";
+
+  fileInfo.style.color = "#60a5fa";
+  card.appendChild(fileInfo);
+}
     const type = document.createElement("p");
     type.textContent = "Type: " + entry.type;
 
