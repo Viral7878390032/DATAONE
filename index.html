@@ -585,11 +585,14 @@ const selectedFile = document.getElementById("dataFile").files[0];
     return;
   }
 
-  myDataEntries.push({
-    title,
-    type: dataType.value,
-    note: dataNote.value.trim()
-  });
+myDataEntries.push({
+  title,
+  type: dataType.value,
+  note: dataNote.value.trim(),
+  fileName: selectedFile ? selectedFile.name : "",
+  fileType: selectedFile ? selectedFile.type : "",
+  fileSize: selectedFile ? selectedFile.size : 0
+});
 
   localStorage.setItem("dataoneMyData", JSON.stringify(myDataEntries));
 
