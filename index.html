@@ -637,15 +637,6 @@ addDataButton.addEventListener("click", async () => {
       filePath
     });
 
-    localStorage.setItem(
-      "dataoneMyData",
-      JSON.stringify(myDataEntries)
-    );
-
-    dataTitle.value = "";
-    dataNote.value = "";
-    document.getElementById("dataFile").value = "";
-
     renderDataEntries();
     alert("File uploaded successfully!");
   } catch (error) {
