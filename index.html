@@ -527,12 +527,13 @@ async function updateSettingsEmail() {
     emailElement.textContent = "Could not load email.";
   }
 }
+updateSettingsEmail();
 
-  updateSettingsEmail();
-
- window.supabaseClient.auth.onAuthStateChange(() => {
+if (window.supabaseClient && window.supabaseClient.auth) {
+  window.supabaseClient.auth.onAuthStateChange(() => {
     updateSettingsEmail();
   });
+}
 </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
