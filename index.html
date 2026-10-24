@@ -578,7 +578,7 @@ function renderDataEntries() {
 
 addDataButton.addEventListener("click", () => {
   const title = dataTitle.value.trim();
-
+const selectedFile = document.getElementById("dataFile").files[0];
   if (!title) {
     alert("Please enter a name.");
     dataTitle.focus();
