@@ -509,7 +509,7 @@ async function updateSettingsEmail() {
   if (!emailElement) return;
 
   try {
-    const client = window.supabaseClient || window.supabase;
+    const client = window.supabaseClient;
 
     if (!client || !client.auth) {
       emailElement.textContent = "Supabase is not available.";
