@@ -411,13 +411,25 @@ body {
     <button id="settingsToggle" type="button">⚙️ <span>Settings</span></button>
   </nav>
 
-  <div id="settingsPanel" hidden>
-    <p>DATAONE Settings</p>
-    <label>
-      <input id="compactMode" type="checkbox">
-      Compact cards
-    </label>
+<div id="settingsPanel" hidden>
+  <p>DATAONE Settings</p>
+
+  <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;color:white;">
+    <h3 style="margin-top:0;">My Account</h3>
+    <p style="color:#94a3b8;margin-bottom:6px;">Signed-in email</p>
+    <p id="settingsEmail" style="overflow-wrap:anywhere;">Loading email...</p>
+    <p style="color:#94a3b8;font-size:13px;">Your DATAONE account</p>
   </div>
+
+  <label>
+    <input id="compactMode" type="checkbox">
+    Compact cards
+  </label>
+
+  <p style="margin-top:18px;color:#94a3b8;font-size:13px;">
+    Sign out using the red Sign Out button at the bottom-right of the screen.
+  </p>
+</div>
 </aside>
 
   <header>
@@ -488,6 +500,26 @@ body {
     event.preventDefault();
     setSidebar(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+    // Show the signed-in email in Settings
+  async function updateSettingsEmail() {
+    const emailElement = document.getElementById("settingsEmail");
+
+    if (!emailElement || !window.supabase) return;
+
+    const { data, error } = await supabaseClient.auth.getUser();
+
+    if (error || !data.user) {
+      emailElement.textContent = "Not signed in";
+    } else {
+      emailElement.textContent = data.user.email || "Email unavailable";
+    }
+  }
+
+  updateSettingsEmail();
+
+  supabaseClient.auth.onAuthStateChange(() => {
+    updateSettingsEmail();
   });
 </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
