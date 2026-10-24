@@ -648,13 +648,6 @@ addDataButton.addEventListener("click", async () => {
   }
 });
 
-  localStorage.setItem("dataoneMyData", JSON.stringify(myDataEntries));
-
-  dataTitle.value = "";
-  dataNote.value = "";
-  renderDataEntries();
-});
-
 renderDataEntries();
   compactMode.addEventListener("change", () => {
     document.querySelectorAll(".card").forEach((card) => {
