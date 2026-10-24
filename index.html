@@ -593,7 +593,36 @@ body {
 
   updateAuthView();
 </script>
+<button id="signOutButton"
+  style="position:fixed;bottom:20px;right:20px;z-index:9999;
+  padding:12px 18px;background:#dc2626;color:white;
+  border:0;border-radius:10px;cursor:pointer;display:none;">
+  Sign Out
+</button>
 
+<script>
+  const signOutButton = document.getElementById("signOutButton");
+
+  async function refreshSignOutButton() {
+    const { data } = await supabaseClient.auth.getSession();
+    signOutButton.style.display = data.session ? "block" : "none";
+  }
+
+  signOutButton.addEventListener("click", async () => {
+    signOutButton.disabled = true;
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+      alert("Sign out failed. Please try again.");
+      signOutButton.disabled = false;
+      return;
+    }
+
+    window.location.reload();
+  });
+
+  refreshSignOutButton();
+</script>
 </body>
 </html>
   
