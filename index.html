@@ -503,18 +503,30 @@ body {
   });
     // Show the signed-in email in Settings
   async function updateSettingsEmail() {
-    const emailElement = document.getElementById("settingsEmail");
+ 
+async function updateSettingsEmail() {
+  const emailElement = document.getElementById("settingsEmail");
 
-    if (!emailElement || !window.supabase) return;
+  if (!emailElement) return;
 
+  emailElement.textContent = "Checking account...";
+
+  try {
     const { data, error } = await supabaseClient.auth.getUser();
 
-    if (error || !data.user) {
-      emailElement.textContent = "Not signed in";
+    if (error) throw error;
+
+    if (data.user && data.user.email) {
+      emailElement.textContent = data.user.email;
     } else {
-      emailElement.textContent = data.user.email || "Email unavailable";
+      emailElement.textContent = "Please sign in to view your email.";
     }
+  } catch (error) {
+    console.error("Settings email error:", error);
+    emailElement.textContent =
+      "Could not load email. Please sign in again.";
   }
+}
 
   updateSettingsEmail();
 
