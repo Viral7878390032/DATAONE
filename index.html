@@ -849,6 +849,28 @@ const supabaseClient = window.supabaseClient;
 
   refreshSignOutButton();
 </script>
+  
+<script>
+  window.addEventListener("load", function () {
+    const clientId = "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
+
+    if (window.google && document.getElementById("googleSignInButton")) {
+      google.accounts.id.initialize({
+        client_id: clientId,
+        callback: function (response) {
+          alert("Google sign-in completed. Next, we will connect your account securely.");
+          console.log("Google sign-in response received.");
+        }
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("googleSignInButton"),
+        { theme: "filled_black", size: "large", text: "signin_with" }
+      );
+    }
+  });
+</script>
+
 </body>
 </html>
   
