@@ -867,122 +867,180 @@ const supabaseClient = window.supabaseClient;
   refreshSignOutButton();
 </script>
 
+
 <script>
-  window.addEventListener("load", function () {
-    const clientId =
-      "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
+window.addEventListener("load", function () {
+  const clientId = "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
+  const button = document.getElementById("googleSignInButton");
+  const storageDisplay = document.getElementById("gmailStorage");
+  const countDisplay = document.getElementById("gmailAccountCount");
+  const gmailCard = document.getElementById("gmailCard");
+  const gmailPage = document.getElementById("connectedGmailPage");
+  const closeGmailPage = document.getElementById("closeGmailPage");
+  const accountList = document.getElementById("connectedGmailList");
 
-    const button = document.getElementById("googleSignInButton");
-    const storageDisplay = document.getElementById("gmailStorage");
-    const countDisplay = document.getElementById("gmailAccountCount");
+  if (!window.google || !button || !storageDisplay || !countDisplay ||
+      !gmailCard || !gmailPage || !closeGmailPage || !accountList) {
+    console.error("DATAONE Gmail elements are missing.");
+    return;
+  }
 
-    if (!window.google || !button || !storageDisplay || !countDisplay) {
-      return;
+  const GB = 1024 * 1024 * 1024;
+  const savedKey = "dataoneGoogleAccounts";
+  let accounts = {};
+
+  try {
+    accounts = JSON.parse(localStorage.getItem(savedKey) || "{}");
+  } catch (error) {
+    accounts = {};
+  }
+
+  function updateDashboard() {
+    const list = Object.values(accounts);
+    const totalUsed = list.reduce((sum, a) => sum + a.used, 0);
+    const totalLimit = list.reduce((sum, a) => sum + a.limit, 0);
+
+    countDisplay.textContent = String(list.length);
+    storageDisplay.textContent =
+      (totalUsed / GB).toFixed(2) + " / " +
+      (totalLimit / GB).toFixed(2) + " GB used";
+
+    localStorage.setItem(savedKey, JSON.stringify(accounts));
+    accountList.innerHTML = "";
+
+    if (list.length === 0) {
+      const empty = document.createElement("p");
+      empty.textContent = "No Gmail accounts connected yet.";
+      empty.style.color = "#94a3b8";
+      accountList.appendChild(empty);
     }
 
-    const GB = 1024 * 1024 * 1024;
-    const savedKey = "dataoneGoogleAccounts";
+    list.forEach(function (account) {
+      const row = document.createElement("div");
+      row.style.cssText =
+        "display:flex;align-items:center;gap:12px;padding:16px;" +
+        "margin-bottom:12px;background:#1e293b;" +
+        "border:1px solid #334155;border-radius:12px;";
 
-    let accounts = {};
+      const details = document.createElement("div");
+      details.style.cssText = "flex:1;min-width:0;";
 
-    try {
-      accounts = JSON.parse(localStorage.getItem(savedKey) || "{}");
-    } catch (error) {
-      accounts = {};
-    }
+      const email = document.createElement("div");
+      email.textContent = account.email;
+      email.style.cssText =
+        "font-weight:600;overflow-wrap:anywhere;";
 
-    function updateDashboard() {
-      const list = Object.values(accounts);
-      const totalUsed = list.reduce((sum, a) => sum + a.used, 0);
-      const totalLimit = list.reduce((sum, a) => sum + a.limit, 0);
+      const storage = document.createElement("small");
+      storage.style.cssText =
+        "display:block;color:#94a3b8;margin-top:6px;";
+      storage.textContent =
+        (account.used / GB).toFixed(2) + " GB used of " +
+        (account.limit > 0
+          ? (account.limit / GB).toFixed(2) + " GB"
+          : "unknown total");
 
-      countDisplay.textContent = String(list.length);
+      details.appendChild(email);
+      details.appendChild(storage);
 
-      storageDisplay.textContent =
-        (totalUsed / GB).toFixed(2) + " / " +
-        (totalLimit / GB).toFixed(2) + " GB used";
+      const removeButton = document.createElement("button");
+      removeButton.textContent = "Remove";
+      removeButton.style.cssText =
+        "background:#7f1d1d;color:white;border:0;" +
+        "border-radius:8px;padding:9px 12px;cursor:pointer;";
 
-      localStorage.setItem(savedKey, JSON.stringify(accounts));
-    }
-
-    updateDashboard();
-
-    const tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope:
-        "openid email https://www.googleapis.com/auth/drive.metadata.readonly",
-
-      callback: async function (response) {
-        if (response.error || !response.access_token) {
-          alert(
-            "Google connection failed. Please try again and select the correct account."
-          );
-          return;
-        }
-
-        try {
-          const headers = {
-            Authorization: "Bearer " + response.access_token
-          };
-
-          const profileResponse = await fetch(
-            "https://www.googleapis.com/oauth2/v3/userinfo",
-            { headers: headers }
-          );
-
-          if (!profileResponse.ok) {
-            throw new Error("Could not identify the Google account.");
-          }
-
-          const profile = await profileResponse.json();
-          const email = profile.email;
-
-          const driveResponse = await fetch(
-            "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
-            { headers: headers }
-          );
-
-          if (!driveResponse.ok) {
-            throw new Error("Could not read Google Drive storage.");
-          }
-
-          const driveData = await driveResponse.json();
-          const quota = driveData.storageQuota || {};
-
-          accounts[email] = {
-            email: email,
-            used: Number(quota.usage || 0),
-            limit: Number(quota.limit || 0)
-          };
-
+      removeButton.addEventListener("click", function () {
+        if (confirm("Remove " + account.email + " from DATAONE's list?")) {
+          delete accounts[account.email];
           updateDashboard();
-
-          alert("Connected successfully: " + email);
-        } catch (error) {
-          console.error(error);
-          alert(
-            "Could not load this account. Check its permissions and try again."
-          );
         }
-      }
-    });
-
-    button.innerHTML = "";
-
-    const connectButton = document.createElement("button");
-    connectButton.textContent = "Connect Another Google Account";
-    connectButton.style.cssText =
-      "padding:12px 18px;border:0;border-radius:8px;" +
-      "background:#4285f4;color:white;cursor:pointer;font-size:14px;";
-
-    connectButton.addEventListener("click", function () {
-      tokenClient.requestAccessToken({
-        prompt: "select_account"
       });
-    });
 
-    button.appendChild(connectButton);
+      row.appendChild(details);
+      row.appendChild(removeButton);
+      accountList.appendChild(row);
+    });
+  }
+
+  gmailCard.addEventListener("click", function (event) {
+    event.preventDefault();
+    gmailPage.style.display = "block";
+    updateDashboard();
   });
+
+  closeGmailPage.addEventListener("click", function () {
+    gmailPage.style.display = "none";
+  });
+
+  const tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: "openid email https://www.googleapis.com/auth/drive.metadata.readonly",
+
+    callback: async function (response) {
+      if (response.error || !response.access_token) {
+        alert("Google connection failed. Please try again.");
+        return;
+      }
+
+      try {
+        const headers = {
+          Authorization: "Bearer " + response.access_token
+        };
+
+        const profileResponse = await fetch(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          { headers: headers }
+        );
+
+        if (!profileResponse.ok) {
+          throw new Error("Could not identify Google account.");
+        }
+
+        const profile = await profileResponse.json();
+
+        const driveResponse = await fetch(
+          "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
+          { headers: headers }
+        );
+
+        if (!driveResponse.ok) {
+          throw new Error("Could not read Drive storage.");
+        }
+
+        const driveData = await driveResponse.json();
+        const quota = driveData.storageQuota || {};
+
+        accounts[profile.email] = {
+          email: profile.email,
+          used: Number(quota.usage || 0),
+          limit: Number(quota.limit || 0)
+        };
+
+        updateDashboard();
+        alert("Connected successfully: " + profile.email);
+      } catch (error) {
+        console.error(error);
+        alert("Could not load this account. Check Google permissions.");
+      }
+    }
+  });
+
+  button.innerHTML = "";
+
+  const connectButton = document.createElement("button");
+  connectButton.textContent = "+ Add More Gmail";
+  connectButton.style.cssText =
+    "width:100%;padding:14px 18px;border:0;border-radius:10px;" +
+    "background:#2563eb;color:white;cursor:pointer;font-size:15px;";
+
+  connectButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    tokenClient.requestAccessToken({ prompt: "select_account" });
+  });
+
+  button.appendChild(connectButton);
+  updateDashboard();
+});
 </script>
 </body>
 </html>
