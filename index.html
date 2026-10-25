@@ -851,55 +851,103 @@ const supabaseClient = window.supabaseClient;
 </script>
   
 
+
 <script>
   window.addEventListener("load", function () {
-    const clientId = "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
+    const clientId =
+      "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
 
     const button = document.getElementById("googleSignInButton");
-    if (!window.google || !button) return;
+    const storageDisplay = document.getElementById("gmailStorage");
+    const countDisplay = document.getElementById("gmailAccountCount");
+
+    if (!window.google || !button || !storageDisplay || !countDisplay) {
+      return;
+    }
+
+    const GB = 1024 * 1024 * 1024;
+    const savedKey = "dataoneGoogleAccounts";
+
+    let accounts = {};
+
+    try {
+      accounts = JSON.parse(localStorage.getItem(savedKey) || "{}");
+    } catch (error) {
+      accounts = {};
+    }
+
+    function updateDashboard() {
+      const list = Object.values(accounts);
+      const totalUsed = list.reduce((sum, a) => sum + a.used, 0);
+      const totalLimit = list.reduce((sum, a) => sum + a.limit, 0);
+
+      countDisplay.textContent = String(list.length);
+
+      storageDisplay.textContent =
+        (totalUsed / GB).toFixed(2) + " / " +
+        (totalLimit / GB).toFixed(2) + " GB used";
+
+      localStorage.setItem(savedKey, JSON.stringify(accounts));
+    }
+
+    updateDashboard();
 
     const tokenClient = google.accounts.oauth2.initTokenClient({
       client_id: clientId,
-      scope: "https://www.googleapis.com/auth/drive.metadata.readonly",
+      scope:
+        "openid email https://www.googleapis.com/auth/drive.metadata.readonly",
+
       callback: async function (response) {
-        if (response.error) {
-          alert("Google connection failed. Please try again.");
+        if (response.error || !response.access_token) {
+          alert(
+            "Google connection failed. Please try again and select the correct account."
+          );
           return;
         }
 
         try {
-          const result = await fetch(
-            "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
-            {
-              headers: {
-                Authorization: "Bearer " + response.access_token
-              }
-            }
+          const headers = {
+            Authorization: "Bearer " + response.access_token
+          };
+
+          const profileResponse = await fetch(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            { headers: headers }
           );
 
-          if (!result.ok) {
+          if (!profileResponse.ok) {
+            throw new Error("Could not identify the Google account.");
+          }
+
+          const profile = await profileResponse.json();
+          const email = profile.email;
+
+          const driveResponse = await fetch(
+            "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
+            { headers: headers }
+          );
+
+          if (!driveResponse.ok) {
             throw new Error("Could not read Google Drive storage.");
           }
 
-          const data = await result.json();
-          const quota = data.storageQuota || {};
+          const driveData = await driveResponse.json();
+          const quota = driveData.storageQuota || {};
 
-          const used = Number(quota.usage || 0);
-          const limit = Number(quota.limit || 0);
-          const gb = 1024 * 1024 * 1024;
+          accounts[email] = {
+            email: email,
+            used: Number(quota.usage || 0),
+            limit: Number(quota.limit || 0)
+          };
 
-          document.getElementById("gmailStorage").textContent =
-            limit > 0
-              ? (used / gb).toFixed(2) + " / " +
-                (limit / gb).toFixed(2) + " GB used"
-              : (used / gb).toFixed(2) + " GB used";
+          updateDashboard();
 
-          document.getElementById("gmailAccountCount").textContent = "1";
-
-          alert("Google Drive storage loaded successfully.");
+          alert("Connected successfully: " + email);
         } catch (error) {
           console.error(error);
-          alert("Could not load storage. Please check Google permissions.");
+          alert(
+            "Could not load this account. Check its permissions and try again."
+          );
         }
       }
     });
@@ -907,20 +955,20 @@ const supabaseClient = window.supabaseClient;
     button.innerHTML = "";
 
     const connectButton = document.createElement("button");
-    connectButton.textContent = "Connect Google Drive";
+    connectButton.textContent = "Connect Another Google Account";
     connectButton.style.cssText =
       "padding:12px 18px;border:0;border-radius:8px;" +
       "background:#4285f4;color:white;cursor:pointer;font-size:14px;";
 
     connectButton.addEventListener("click", function () {
-      tokenClient.requestAccessToken();
+      tokenClient.requestAccessToken({
+        prompt: "select_account"
+      });
     });
 
     button.appendChild(connectButton);
   });
 </script>
-
-
 </body>
 </html>
   
