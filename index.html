@@ -482,13 +482,41 @@ body {
     <span>Search with Google</span>
   </a>
 
-  <div class="grid">
-    <a class="card" href="https://mail.google.com">
-      <div class="emoji">✉️</div>
-      <strong>Gmail</strong>
-      <small>Open your email</small>
-    </a>
-  </div>
+
+<div class="grid">
+  <a class="card" href="#gmail" id="gmailCard"
+     style="border:1px solid #334155;display:block;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <img
+        src="https://www.google.com/gmail/about/static/images/logo-gmail.png"
+        alt="Gmail"
+        style="width:42px;height:42px;object-fit:contain;"
+      >
+      <div>
+        <strong style="font-size:18px;margin-bottom:5px;">Gmail</strong>
+        <small>Google email accounts</small>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div>
+        <small>Connected Gmail</small>
+        <div id="gmailAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px;">0</div>
+        <small>Accounts</small>
+      </div>
+
+      <div>
+        <small>Total storage</small>
+        <div id="gmailStorage" style="font-size:25px;font-weight:bold;margin-top:8px;">—</div>
+        <small>Google storage</small>
+      </div>
+    </div>
+
+    <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">
+      Connect Google to view your account information.
+    </p>
+  </a>
+</div>
 
   <footer>DATAONE • Version 1.0</footer>
   
