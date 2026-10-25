@@ -487,7 +487,7 @@ body {
 
 <div class="grid">
   <a class="card" href="#gmail" id="gmailCard"
-     style="border:1px solid #334155;display:block;">
+     style="border:1px solid #334155;display:block;text-decoration:none;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
       <img
         src="https://www.google.com/gmail/about/static/images/logo-gmail.png"
@@ -515,14 +515,31 @@ body {
     </div>
 
     <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">
-      Connect Google to view your account information.
+      View your connected Gmail accounts.
     </p>
-<div id="googleSignInButton" style="margin-top:14px;"></div>
   </a>
 </div>
 
-  <footer>DATAONE • Version 1.0</footer>
-  
+<div id="connectedGmailPage"
+     style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:24px;box-sizing:border-box;">
+
+  <div style="max-width:600px;margin:0 auto;">
+    <button id="closeGmailPage"
+      style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px;cursor:pointer;">
+      ← Back
+    </button>
+
+    <h2 style="margin-top:28px;">Connected Gmail Accounts</h2>
+    <p style="color:#94a3b8;">Manage your connected Google accounts.</p>
+
+    <div id="connectedGmailList" style="margin-top:24px;"></div>
+
+    <div style="margin-top:28px;padding-bottom:24px;">
+      <div id="googleSignInButton"></div>
+    </div>
+  </div>
+</div>
+  <footer>DATAONE • Version 1.0</footer>  
 <script>
   const sidebar = document.getElementById("sidebar");
   const backdrop = document.getElementById("sidebarBackdrop");
@@ -849,8 +866,6 @@ const supabaseClient = window.supabaseClient;
 
   refreshSignOutButton();
 </script>
-  
-
 
 <script>
   window.addEventListener("load", function () {
