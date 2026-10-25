@@ -850,26 +850,76 @@ const supabaseClient = window.supabaseClient;
   refreshSignOutButton();
 </script>
   
+
 <script>
   window.addEventListener("load", function () {
     const clientId = "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
 
-    if (window.google && document.getElementById("googleSignInButton")) {
-      google.accounts.id.initialize({
-        client_id: clientId,
-        callback: function (response) {
-          alert("Google sign-in completed. Next, we will connect your account securely.");
-          console.log("Google sign-in response received.");
-        }
-      });
+    const button = document.getElementById("googleSignInButton");
+    if (!window.google || !button) return;
 
-      google.accounts.id.renderButton(
-        document.getElementById("googleSignInButton"),
-        { theme: "filled_black", size: "large", text: "signin_with" }
-      );
-    }
+    const tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: "https://www.googleapis.com/auth/drive.metadata.readonly",
+      callback: async function (response) {
+        if (response.error) {
+          alert("Google connection failed. Please try again.");
+          return;
+        }
+
+        try {
+          const result = await fetch(
+            "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
+            {
+              headers: {
+                Authorization: "Bearer " + response.access_token
+              }
+            }
+          );
+
+          if (!result.ok) {
+            throw new Error("Could not read Google Drive storage.");
+          }
+
+          const data = await result.json();
+          const quota = data.storageQuota || {};
+
+          const used = Number(quota.usage || 0);
+          const limit = Number(quota.limit || 0);
+          const gb = 1024 * 1024 * 1024;
+
+          document.getElementById("gmailStorage").textContent =
+            limit > 0
+              ? (used / gb).toFixed(2) + " / " +
+                (limit / gb).toFixed(2) + " GB used"
+              : (used / gb).toFixed(2) + " GB used";
+
+          document.getElementById("gmailAccountCount").textContent = "1";
+
+          alert("Google Drive storage loaded successfully.");
+        } catch (error) {
+          console.error(error);
+          alert("Could not load storage. Please check Google permissions.");
+        }
+      }
+    });
+
+    button.innerHTML = "";
+
+    const connectButton = document.createElement("button");
+    connectButton.textContent = "Connect Google Drive";
+    connectButton.style.cssText =
+      "padding:12px 18px;border:0;border-radius:8px;" +
+      "background:#4285f4;color:white;cursor:pointer;font-size:14px;";
+
+    connectButton.addEventListener("click", function () {
+      tokenClient.requestAccessToken();
+    });
+
+    button.appendChild(connectButton);
   });
 </script>
+
 
 </body>
 </html>
