@@ -915,7 +915,7 @@ window.addEventListener("load", function () {
       accountList.appendChild(empty);
     }
 
-    list.forEach(function (account) {
+   list.forEach(function (account, index) {
       const row = document.createElement("div");
       row.style.cssText =
         "display:flex;align-items:center;gap:12px;padding:16px;" +
@@ -926,9 +926,13 @@ window.addEventListener("load", function () {
       details.style.cssText = "flex:1;min-width:0;";
 
       const email = document.createElement("div");
-      email.textContent = account.email;
-      email.style.cssText =
-        "font-weight:600;overflow-wrap:anywhere;";
+    const email = document.createElement("a");
+email.textContent = account.email;
+email.href = "https://mail.google.com/mail/u/" + index + "/";
+email.target = "_blank";
+email.rel = "noopener noreferrer";
+email.style.cssText =
+  "font-weight:600;overflow-wrap:anywhere;color:#60a5fa;text-decoration:none;display:block;";
 
       const storage = document.createElement("small");
       storage.style.cssText =
