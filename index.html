@@ -800,7 +800,9 @@ const supabaseClient = window.supabaseClient;
     authScreen.style.display = signedIn ? "none" : "block";
 
     document.querySelectorAll("[data-auth-hidden='true']").forEach((element) => {
-      element.style.display = signedIn ? "" : "none";
+    element.style.display = signedIn
+  ? (element.id === "connectedGmailPage" ? "none" : "")
+  : "none";
     });
 
     if (!signedIn) {
