@@ -928,7 +928,7 @@ window.addEventListener("load", function () {
       details.style.cssText = "flex:1;min-width:0;";
     const email = document.createElement("a");
 email.textContent = account.email;
-email.href = "https://mail.google.com/mail/u/" + index + "/";
+email.href = "https://mail.google.com/mail/?authuser=" + encodeURIComponent(account.email);
 email.target = "_blank";
 email.rel = "noopener noreferrer";
 email.style.cssText =
