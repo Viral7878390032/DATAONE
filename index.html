@@ -802,12 +802,56 @@ if (entry.fileName) {
     removeButton.style.cssText =
       "padding:7px 10px;background:#dc2626;color:white;border:0;border-radius:7px;cursor:pointer;";
 
-    removeButton.addEventListener("click", () => {
-      myDataEntries.splice(index, 1);
-      localStorage.setItem("dataoneMyData", JSON.stringify(myDataEntries));
-      renderDataEntries();
-    });
+  
+removeButton.addEventListener("click", async () => {
+  if (!confirm("Delete this entry and its uploaded file?")) {
+    return;
+  }
 
+  removeButton.disabled = true;
+  removeButton.textContent = "Deleting...";
+
+  try {
+    const { data: userData, error: userError } =
+      await supabaseClient.auth.getUser();
+
+    if (userError || !userData.user) {
+      throw new Error("Please sign in again.");
+    }
+
+    const entry = myDataEntries[index];
+
+    if (!entry || !entry.filePath) {
+      throw new Error("File information is missing. Entry was not deleted.");
+    }
+
+    const userId = userData.user.id;
+
+    if (entry.filePath.split("/")[0] !== userId) {
+      throw new Error("You can only delete your own files.");
+    }
+
+    const { error: deleteError } = await supabaseClient.storage
+      .from("dataone-files")
+      .remove([entry.filePath]);
+
+    if (deleteError) throw deleteError;
+
+    myDataEntries.splice(index, 1);
+    localStorage.setItem(
+      "dataoneMyData",
+      JSON.stringify(myDataEntries)
+    );
+
+    renderDataEntries();
+    alert("Entry and uploaded file deleted successfully!");
+  } catch (error) {
+    console.error("DATAONE delete error:", error);
+    alert("Delete failed: " + error.message);
+    removeButton.disabled = false;
+    removeButton.textContent = "Delete";
+  }
+});
     card.append(title, type, note, removeButton);
     dataEntries.appendChild(card);
   });
