@@ -291,12 +291,16 @@ h1 {
   color: #93c5fd;
 }
 
+
 #settingsPanel {
   margin-top: 20px;
   padding: 14px;
   border-radius: 12px;
   background: #17243a;
   color: #e2e8f0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
 }
 
 #settingsPanel[hidden] {
@@ -305,6 +309,13 @@ h1 {
 
 #settingsPanel p {
   font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  #settingsPanel {
+    margin-top: 16px;
+    padding: 12px;
+  }
 }
 
 body.sidebar-open {
