@@ -71,17 +71,30 @@ h1 {
 
     .subtitle { color: #94a3b8; margin-top: 6px; }
     h2 { font-size: 20px; margin-bottom: 18px; }
-    .search {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: white;
-      color: #334155;
-      padding: 16px;
-      border-radius: 30px;
-      text-decoration: none;
-      margin-bottom: 30px;
-    }
+   
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  color: #334155;
+  padding: 16px;
+  border-radius: 30px;
+  text-decoration: none;
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .search {
+    padding: 13px 15px;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+}
+
     .search img { width: 25px; height: 25px; }
    
 .grid {
