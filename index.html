@@ -667,7 +667,16 @@ body {
   menuToggle.addEventListener("click", () => {
     setSidebar(!sidebar.classList.contains("open"));
   });
+  
+backdrop.addEventListener("click", () => {
+  setSidebar(false);
+});
 
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    setSidebar(false);
+  }
+});
   menuClose.addEventListener("click", () => setSidebar(false));
   backdrop.addEventListener("click", () => setSidebar(false));
 
