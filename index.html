@@ -9,13 +9,30 @@
   <title>DATAONE</title>
   <style>
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: white;
-      padding: 24px;
-    }
+ 
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: white;
+  padding: 24px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 14px;
+    font-size: 15px;
+  }
+}
+
     header {
       display: flex;
       align-items: center;
