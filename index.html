@@ -589,6 +589,18 @@ body {
     padding: 12px;
   }
 }
+    /* Move DATAONE header upward */
+.dataone-header {
+  transform: translateY(-55px);
+}
+
+/* Make Google search bar thinner */
+input[type="search"] {
+  height: 42px !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 14px;
+}
   </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -780,6 +792,9 @@ body {
   const backdrop = document.getElementById("sidebarBackdrop");
   const settingsToggle = document.getElementById("settingsToggle");
   const profileAvatar = document.getElementById("profileAvatar");
+  profileAvatar.addEventListener("click", () => {
+  settingsToggle.click();
+});
   document.getElementById("vpnButton").addEventListener("click", () => {
   alert("DATAONE VPN is coming soon!");
 });
