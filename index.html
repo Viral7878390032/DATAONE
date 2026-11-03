@@ -322,10 +322,6 @@ body.sidebar-open {
   overflow: hidden;
 }
 
-body {
-  padding-top: 80px;
-}
-
 @media (max-width: 480px) {
   .sidebar {
     width: min(280px, 85vw);
@@ -541,8 +537,8 @@ body {
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 20px;
-  margin-top: -70px;
+  padding: 6px 12px;
+  margin: 0 0 24px;
   gap: 8px;
 }
 
@@ -588,15 +584,14 @@ body {
   background: #2563eb;
 }
 
-/* MOBILE */
 @media (max-width: 600px) {
   .dataone-header {
-    padding: 8px 12px;
-    margin-top: -35px;
+    padding: 4px 6px;
+    margin-bottom: 20px;
   }
 
   .header-brand h1 {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .profile-avatar {
@@ -610,21 +605,13 @@ body {
   }
 }
 
-/* TABLET */
 @media (min-width: 601px) and (max-width: 1024px) {
   .dataone-header {
-    padding: 10px 18px;
-    margin-top: -45px;
+    padding: 6px 14px;
+    margin-bottom: 22px;
   }
 }
 
-/* DESKTOP */
-@media (min-width: 1025px) {
-  .dataone-header {
-    padding: 10px 24px;
-    margin-top: -55px;
-  }
-}
     /* Thinner Google Search Bar */
 .search {
   height: 42px;
@@ -762,8 +749,6 @@ body {
   </button>
 
 </header>
-  <h2>Search &amp; Explore</h2>
-
   <a class="search" href="https://www.google.com">
     <img src="https://www.google.com/favicon.ico" alt="Google">
     <span>Search with Google</span>
@@ -829,18 +814,8 @@ body {
   const sidebar = document.getElementById("sidebar");
   const backdrop = document.getElementById("sidebarBackdrop");
   const settingsToggle = document.getElementById("settingsToggle");
-  const profileAvatar = document.getElementById("profileAvatar");
-  profileAvatar.addEventListener("click", () => {
-  settingsToggle.click();
-});
-  document.getElementById("vpnButton").addEventListener("click", () => {
-  alert("DATAONE VPN is coming soon!");
-});
-
-profileAvatar.addEventListener("click", () => {
-  settingsToggle.click();
-});
   const settingsPanel = document.getElementById("settingsPanel");
+  const profileAvatar = document.getElementById("profileAvatar");
   const compactMode = document.getElementById("compactMode");
 
   function setSidebar(open) {
@@ -848,17 +823,18 @@ profileAvatar.addEventListener("click", () => {
     backdrop.classList.toggle("open", open);
     document.body.classList.toggle("sidebar-open", open);
   }
-  });
-  
-backdrop.addEventListener("click", () => {
-  setSidebar(false);
-});
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    setSidebar(false);
-  }
-});
+  // The profile avatar opens the sidebar directly on Settings.
+  profileAvatar.addEventListener("click", () => {
+    document.getElementById("myDataPanel").hidden = true;
+    settingsPanel.hidden = false;
+    setSidebar(true);
+  });
+
+  document.getElementById("vpnButton").addEventListener("click", () => {
+    alert("DATAONE VPN is coming soon!");
+  });
+
   backdrop.addEventListener("click", () => setSidebar(false));
 
   document.addEventListener("keydown", (event) => {
@@ -868,7 +844,8 @@ document.addEventListener("keydown", (event) => {
   settingsToggle.addEventListener("click", () => {
     settingsPanel.hidden = !settingsPanel.hidden;
   });
-const myDataToggle = document.getElementById("myDataToggle");
+
+  const myDataToggle = document.getElementById("myDataToggle");
 const myDataPanel = document.getElementById("myDataPanel");
 
 myDataToggle.addEventListener("click", (event) => {
