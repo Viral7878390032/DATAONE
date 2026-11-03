@@ -627,6 +627,27 @@ body {
   width: 20px;
   height: 20px;
 }
+    /* Responsive Gmail card */
+.gmail-card {
+  width: 100%;
+  max-width: 520px;
+  box-sizing: border-box;
+  padding: 18px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .gmail-card {
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gmail-card {
+    padding: 14px;
+  }
+}
   </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -757,7 +778,7 @@ body {
 
 
 <div class="grid">
-  <a class="card" href="#gmail" id="gmailCard"
+ <a class="card gmail-card" href="#gmail" id="gmailCard"
      style="border:1px solid #334155;display:block;text-decoration:none;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
       <img
