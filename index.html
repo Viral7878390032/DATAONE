@@ -63,50 +63,6 @@ h1 {
   overflow-wrap: anywhere;
 }
 
-/* Mobile: full-width, compact horizontal Gmail card */
-@media (max-width: 480px) {
-  .gmail-card {
-    width: 100%;
-    max-width: 100%;
-    padding: 8px 12px;
-    margin: 0;
-    border-radius: 12px;
-  }
-
-  .gmail-card > div:first-child {
-    gap: 7px !important;
-    margin-bottom: 6px !important;
-  }
-
-  .gmail-card img {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  .gmail-card strong {
-    font-size: 13px !important;
-  }
-
-  .gmail-card small {
-    font-size: 10px !important;
-  }
-
-  .gmail-card > div:nth-child(2) {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 8px !important;
-    padding-top: 7px !important;
-  }
-
-  .gmail-card > div:nth-child(2) div {
-    font-size: 16px !important;
-    margin-top: 3px !important;
-  }
-
-  .gmail-card p {
-    font-size: 9px !important;
-    margin-top: 6px !important;
-  }
-}
 
     .search img { width: 25px; height: 25px; }
    
@@ -694,23 +650,25 @@ body {
   }
 }
 
-/* Mobile: compact horizontal Gmail card */
+/* Mobile: full-width, short horizontal Gmail card */
 @media (max-width: 480px) {
   .gmail-card {
-    width: 220px;
+    width: 100%;
     max-width: 100%;
-    padding: 10px;
+    min-height: 0;
+    padding: 8px 12px;
+    margin: 0;
     border-radius: 12px;
   }
 
   .gmail-card > div:first-child {
     gap: 7px !important;
-    margin-bottom: 9px !important;
+    margin-bottom: 5px !important;
   }
 
   .gmail-card img {
-    width: 25px !important;
-    height: 25px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .gmail-card strong {
@@ -724,16 +682,17 @@ body {
   .gmail-card > div:nth-child(2) {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 6px !important;
-    padding-top: 8px !important;
+    padding-top: 6px !important;
   }
 
   .gmail-card > div:nth-child(2) div {
-    font-size: 16px !important;
+    font-size: 15px !important;
+    margin-top: 2px !important;
   }
 
   .gmail-card p {
     font-size: 9px !important;
-    margin-top: 8px !important;
+    margin: 5px 0 0 !important;
   }
 }
   </style>
