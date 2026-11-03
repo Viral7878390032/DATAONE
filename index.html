@@ -617,7 +617,7 @@ body {
   <p id="authMessage" role="status" style="color:#cbd5e1;font-size:14px;text-align:center;"></p>
 </div>
 
-<button id="menuToggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+
 
 <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
 
@@ -628,7 +628,6 @@ body {
       <strong>DATAONE</strong>
       <small>Your digital space</small>
     </div>
-    <button id="menuClose" class="menu-close" aria-label="Close menu">×</button>
   </div>
 
   <nav class="sidebar-nav">
@@ -779,8 +778,6 @@ body {
 <script>
   const sidebar = document.getElementById("sidebar");
   const backdrop = document.getElementById("sidebarBackdrop");
-  const menuToggle = document.getElementById("menuToggle");
-  const menuClose = document.getElementById("menuClose");
   const settingsToggle = document.getElementById("settingsToggle");
   const profileAvatar = document.getElementById("profileAvatar");
   document.getElementById("vpnButton").addEventListener("click", () => {
@@ -797,12 +794,7 @@ profileAvatar.addEventListener("click", () => {
     sidebar.classList.toggle("open", open);
     backdrop.classList.toggle("open", open);
     document.body.classList.toggle("sidebar-open", open);
-    menuToggle.setAttribute("aria-expanded", String(open));
-    menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   }
-
-  menuToggle.addEventListener("click", () => {
-    setSidebar(!sidebar.classList.contains("open"));
   });
   
 backdrop.addEventListener("click", () => {
@@ -814,7 +806,6 @@ document.addEventListener("keydown", (event) => {
     setSidebar(false);
   }
 });
-  menuClose.addEventListener("click", () => setSidebar(false));
   backdrop.addEventListener("click", () => setSidebar(false));
 
   document.addEventListener("keydown", (event) => {
