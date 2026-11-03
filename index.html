@@ -1298,7 +1298,7 @@ window.addEventListener("load", function () {
     countDisplay.textContent = String(list.length);
     storageDisplay.textContent =
       (totalUsed / GB).toFixed(2) + " / " +
-      (totalLimit / GB).toFixed(2) + " GB used";
+      (totalLimit / GB).toFixed(2) + " GB";
 
     localStorage.setItem(savedKey, JSON.stringify(accounts));
     accountList.innerHTML = "";
