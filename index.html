@@ -534,7 +534,61 @@ body {
     transition: none;
   }
 }
+/* DATAONE Header */
+.dataone-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 22px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-brand h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.profile-avatar {
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  border: 1px solid #3b82f6;
+  background: #263449;
+  color: white;
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.vpn-button {
+  padding: 11px 18px;
+  border: 1px solid #3b82f6;
+  border-radius: 10px;
+  background: #1e293b;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vpn-button:hover {
+  background: #2563eb;
+}
+
+@media (max-width: 600px) {
+  .dataone-header {
+    padding: 12px;
+  }
+}
   </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -639,14 +693,26 @@ body {
 </div>
 </aside>
 
-  <header>
-    <div class="logo">D</div>
+ <header class="dataone-header">
+
+  <div class="header-brand">
+    <button class="profile-avatar"
+            id="profileAvatar"
+            aria-label="Profile">
+      👤
+    </button>
+
     <div>
       <h1>DATAONE</h1>
       <div class="subtitle">Your simple digital space</div>
     </div>
-  </header>
+  </div>
 
+  <button class="vpn-button" id="vpnButton">
+    🛡️ VPN
+  </button>
+
+</header>
   <h2>Search &amp; Explore</h2>
 
   <a class="search" href="https://www.google.com">
@@ -716,6 +782,14 @@ body {
   const menuToggle = document.getElementById("menuToggle");
   const menuClose = document.getElementById("menuClose");
   const settingsToggle = document.getElementById("settingsToggle");
+  const profileAvatar = document.getElementById("profileAvatar");
+  document.getElementById("vpnButton").addEventListener("click", () => {
+  alert("DATAONE VPN is coming soon!");
+});
+
+profileAvatar.addEventListener("click", () => {
+  settingsToggle.click();
+});
   const settingsPanel = document.getElementById("settingsPanel");
   const compactMode = document.getElementById("compactMode");
 
