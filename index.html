@@ -1479,6 +1479,63 @@ closeGmailPage.addEventListener("click", function () {
   updateDashboard();
 });
 </script>
+  <script>
+async function loadMegaStorage() {
+  const usedEl = document.getElementById("megaStorageUsed");
+  const availableEl = document.getElementById("megaStorageAvailable");
+  const totalEl = document.getElementById("megaTotalStorage");
+
+  if (!usedEl || !availableEl || !totalEl) return;
+
+  try {
+    usedEl.textContent = "Loading...";
+    availableEl.textContent = "Loading...";
+    totalEl.textContent = "Loading...";
+
+    const { data: sessionData, error: sessionError } =
+      await window.supabaseClient.auth.getSession();
+
+    if (sessionError || !sessionData.session) {
+      throw new Error("Please sign in to DATAONE.");
+    }
+
+    const response = await fetch(
+      "https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/mega-storage",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + sessionData.session.access_token,
+          "apikey": "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi"
+        },
+        body: JSON.stringify({})
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "MEGA connection failed.");
+    }
+
+    function formatStorage(bytes) {
+      return (bytes / (1024 ** 3)).toFixed(2) + " GB";
+    }
+
+    usedEl.textContent = formatStorage(result.usedBytes);
+    availableEl.textContent = formatStorage(result.availableBytes);
+    totalEl.textContent = formatStorage(result.totalBytes);
+
+  } catch (error) {
+    console.error("MEGA error:", error);
+    usedEl.textContent = "Unavailable";
+    availableEl.textContent = "Unavailable";
+    totalEl.textContent = "Unavailable";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadMegaStorage);
+</script>
 </body>
 </html>
   
