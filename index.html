@@ -780,29 +780,34 @@ body {
 }
     /* DATAONE RESPONSIVE NAVIGATION */
 
-@media (min-width: 769px) {
-  .sidebar {
-    transform: translateX(0);
-    visibility: visible;
-    width: 250px;
-  }
-
-  .sidebar-backdrop {
-    display: none;
-  }
-
-  body {
-    padding-left: 250px;
-  }
-
-  .sidebar-nav {
-    margin-bottom: 20px;
-  }
-}
-
 @media (max-width: 768px) {
   .sidebar {
-    display: none;
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    transform: none;
+    visibility: visible;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  .sidebar.open {
+    transform: none;
+    visibility: visible;
+  }
+
+  .sidebar-brand,
+  #myDataPanel {
+    display: none !important;
   }
 
   .sidebar-backdrop {
@@ -811,7 +816,7 @@ body {
 
   body {
     padding-left: 0;
-    padding-bottom: 85px;
+    padding-bottom: 90px;
   }
 
   .sidebar-nav {
@@ -828,6 +833,7 @@ body {
     padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
     background: #101b2e;
     border-top: 1px solid #263650;
+    pointer-events: auto;
   }
 
   .sidebar-nav a,
