@@ -900,10 +900,10 @@ body {
  <nav class="sidebar-nav">
   <a href="#home" data-page="home">🏠 <span>Home</span></a>
 
-  <a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">
-    ✉️ <span>Gmail</span>
-  </a>
-
+ <button id="gmailNav" type="button">
+  ✉️ <span>Gmail</span>
+</button>
+   
   <button id="storageNav" type="button">☁️ <span>Storage</span></button>
 
   <button id="mediaNav" type="button">🖼️ <span>Media</span></button>
@@ -1026,10 +1026,6 @@ body {
       View your connected Gmail accounts.
     </p>
   </a>
-
-  <!-- MEGA Card -->
-
-
 <!-- MEGA Card -->
 <a class="card gmail-card" href="#mega" id="megaCard"
    style="border:1px solid #334155;display:block;text-decoration:none;">
@@ -1061,7 +1057,77 @@ body {
     View your connected MEGA accounts.
   </p>
 </a>
-<!-- Connected MEGA Page -->
+  <!-- Media Card -->
+<div class="card" id="mediaCard"
+     style="border:1px solid #334155;display:block;">
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+    <div style="font-size:38px;">🖼️</div>
+    <div>
+      <strong style="font-size:18px;margin-bottom:5px;">Media</strong>
+      <small>Your photos and videos in one place</small>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid #334155;padding-top:16px;
+              display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+    <div style="background:#1e293b;padding:14px;border-radius:10px;">
+      <div style="font-size:25px;">📷</div>
+      <strong>Photos</strong>
+      <small style="display:block;margin-top:5px;">View your photo collection</small>
+    </div>
+
+    <div style="background:#1e293b;padding:14px;border-radius:10px;">
+      <div style="font-size:25px;">🎬</div>
+      <strong>Videos</strong>
+      <small style="display:block;margin-top:5px;">View your video collection</small>
+    </div>
+
+  </div>
+
+  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">
+    Explore your media library.
+  </p>
+</div>
+<!-- Profile Card -->
+<div class="card" id="profileCard"
+     style="border:1px solid #334155;display:block;">
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+    <div style="width:48px;height:48px;border-radius:50%;
+                background:#1e3a8a;display:flex;align-items:center;
+                justify-content:center;font-size:24px;">
+      👤
+    </div>
+    <div>
+      <strong style="font-size:18px;">My Profile</strong>
+      <small style="display:block;">Your DATAONE account</small>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid #334155;padding-top:16px;
+              display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+    <button type="button" id="profileSettingsBtn">
+      ⚙️ Account Settings
+    </button>
+
+    <button type="button" id="profileSecurityBtn">
+      🔒 Security
+    </button>
+
+    <button type="button" id="profileConnectedBtn">
+      🔗 Connected Accounts
+    </button>
+
+    <button type="button" id="profileDataBtn">
+      📁 My Data
+    </button>
+
+  </div>
+</div>
+  <!-- Connected MEGA Page -->
 <div id="connectedMegaPage"
      style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px;box-sizing:border-box;">
 
@@ -1182,23 +1248,65 @@ body {
   });
 }
 const storageNav = document.getElementById("storageNav");
+  const gmailNav = document.getElementById("gmailNav");
+
+gmailNav.addEventListener("click", () => {
+  document.getElementById("gmailCard").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+});
 const mediaNav = document.getElementById("mediaNav");
 const profileNav = document.getElementById("profileNav");
 
 storageNav.addEventListener("click", () => {
-  document.getElementById("connectedMegaPage").style.display = "block";
+  document.getElementById("megaCard").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
 });
 
 mediaNav.addEventListener("click", () => {
-  alert("Media section is coming soon!");
+  document.getElementById("mediaCard").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
 });
 
 profileNav.addEventListener("click", () => {
+  document.getElementById("profileCard").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+});
+  document.getElementById("profileSettingsBtn").addEventListener("click", () => {
+  myDataPanel.hidden = true;
   settingsPanel.hidden = false;
-  document.getElementById("myDataPanel").hidden = true;
+  setSidebar(true);
 });
   const myDataToggle = document.getElementById("myDataToggle");
 const myDataPanel = document.getElementById("myDataPanel");
+  document.getElementById("profileDataBtn").addEventListener("click", () => {
+  settingsPanel.hidden = true;
+  myDataPanel.hidden = false;
+  setSidebar(true);
+});
+document.getElementById("profileConnectedBtn").addEventListener("click", () => {
+  document.getElementById("gmailCard").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+document.getElementById("profileSecurityBtn").addEventListener("click", () => {
+  myDataPanel.hidden = true;
+  settingsPanel.hidden = false;
+  setSidebar(true);
+});
+  document.getElementById("gmailCard").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+});
 
 if (myDataToggle) {
   myDataToggle.addEventListener("click", (event) => {
