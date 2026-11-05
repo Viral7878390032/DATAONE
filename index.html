@@ -1170,9 +1170,11 @@ body {
     if (event.key === "Escape") setSidebar(false);
   });
 
+ if (settingsToggle) {
   settingsToggle.addEventListener("click", () => {
     settingsPanel.hidden = !settingsPanel.hidden;
   });
+}
 const storageNav = document.getElementById("storageNav");
 const mediaNav = document.getElementById("mediaNav");
 const profileNav = document.getElementById("profileNav");
@@ -1192,11 +1194,13 @@ profileNav.addEventListener("click", () => {
   const myDataToggle = document.getElementById("myDataToggle");
 const myDataPanel = document.getElementById("myDataPanel");
 
-myDataToggle.addEventListener("click", (event) => {
-  event.preventDefault();
-  myDataPanel.hidden = !myDataPanel.hidden;
-  settingsPanel.hidden = true;
-});
+if (myDataToggle) {
+  myDataToggle.addEventListener("click", (event) => {
+    event.preventDefault();
+    myDataPanel.hidden = !myDataPanel.hidden;
+    settingsPanel.hidden = true;
+  });
+}
   const dataTitle = document.getElementById("dataTitle");
 const dataType = document.getElementById("dataType");
 const dataNote = document.getElementById("dataNote");
