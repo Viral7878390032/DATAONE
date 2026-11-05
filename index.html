@@ -870,8 +870,10 @@ body {
 
   <!-- MEGA Card -->
 
-<div class="card mega-card" id="megaCard"
-     style="border:1px solid #334155;display:block;">
+
+<!-- MEGA Card -->
+<a class="card gmail-card" href="#mega" id="megaCard"
+   style="border:1px solid #334155;display:block;text-decoration:none;">
 
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
     <img src="https://mega.io/favicon.ico"
@@ -885,59 +887,82 @@ body {
 
   <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
     <div>
-      <small>Storage used</small>
-      <div id="megaStorageUsed" style="font-size:25px;font-weight:bold;margin-top:8px;">—</div>
+      <small>Connected MEGA</small>
+      <div id="megaAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px;">0</div>
+      <small>Accounts</small>
     </div>
     <div>
-      <small>Storage available</small>
-      <div id="megaStorageAvailable" style="font-size:25px;font-weight:bold;margin-top:8px;">—</div>
+      <small>Total storage</small>
+      <div id="megaStorage" style="font-size:25px;font-weight:bold;margin-top:8px;">—</div>
+      <small>MEGA storage</small>
     </div>
   </div>
 
-  <div style="margin-top:16px;">
-    <small>Total storage</small>
-    <div id="megaTotalStorage" style="font-size:22px;font-weight:bold;margin-top:6px;">—</div>
-  </div>
+  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">
+    View your connected MEGA accounts.
+  </p>
+</a>
+<!-- Connected MEGA Page -->
+<div id="connectedMegaPage"
+     style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px;box-sizing:border-box;">
 
-  <div style="margin-top:20px;border-top:1px solid #334155;padding-top:16px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-      <strong>Connected accounts</strong>
+  <div style="max-width:600px;margin:0 auto;">
+
+    <button type="button" id="closeMegaPage"
+      style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px;cursor:pointer;">
+      ← Back
+    </button>
+
+    <h2 style="margin-top:28px;">Connected MEGA Accounts</h2>
+
+    <p style="color:#94a3b8;">
+      Manage your connected MEGA accounts and storage.
+    </p>
+
+    <div id="connectedMegaList" style="margin-top:24px;">
+      Loading accounts...
+    </div>
+
+    <div style="margin-top:28px;padding-bottom:24px;">
+
       <button type="button" id="addMegaAccountBtn"
-        style="background:#2563eb;color:white;border:0;padding:9px 14px;border-radius:8px;cursor:pointer;">
-        + Add Account
+        style="width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white;cursor:pointer;font-size:15px;">
+        + Add More MEGA
       </button>
-    </div>
 
-    <div id="megaAccountsList" style="margin-top:14px;">
-      <small style="color:#94a3b8;">Loading accounts...</small>
-    </div>
+      <div id="megaAddAccountForm"
+        style="display:none;margin-top:18px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
 
-    <div id="megaAddAccountForm" style="display:none;margin-top:16px;padding:14px;border:1px solid #334155;border-radius:10px;">
-      <strong>Add MEGA Account</strong>
+        <h3>Add MEGA Account</h3>
 
-      <input id="megaAccountEmail" type="email"
-        placeholder="MEGA email address"
-        autocomplete="username"
-        style="width:100%;box-sizing:border-box;margin-top:12px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
+        <input id="megaAccountEmail" type="email"
+          placeholder="MEGA email address"
+          autocomplete="username"
+          style="width:100%;box-sizing:border-box;margin-top:12px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
 
-      <input id="megaAccountPassword" type="password"
-        placeholder="MEGA password"
-        autocomplete="new-password"
-        style="width:100%;box-sizing:border-box;margin-top:10px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
+        <input id="megaAccountPassword" type="password"
+          placeholder="MEGA password"
+          autocomplete="new-password"
+          style="width:100%;box-sizing:border-box;margin-top:10px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
 
-      <div style="display:flex;gap:10px;margin-top:12px;">
-        <button type="button" id="saveMegaAccountBtn"
-          style="background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">
-          Connect Account
-        </button>
+        <div style="display:flex;gap:10px;margin-top:12px;">
 
-        <button type="button" id="cancelMegaAccountBtn"
-          style="background:#334155;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">
-          Cancel
-        </button>
+          <button type="button" id="saveMegaAccountBtn"
+            style="background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">
+            Connect Account
+          </button>
+
+          <button type="button" id="cancelMegaAccountBtn"
+            style="background:#334155;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">
+            Cancel
+          </button>
+
+        </div>
+
+        <p id="megaAccountMessage"
+          style="font-size:12px;color:#94a3b8;margin-top:10px;"></p>
+
       </div>
-
-      <p id="megaAccountMessage" style="font-size:12px;color:#94a3b8;margin-top:10px;"></p>
     </div>
   </div>
 </div>
@@ -1515,8 +1540,7 @@ closeGmailPage.addEventListener("click", function () {
   updateDashboard();
 });
 </script>
-  <script>
-
+<script>
 const MEGA_FUNCTION_URL =
   "https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/mega-storage";
 
@@ -1555,57 +1579,72 @@ async function callMegaFunction(payload = {}) {
 }
 
 async function loadMegaStorage() {
-  const usedEl = document.getElementById("megaStorageUsed");
-  const availableEl = document.getElementById("megaStorageAvailable");
-  const totalEl = document.getElementById("megaTotalStorage");
-  const listEl = document.getElementById("megaAccountsList");
+  const countEl = document.getElementById("megaAccountCount");
+  const storageEl = document.getElementById("megaStorage");
+  const listEl = document.getElementById("connectedMegaList");
 
-  if (!usedEl || !availableEl || !totalEl || !listEl) return;
-
-  usedEl.textContent = "Loading...";
-  availableEl.textContent = "Loading...";
-  totalEl.textContent = "Loading...";
-  listEl.textContent = "Loading accounts...";
+  if (countEl) countEl.textContent = "Loading...";
+  if (storageEl) storageEl.textContent = "Loading...";
+  if (listEl) listEl.textContent = "Loading accounts...";
 
   try {
     const result = await callMegaFunction({ action: "list" });
+    const accounts = result.accounts || [];
 
-    usedEl.textContent = formatMegaStorage(result.usedBytes);
-    availableEl.textContent = formatMegaStorage(result.availableBytes);
-    totalEl.textContent = formatMegaStorage(result.totalBytes);
+    if (countEl) {
+      countEl.textContent = String(accounts.length);
+    }
+
+    if (storageEl) {
+      storageEl.textContent =
+        formatMegaStorage(result.usedBytes) + " / " +
+        formatMegaStorage(result.totalBytes);
+    }
+
+    if (!listEl) return;
 
     listEl.replaceChildren();
 
-    if (!result.accounts || result.accounts.length === 0) {
-      listEl.textContent = "No MEGA accounts connected.";
+    if (accounts.length === 0) {
+      listEl.textContent = "No MEGA accounts connected yet.";
       return;
     }
 
-    result.accounts.forEach((account) => {
+    accounts.forEach((account) => {
       const card = document.createElement("div");
 
       card.style.cssText =
-        "padding:13px;margin-top:10px;border:1px solid #334155;border-radius:9px;";
+        "padding:16px;margin-bottom:12px;" +
+        "background:#1e293b;border:1px solid #334155;" +
+        "border-radius:12px;";
 
       const heading = document.createElement("div");
+
       heading.style.cssText =
-        "display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;";
+        "display:flex;justify-content:space-between;" +
+        "align-items:center;gap:10px;flex-wrap:wrap;";
 
       const email = document.createElement("strong");
       email.textContent = account.email;
-      email.style.cssText = "font-size:13px;overflow-wrap:anywhere;";
+      email.style.cssText =
+        "font-size:14px;overflow-wrap:anywhere;";
 
       heading.appendChild(email);
 
       if (account.id !== "legacy") {
         const removeBtn = document.createElement("button");
+
         removeBtn.type = "button";
         removeBtn.textContent = "Remove";
+
         removeBtn.style.cssText =
-          "background:#7f1d1d;color:white;border:0;padding:6px 10px;border-radius:6px;cursor:pointer;";
+          "background:#7f1d1d;color:white;border:0;" +
+          "padding:8px 12px;border-radius:8px;cursor:pointer;";
 
         removeBtn.addEventListener("click", async () => {
-          if (!confirm("Remove this MEGA account from DATAONE?")) return;
+          if (!confirm("Remove this MEGA account from DATAONE?")) {
+            return;
+          }
 
           removeBtn.disabled = true;
           removeBtn.textContent = "Removing...";
@@ -1617,6 +1656,7 @@ async function loadMegaStorage() {
             });
 
             await loadMegaStorage();
+
           } catch (error) {
             alert(error.message);
             removeBtn.disabled = false;
@@ -1629,48 +1669,72 @@ async function loadMegaStorage() {
 
       card.appendChild(heading);
 
+      const storage = document.createElement("p");
+
+      storage.style.cssText =
+        "color:#94a3b8;font-size:13px;" +
+        "line-height:1.8;margin:12px 0 0;";
+
       if (account.error) {
-        const errorText = document.createElement("p");
-        errorText.textContent = account.error;
-        errorText.style.cssText =
-          "color:#f87171;font-size:12px;margin:10px 0 0;";
-        card.appendChild(errorText);
+        storage.style.color = "#f87171";
+        storage.textContent = account.error;
       } else {
-        const storageText = document.createElement("p");
-        storageText.textContent =
+        storage.textContent =
           "Used: " + formatMegaStorage(account.usedBytes) +
-          " | Available: " + formatMegaStorage(account.availableBytes) +
-          " | Total: " + formatMegaStorage(account.totalBytes);
+          "\nAvailable: " + formatMegaStorage(account.availableBytes) +
+          "\nTotal: " + formatMegaStorage(account.totalBytes);
 
-        storageText.style.cssText =
-          "color:#94a3b8;font-size:12px;margin:10px 0 0;line-height:1.7;";
-
-        card.appendChild(storageText);
+        storage.style.whiteSpace = "pre-line";
       }
 
+      card.appendChild(storage);
       listEl.appendChild(card);
     });
 
   } catch (error) {
     console.error("MEGA error:", error);
 
-    usedEl.textContent = "Unavailable";
-    availableEl.textContent = "Unavailable";
-    totalEl.textContent = "Unavailable";
-    listEl.textContent = error.message;
+    if (countEl) countEl.textContent = "—";
+    if (storageEl) storageEl.textContent = "Unavailable";
+    if (listEl) listEl.textContent = error.message;
   }
 }
 
 function setupMegaAccountButtons() {
+  const megaCard = document.getElementById("megaCard");
+  const megaPage = document.getElementById("connectedMegaPage");
+  const closeBtn = document.getElementById("closeMegaPage");
+
   const addBtn = document.getElementById("addMegaAccountBtn");
   const cancelBtn = document.getElementById("cancelMegaAccountBtn");
   const saveBtn = document.getElementById("saveMegaAccountBtn");
+
   const form = document.getElementById("megaAddAccountForm");
   const emailInput = document.getElementById("megaAccountEmail");
   const passwordInput = document.getElementById("megaAccountPassword");
   const message = document.getElementById("megaAccountMessage");
 
-  if (!addBtn || !cancelBtn || !saveBtn || !form) return;
+  if (
+    !megaCard || !megaPage || !closeBtn ||
+    !addBtn || !cancelBtn || !saveBtn ||
+    !form || !emailInput || !passwordInput || !message
+  ) {
+    console.error("MEGA page elements are missing.");
+    return;
+  }
+
+  megaCard.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    megaPage.style.display = "block";
+    form.style.display = "none";
+
+    loadMegaStorage();
+  });
+
+  closeBtn.addEventListener("click", () => {
+    megaPage.style.display = "none";
+  });
 
   addBtn.addEventListener("click", () => {
     form.style.display = "block";
@@ -1690,7 +1754,8 @@ function setupMegaAccountButtons() {
     const password = passwordInput.value;
 
     if (!email || !password) {
-      message.textContent = "Enter your MEGA email and password.";
+      message.textContent =
+        "Enter your MEGA email and password.";
       return;
     }
 
@@ -1705,9 +1770,11 @@ function setupMegaAccountButtons() {
         password
       });
 
-      message.textContent = "MEGA account connected successfully!";
       emailInput.value = "";
       passwordInput.value = "";
+
+      message.textContent =
+        "MEGA account connected successfully!";
 
       await loadMegaStorage();
 
@@ -1716,6 +1783,7 @@ function setupMegaAccountButtons() {
     } catch (error) {
       console.error("MEGA add account error:", error);
       message.textContent = error.message;
+
     } finally {
       saveBtn.disabled = false;
       saveBtn.textContent = "Connect Account";
