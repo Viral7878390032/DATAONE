@@ -21,11 +21,85 @@ body {
 }
 
 @media (max-width: 768px) {
+  .sidebar {
+    display: block;
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    transform: none;
+    visibility: visible;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  .sidebar-brand,
+  #myDataPanel {
+    display: none !important;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+  }
+
   body {
-    padding: 18px;
+    padding-left: 0;
+    padding-bottom: 90px;
+  }
+
+  .sidebar-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1005;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+    background: #101b2e;
+    border-top: 1px solid #263650;
+    pointer-events: auto;
+  }
+
+  .sidebar-nav a,
+  .sidebar-nav button {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    min-height: 54px;
+    padding: 5px 2px;
+    font-size: 11px;
+  }
+
+  .sidebar-nav a span,
+  .sidebar-nav button span {
+    font-size: 10px;
+  }
+
+  #settingsPanel:not([hidden]) {
+    display: block;
+    position: fixed;
+    z-index: 1010;
+    left: 5%;
+    right: 5%;
+    bottom: 90px;
+    max-height: 65vh;
+    overflow-y: auto;
+    background: #17243a;
+    box-shadow: 0 8px 35px #0009;
   }
 }
-
 @media (max-width: 480px) {
   body {
     padding: 14px;
