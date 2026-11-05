@@ -704,6 +704,78 @@ body {
     margin: 5px 0 0 !important;
   }
 }
+    /* DATAONE RESPONSIVE NAVIGATION */
+
+@media (min-width: 769px) {
+  .sidebar {
+    transform: translateX(0);
+    visibility: visible;
+    width: 250px;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+  }
+
+  body {
+    padding-left: 250px;
+  }
+
+  .sidebar-nav {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+  }
+
+  body {
+    padding-left: 0;
+    padding-bottom: 85px;
+  }
+
+  .sidebar-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1005;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+    background: #101b2e;
+    border-top: 1px solid #263650;
+  }
+
+  .sidebar-nav a,
+  .sidebar-nav button {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    min-height: 54px;
+    padding: 5px 2px;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .sidebar-nav a span,
+  .sidebar-nav button span {
+    font-size: 10px;
+  }
+}
   </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -745,12 +817,19 @@ body {
     </div>
   </div>
 
-  <nav class="sidebar-nav">
-    <a href="#home" data-page="home">🏠 <span>Home</span></a>
-    <a href="#myData" id="myDataToggle">📁 <span>My Data</span></a>
-    <a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">✉️ <span>Gmail</span></a>
-    <button id="settingsToggle" type="button">⚙️ <span>Settings</span></button>
-  </nav>
+ <nav class="sidebar-nav">
+  <a href="#home" data-page="home">🏠 <span>Home</span></a>
+
+  <a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">
+    ✉️ <span>Gmail</span>
+  </a>
+
+  <button id="storageNav" type="button">☁️ <span>Storage</span></button>
+
+  <button id="mediaNav" type="button">🖼️ <span>Media</span></button>
+
+  <button id="profileNav" type="button">👤 <span>Profile</span></button>
+</nav>
 <div id="myDataPanel" hidden style="margin-top:20px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:14px;color:white;">
   <h3 style="margin-top:0;">📁 My Data</h3>
   <p style="color:#94a3b8;">Organize your personal files and information.</p>
@@ -1020,7 +1099,22 @@ body {
   settingsToggle.addEventListener("click", () => {
     settingsPanel.hidden = !settingsPanel.hidden;
   });
+const storageNav = document.getElementById("storageNav");
+const mediaNav = document.getElementById("mediaNav");
+const profileNav = document.getElementById("profileNav");
 
+storageNav.addEventListener("click", () => {
+  document.getElementById("connectedMegaPage").style.display = "block";
+});
+
+mediaNav.addEventListener("click", () => {
+  alert("Media section is coming soon!");
+});
+
+profileNav.addEventListener("click", () => {
+  settingsPanel.hidden = false;
+  document.getElementById("myDataPanel").hidden = true;
+});
   const myDataToggle = document.getElementById("myDataToggle");
 const myDataPanel = document.getElementById("myDataPanel");
 
@@ -1804,6 +1898,7 @@ if (document.readyState === "loading") {
 } else {
   initializeMegaAccounts();
 }
+  
 </script>
   <!-- DATAONE deployment refresh -->
 </body>
