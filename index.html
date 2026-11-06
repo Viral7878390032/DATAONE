@@ -1,1349 +1,352 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1220">
-  <link rel="manifest" href="./manifest.json">
-  <title>DATAONE</title>
-  <style>
-    * { box-sizing: border-box; }
- 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b1220;
-  color: white;
-  padding: 24px;
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100%;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    display: block;
-    position: fixed;
-    inset: auto 0 0 0;
-    width: 100%;
-    height: auto;
-    padding: 0;
-    transform: none;
-    visibility: visible;
-    overflow: visible;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    pointer-events: none;
-  }
-
-  .sidebar-brand,
-  #myDataPanel {
-    display: none !important;
-  }
-
-  .sidebar-backdrop {
-    display: none;
-  }
-
-  body {
-    padding-left: 0;
-    padding-bottom: 90px;
-  }
-
-  .sidebar-nav {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1005;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 2px;
-    margin: 0;
-    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
-    background: #101b2e;
-    border-top: 1px solid #263650;
-    pointer-events: auto;
-  }
-
-  .sidebar-nav a,
-  .sidebar-nav button {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    min-width: 0;
-    min-height: 54px;
-    padding: 5px 2px;
-    font-size: 11px;
-  }
-
-  .sidebar-nav a span,
-  .sidebar-nav button span {
-    font-size: 10px;
-  }
-
-  #settingsPanel:not([hidden]) {
-    display: block;
-    position: fixed;
-    z-index: 1010;
-    left: 5%;
-    right: 5%;
-    bottom: 90px;
-    max-height: 65vh;
-    overflow-y: auto;
-    background: #17243a;
-    box-shadow: 0 8px 35px #0009;
-  }
-}
-@media (max-width: 480px) {
-  body {
-    padding: 14px;
-    font-size: 15px;
-  }
-}
-
-
-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 12px 0 32px;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 480px) {
-  header {
-    gap: 10px;
-    margin: 8px 0 24px;
-  }
-}
-
-    .logo {
-      background: #2563eb;
-      padding: 14px;
-      border-radius: 14px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-    
-h1 {
-  margin: 0;
-  font-size: 27px;
-  overflow-wrap: anywhere;
-}
-
-
-    .search img { width: 25px; height: 25px; }
-   
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  width: 100%;
-}
-
-/* Tablets */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-}
-
-/* Mobile phones */
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-}
-
- 
-.card {
-  background: #17243a;
-  color: white;
-  text-decoration: none;
-  border: 1px solid #263650;
-  border-radius: 18px;
-  padding: 22px 16px;
-  min-height: 125px;
-  width: 100%;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  transition: transform 0.2s ease, border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  border-color: #60a5fa;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-}
-
-.card:focus-visible {
-  outline: 2px solid #60a5fa;
-  outline-offset: 3px;
-}
-
-@media (max-width: 480px) {
-  .card {
-    border-radius: 14px;
-    padding: 18px 14px;
-    min-height: 110px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card {
-    transition: none;
-  }
-
-  .card:hover {
-    transform: none;
-  }
-}
-
-    .emoji { font-size: 30px; margin-bottom: 15px; }
-    .card strong { display: block; margin-bottom: 7px; }
-    .card small { color: #94a3b8; }
-    footer {
-      color: #64748b;
-      text-align: center;
-      margin-top: 40px;
-      font-size: 12px;
-    }
-    
-.menu-toggle {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  z-index: 1001;
-  width: 44px;
-  height: 44px;
-  border: 1px solid #334155;
-  border-radius: 12px;
-  background: #17243a;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-
-.sidebar {
-  position: fixed;
-  inset: 0 auto 0 0;
-  z-index: 1003;
-  width: min(280px, 85vw);
-  max-width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  padding: 20px;
-  background: #101b2e;
-  border-right: 1px solid #263650;
-  transform: translateX(-100%);
-  transition: transform 0.25s ease;
-  visibility: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
-.sidebar.open {
-  transform: translateX(0);
-  visibility: visible;
-}
-
-.sidebar-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 1002;
-  background: #0009;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease;
-}
-
-.sidebar-backdrop.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.sidebar-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #263650;
-}
-
-.sidebar-brand strong,
-.sidebar-brand small {
-  display: block;
-}
-
-.sidebar-brand small {
-  margin-top: 5px;
-  color: #94a3b8;
-  font-size: 12px;
-}
-
-.sidebar-brand .logo {
-  padding: 10px;
-  color: white;
-}
-
-.menu-close {
-  margin-left: auto;
-  background: transparent;
-  border: 0;
-  color: white;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.sidebar-nav {
-  display: grid;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.sidebar-nav a,
-.sidebar-nav button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 14px;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  color: #e2e8f0;
-  font: inherit;
-  text-decoration: none;
-  text-align: left;
-  cursor: pointer;
-}
-
-.sidebar-nav a:hover,
-.sidebar-nav button:hover {
-  background: #203553;
-  color: #93c5fd;
-}
-
-
-#settingsPanel {
-  margin-top: 20px;
-  padding: 14px;
-  border-radius: 12px;
-  background: #17243a;
-  color: #e2e8f0;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-wrap: anywhere;
-}
-
-#settingsPanel[hidden] {
-  display: none;
-}
-
-#settingsPanel p {
-  font-weight: bold;
-}
-
-@media (max-width: 480px) {
-  #settingsPanel {
-    margin-top: 16px;
-    padding: 12px;
-  }
-}
-
-body.sidebar-open {
-  overflow: hidden;
-}
-
-@media (max-width: 480px) {
-  .sidebar {
-    width: min(280px, 85vw);
-  }
-}
-/* DATAONE responsive layout */
-* {
-  box-sizing: border-box;
-}
-
-img,
-video,
-iframe {
-  max-width: 100%;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-@media (max-width: 768px) {
-  .container,
-  .main-content,
-  .content {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .card,
-  button,
-  input,
-  select,
-  textarea {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-
-  .card {
-    padding: 14px;
-  }
-
-  button {
-    min-height: 42px;
-  }
-}
-
-
-/* DATAONE premium sidebar upgrade */
-:root {
-  --sidebar-bg: #0d1628;
-  --sidebar-panel: #111e33;
-  --sidebar-border: rgba(148, 163, 184, 0.15);
-  --sidebar-blue: #60a5fa;
-  --sidebar-text: #e2e8f0;
-  --sidebar-muted: #94a3b8;
-}
-
-.menu-toggle {
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(96, 165, 250, 0.28);
-  background: rgba(17, 30, 51, 0.94);
-  box-shadow: 0 8px 28px #0004;
-  backdrop-filter: blur(14px);
-  transition: background .2s, border-color .2s, transform .2s;
-}
-
-.menu-toggle:hover {
-  background: #1d3556;
-  border-color: var(--sidebar-blue);
-  transform: translateY(-1px);
-}
-
-.sidebar {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  background:
-    radial-gradient(ellipse at top left, #1d3c67 0%, transparent 48%),
-    var(--sidebar-bg);
-  border-right: 1px solid var(--sidebar-border);
-  box-shadow: 18px 0 60px #0005;
-  padding: 24px 16px;
-  transition: transform .28s cubic-bezier(.2,.8,.2,1),
-              visibility .28s;
-}
-
-.sidebar-brand {
-  padding: 8px 6px 24px;
-  border-bottom-color: var(--sidebar-border);
-}
-
-.sidebar-brand strong {
-  color: #f8fafc;
-  letter-spacing: 1.6px;
-  font-size: 17px;
-}
-
-.sidebar-brand .logo {
-  width: 44px;
-  height: 44px;
-  box-sizing: border-box;
-  display: grid;
-  place-items: center;
-  border: 1px solid #60a5fa66;
-  border-radius: 14px;
-  background: linear-gradient(145deg, #2563eb, #172554);
-  box-shadow: 0 0 24px #3b82f633;
-  font-weight: 800;
-  font-size: 19px;
-}
-
-.menu-close {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  transition: background .2s, color .2s;
-}
-
-.menu-close:hover {
-  background: #ffffff12;
-  color: #93c5fd;
-}
-
-.sidebar-nav {
-  gap: 8px;
-  margin-top: 26px;
-}
-
-.sidebar-nav a,
-.sidebar-nav button {
-  box-sizing: border-box;
-  min-height: 48px;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  color: var(--sidebar-muted);
-  font-size: 14px;
-  font-weight: 500;
-  transition: background .2s, color .2s,
-              border-color .2s, transform .2s;
-}
-
-.sidebar-nav a:hover,
-.sidebar-nav button:hover {
-  background: #ffffff09;
-  border-color: var(--sidebar-border);
-  color: white;
-  transform: translateX(3px);
-}
-
-.sidebar-nav a[data-page="home"] {
-  background: linear-gradient(100deg, #2563eb35, #3b82f60a);
-  border-color: #60a5fa35;
-  color: #93c5fd;
-  box-shadow: inset 3px 0 0 #60a5fa;
-}
-
-.sidebar-nav a:focus-visible,
-.sidebar-nav button:focus-visible,
-.menu-toggle:focus-visible,
-.menu-close:focus-visible {
-  outline: 2px solid var(--sidebar-blue);
-  outline-offset: 3px;
-}
-
-#settingsPanel {
-  border: 1px solid var(--sidebar-border);
-  background: #ffffff08;
-  border-radius: 14px;
-  padding: 16px;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-#settingsPanel p {
-  margin-top: 0;
-  color: #93c5fd;
-}
-
-#settingsPanel label {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  cursor: pointer;
-}
-
-#settingsPanel input {
-  accent-color: #3b82f6;
-}
-
-.sidebar-backdrop {
-  background: rgba(2, 6, 23, .72);
-  backdrop-filter: blur(3px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sidebar,
-  .sidebar-nav a,
-  .sidebar-nav button,
-  .menu-toggle {
-    transition: none;
-  }
-}
-/* DATAONE HEADER */
-.dataone-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 6px 12px;
-  margin: 0 0 24px;
-  gap: 8px;
-}
-
-.header-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-brand h1 {
-  margin: 0 0 0 0;
-  padding: 0;
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  line-height: 1;
-}
-.profile-avatar {
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  border: 1px solid #3b82f6;
-  background: #263449;
-  color: white;
-  font-size: 21px;
-  cursor: pointer;
-}
-
-.vpn-button {
-  padding: 10px 16px;
-  border: 1px solid #3b82f6;
-  border-radius: 10px;
-  background: #1e293b;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.vpn-button:hover {
-  background: #2563eb;
-}
-
-@media (max-width: 600px) {
-  .dataone-header {
-    padding: 4px 6px;
-    margin-bottom: 20px;
-  }
-
-  .header-brand h1 {
-    font-size: 18px;
-  }
-
-  .profile-avatar {
-    width: 38px;
-    height: 38px;
-  }
-
-  .vpn-button {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 1024px) {
-  .dataone-header {
-    padding: 6px 14px;
-    margin-bottom: 22px;
-  }
-}
-
-    /* Thinner Google Search Bar */
-.search {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 42px;
-  width: 100%;
-  padding: 0 14px;
-  box-sizing: border-box;
-  background: #ffffff !important;
-  color: #334155 !important;
-  border-radius: 30px;
-  text-decoration: none;
-  margin-bottom: 30px;
-}
-
-.search img {
-  width: 20px;
-  height: 20px;
-}
-/* Gmail card layout */
-.gmail-card {
-  display: block;
-  width: 100%;
-  max-width: 320px;
-  margin: 0;
-  padding: 14px;
-  box-sizing: border-box;
-  justify-self: start;
-  align-self: start;
-  border-radius: 14px;
-  background: #172033;
-  border: 1px solid #334155 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-  text-decoration: none;
-}
-
-/* Compact card content */
-.gmail-card > div:first-child {
-  gap: 8px !important;
-  margin-bottom: 10px !important;
-}
-
-.gmail-card img {
-  width: 30px !important;
-  height: 30px !important;
-}
-
-.gmail-card strong {
-  font-size: 14px !important;
-}
-
-.gmail-card > div:nth-child(2) {
-  padding-top: 8px !important;
-  gap: 6px !important;
-}
-
-.gmail-card > div:nth-child(2) div {
-  font-size: 18px !important;
-  margin-top: 4px !important;
-}
-
-.gmail-card p {
-  font-size: 10px !important;
-  margin-top: 8px !important;
-}
-
-/* Tablet */
-@media (min-width: 481px) and (max-width: 1024px) {
-  .gmail-card {
-    max-width: 280px;
-  }
-}
-
-/* Mobile: full-width, short horizontal Gmail card */
-@media (max-width: 480px) {
-  .gmail-card {
-    width: 100%;
-    max-width: 100%;
-    min-height: 0;
-    padding: 8px 12px;
-    margin: 0;
-    border-radius: 12px;
-  }
-
-  .gmail-card > div:first-child {
-    gap: 7px !important;
-    margin-bottom: 5px !important;
-  }
-
- .gmail-card img {
-  width: 36px !important;
-  height: 36px !important;
-  min-width: 36px !important;
-  display: block !important;
-  object-fit: contain !important;
-}
-
-  .gmail-card strong {
-    font-size: 15px !important;
-  }
-
-  .gmail-card small {
-    font-size: 10px !important;
-  }
-
-  .gmail-card > div:nth-child(2) {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 6px !important;
-    padding-top: 6px !important;
-  }
-
-  .gmail-card > div:nth-child(2) div {
-    font-size: 15px !important;
-    margin-top: 2px !important;
-  }
-
-  .gmail-card p {
-    font-size: 9px !important;
-    margin: 5px 0 0 !important;
-  }
-}
-    /* DATAONE RESPONSIVE NAVIGATION */
-
-@media (max-width: 768px) {
-  .sidebar {
-    display: flex;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
-    width: 100%;
-    height: auto;
-    padding: 0;
-    transform: none;
-    visibility: visible;
-    overflow: visible;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    pointer-events: none;
-  }
-
-  .sidebar.open {
-    transform: none;
-    visibility: visible;
-  }
-
-  .sidebar-brand,
-  #myDataPanel {
-    display: none !important;
-  }
-
-  .sidebar-backdrop {
-    display: none;
-  }
-
-  body {
-    padding-left: 0;
-    padding-bottom: 90px;
-  }
-
-  .sidebar-nav {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1005;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 2px;
-    margin: 0;
-    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
-    background: #101b2e;
-    border-top: 1px solid #263650;
-    pointer-events: auto;
-  }
-
-  .sidebar-nav a,
-  .sidebar-nav button {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    min-width: 0;
-    min-height: 54px;
-    padding: 5px 2px;
-    font-size: 11px;
-    text-align: center;
-  }
-
-  .sidebar-nav a span,
-  .sidebar-nav button span {
-    font-size: 10px;
-  }
-}
-  </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1220">
+<link rel="manifest" href="./manifest.json">
+<title>DATAONE</title>
+<style>
+*{box-sizing:border-box}
+:root{--sb-w:264px;--sb-bg:#0d1628;--sb-border:rgba(148,163,184,.14);--sb-accent:#60a5fa;--sb-muted:#94a3b8}
+[hidden]{display:none!important}
+body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#fff;padding:24px;line-height:1.5;overflow-x:hidden;-webkit-text-size-adjust:100%}
+img,video,iframe{max-width:100%}
+#signOutButton{display:none!important}
+
+/* Header */
+.dataone-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;margin:0 0 24px}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-brand h1{margin:0;font-size:16px;font-weight:700;letter-spacing:1px;line-height:1.2}
+.subtitle{color:#94a3b8;font-size:12px}
+.profile-avatar{width:42px;height:42px;flex-shrink:0;border-radius:50%;border:1px solid #3b82f6;background:#263449;color:#fff;font-size:21px;cursor:pointer}
+.vpn-button{padding:10px 16px;border:1px solid #3b82f6;border-radius:10px;background:#1e293b;color:#fff;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
+.vpn-button:hover{background:#2563eb}
+
+/* Search */
+.search{display:flex;align-items:center;gap:10px;height:42px;width:100%;padding:0 14px;background:#fff;color:#334155;border-radius:30px;text-decoration:none;margin-bottom:30px}
+.search img{width:20px;height:20px}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
+.card{background:#17243a;color:#fff;text-decoration:none;border:1px solid #263650;border-radius:18px;padding:22px 16px;min-height:125px;min-width:0;overflow-wrap:anywhere;transition:transform .2s,border-color .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);border-color:#60a5fa;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.card:focus-visible{outline:2px solid #60a5fa;outline-offset:3px}
+.card small{color:#94a3b8}
+.card strong{display:block}
+.profile-btn{padding:12px;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#fff;font-size:13px;cursor:pointer}
+.profile-btn:hover{border-color:#60a5fa}
+footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
+
+/* Sidebar */
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sb-w);z-index:1003;display:flex;flex-direction:column;padding:20px 14px;background:radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),var(--sb-bg);border-right:1px solid var(--sb-border);overflow-y:auto}
+.sb-brand{display:flex;align-items:center;gap:12px;padding:6px 8px 22px;border-bottom:1px solid var(--sb-border)}
+.sb-logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;border:1px solid #60a5fa66;background:linear-gradient(145deg,#2563eb,#172554);box-shadow:0 0 24px #3b82f633;font-weight:800;font-size:19px}
+.sb-brand strong{display:block;letter-spacing:1.6px;font-size:16px}
+.sb-brand small{display:block;margin-top:3px;color:var(--sb-muted);font-size:12px}
+.sb-nav{flex:1;display:flex;flex-direction:column;gap:6px;margin-top:20px}
+.sb-label{padding:0 14px 6px;color:#64748b;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+.sb-nav button,.sb-footer button{position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:46px;padding:0 14px;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--sb-muted);font:500 14px Arial,sans-serif;text-align:left;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.sb-nav i,.sb-footer i{font-style:normal;font-size:18px;width:24px;text-align:center}
+.sb-nav button:hover,.sb-footer button:hover{background:#ffffff0a;border-color:var(--sb-border);color:#fff}
+.sb-nav button.active{background:linear-gradient(100deg,#2563eb38,#3b82f60a);border-color:#60a5fa35;color:#93c5fd}
+.sb-nav button.active::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--sb-accent)}
+.sb-nav button:focus-visible,.sb-footer button:focus-visible{outline:2px solid var(--sb-accent);outline-offset:2px}
+.sb-footer{display:grid;gap:6px;padding-top:14px;border-top:1px solid var(--sb-border)}
+.sb-footer .danger:hover{background:#7f1d1d55;color:#fca5a5;border-color:#ef444455}
+
+/* Popup panel */
+.panel-modal{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(2,6,23,.72);backdrop-filter:blur(3px)}
+.panel-card{position:relative;width:100%;max-width:460px;max-height:85vh;overflow-y:auto;padding:22px;background:#111e33;border:1px solid var(--sb-border);border-radius:18px;box-shadow:0 24px 60px #0008}
+.panel-close{position:absolute;top:10px;right:10px;width:34px;height:34px;border:0;border-radius:10px;background:#ffffff0f;color:#fff;font-size:16px;cursor:pointer}
+.panel-close:hover{background:#ffffff1f}
+.panel-title{margin:0 0 12px;font-weight:700;color:#93c5fd}
+.panel-signout{width:100%;margin-top:16px;padding:12px;border:0;border-radius:10px;background:#dc2626;color:#fff;font-weight:700;cursor:pointer}
+#settingsPanel label{display:flex;align-items:center;gap:9px;cursor:pointer}
+
+@media(min-width:769px){body{padding-left:calc(var(--sb-w) + 28px)}}
+@media(max-width:768px){
+  body{padding:14px 14px 92px}
+  .sidebar{inset:auto 0 0 0;width:100%;flex-direction:row;padding:0 0 env(safe-area-inset-bottom);background:rgba(13,22,40,.96);backdrop-filter:blur(14px);border-right:0;border-top:1px solid var(--sb-border);overflow:visible}
+  .sb-brand,.sb-label,.sb-footer{display:none}
+  .sb-nav{flex-direction:row;margin:0;padding:6px 4px;gap:2px}
+  .sb-nav button{flex:1;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:56px;padding:4px 2px;font-size:11px;text-align:center}
+  .sb-nav button.active::before{left:25%;right:25%;top:0;bottom:auto;width:auto;height:3px}
+  .panel-modal{align-items:flex-end;padding:0}
+  .panel-card{max-width:100%;border-radius:20px 20px 0 0;max-height:88vh}
+}
+@media(max-width:480px){
+  body{font-size:15px}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .card{border-radius:14px;padding:18px 14px;min-height:110px}
+  .vpn-button{padding:8px 12px;font-size:12px}
+  .profile-avatar{width:38px;height:38px}
+}
+@media(prefers-reduced-motion:reduce){.card,.sb-nav button,.sb-footer button{transition:none}.card:hover{transform:none}}
+</style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-  
+
+<!-- Sign in screen -->
 <div id="authScreen" style="max-width:400px;margin:40px auto;padding:28px;background:#17243a;border:1px solid #334155;border-radius:20px;color:white;font-family:Arial,sans-serif;">
   <div style="text-align:center;margin-bottom:24px;">
     <div style="display:inline-block;background:#2563eb;padding:14px 18px;border-radius:14px;font-size:24px;font-weight:bold;">D</div>
     <h2 style="margin-bottom:8px;">DATAONE</h2>
     <p style="color:#94a3b8;">Sign in to your digital space</p>
   </div>
-
   <form id="authForm">
     <label for="authEmail">Email address</label>
     <input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white;">
-
     <label for="authPassword">Password</label>
     <input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Enter password" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white;">
-
     <button id="authSubmit" type="submit" style="width:100%;padding:13px;background:#2563eb;color:white;border:0;border-radius:10px;font-weight:bold;cursor:pointer;">Sign In</button>
   </form>
-
   <button id="authSwitch" type="button" style="width:100%;margin-top:14px;padding:12px;background:transparent;color:#93c5fd;border:1px solid #334155;border-radius:10px;cursor:pointer;">Create Account</button>
-
   <p id="authMessage" role="status" style="color:#cbd5e1;font-size:14px;text-align:center;"></p>
 </div>
 
-
-
-<div id="sidebarBackdrop" class="sidebar-backdrop"></div>
-
+<!-- Sidebar -->
 <aside id="sidebar" class="sidebar" aria-label="Main menu">
-  <div class="sidebar-brand">
-    <div class="logo">D</div>
-    <div>
-      <strong>DATAONE</strong>
-      <small>Your digital space</small>
-    </div>
+  <div class="sb-brand">
+    <div class="sb-logo">D</div>
+    <div><strong>DATAONE</strong><small>Your digital space</small></div>
   </div>
-
- <nav class="sidebar-nav">
-  <a href="#home" data-page="home">🏠 <span>Home</span></a>
-
- <button id="gmailNav" type="button">
-  ✉️ <span>Gmail</span>
-</button>
-   
-  <button id="storageNav" type="button">☁️ <span>Storage</span></button>
-
-  <button id="mediaNav" type="button">🖼️ <span>Media</span></button>
-
-  <button id="profileNav" type="button">👤 <span>Profile</span></button>
-</nav>
-<div id="myDataPanel" hidden style="margin-top:20px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:14px;color:white;">
-  <h3 style="margin-top:0;">📁 My Data</h3>
-  <p style="color:#94a3b8;">Organize your personal files and information.</p>
-
-  <label for="dataFile">Choose a file (optional)</label>
-<input
-  id="dataFile"
-  type="file"
-  accept="image/*,video/*,.pdf,.doc,.docx,.txt"
-  style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;"
->
-  <input id="dataTitle" type="text" placeholder="e.g. My documents"
-    style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
-
-  <label for="dataType">Type</label>
-  <select id="dataType"
-    style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
-    <option>Document</option>
-    <option>Photo</option>
-    <option>Video</option>
-    <option>Note</option>
-    <option>Other</option>
-  </select>
-
-  <label for="dataNote">Details (optional)</label>
-  <textarea id="dataNote" placeholder="Add a short description"
-    style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;"></textarea>
-
-  <button id="addDataButton" type="button"
-    style="padding:12px 16px;background:#2563eb;color:white;border:0;border-radius:8px;cursor:pointer;">
-    + Add Entry
-  </button>
-
-  <div id="dataEntries" style="margin-top:16px;"></div>
-</div>
-<div id="settingsPanel" hidden>
-  <p>DATAONE Settings</p>
-
-  <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;color:white;">
-    <h3 style="margin-top:0;">My Account</h3>
-    <p style="color:#94a3b8;margin-bottom:6px;">Signed-in email</p>
-    <p id="settingsEmail" style="overflow-wrap:anywhere;">Loading email...</p>
-    <p style="color:#94a3b8;font-size:13px;">Your DATAONE account</p>
+  <nav class="sb-nav">
+    <span class="sb-label">Menu</span>
+    <button type="button" class="active" data-target="top"><i>🏠</i><span>Home</span></button>
+    <button type="button" data-target="gmailCard"><i>✉️</i><span>Gmail</span></button>
+    <button type="button" data-target="megaCard"><i>☁️</i><span>Storage</span></button>
+    <button type="button" data-target="mediaCard"><i>🖼️</i><span>Media</span></button>
+    <button type="button" data-target="profileCard"><i>👤</i><span>Profile</span></button>
+  </nav>
+  <div class="sb-footer">
+    <button type="button" id="sbSettings"><i>⚙️</i><span>Settings</span></button>
+    <button type="button" id="sbSignOut" class="danger"><i>🚪</i><span>Sign out</span></button>
   </div>
-
-  <label>
-    <input id="compactMode" type="checkbox">
-    Compact cards
-  </label>
-
-  <p style="margin-top:18px;color:#94a3b8;font-size:13px;">
-    Sign out using the red Sign Out button at the bottom-right of the screen.
-  </p>
-</div>
 </aside>
 
- <header class="dataone-header">
+<!-- Popup panels -->
+<div id="panelModal" class="panel-modal" hidden>
+  <div class="panel-card">
+    <button type="button" class="panel-close" id="panelClose" aria-label="Close">✕</button>
 
+    <div id="myDataPanel" hidden>
+      <h3 style="margin-top:0;">📁 My Data</h3>
+      <p style="color:#94a3b8;">Organize your personal files and information.</p>
+      <label for="dataFile">Choose a file</label>
+      <input id="dataFile" type="file" accept="image/*,video/*,.pdf,.doc,.docx,.txt" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
+      <input id="dataTitle" type="text" placeholder="e.g. My documents" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
+      <label for="dataType">Type</label>
+      <select id="dataType" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
+        <option>Document</option><option>Photo</option><option>Video</option><option>Note</option><option>Other</option>
+      </select>
+      <label for="dataNote">Details (optional)</label>
+      <textarea id="dataNote" placeholder="Add a short description" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;"></textarea>
+      <button id="addDataButton" type="button" style="padding:12px 16px;background:#2563eb;color:white;border:0;border-radius:8px;cursor:pointer;">+ Add Entry</button>
+      <div id="dataEntries" style="margin-top:16px;"></div>
+    </div>
+
+    <div id="settingsPanel" hidden>
+      <p class="panel-title">DATAONE Settings</p>
+      <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
+        <h3 style="margin-top:0;">My Account</h3>
+        <p style="color:#94a3b8;margin-bottom:6px;">Signed-in email</p>
+        <p id="settingsEmail" style="overflow-wrap:anywhere;">Loading email...</p>
+      </div>
+      <label><input id="compactMode" type="checkbox"> Compact cards</label>
+      <button type="button" class="panel-signout" id="panelSignOut">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="dataone-header">
   <div class="header-brand">
-    <button class="profile-avatar"
-            id="profileAvatar"
-            aria-label="Profile">
-      👤
-    </button>
-
+    <button class="profile-avatar" id="profileAvatar" aria-label="Profile">👤</button>
     <div>
       <h1>DATAONE</h1>
       <div class="subtitle">Your simple digital space</div>
     </div>
   </div>
-
-  <button class="vpn-button" id="vpnButton">
-    🛡️ VPN
-  </button>
-
+  <button class="vpn-button" id="vpnButton">🛡️ VPN</button>
 </header>
-  <a class="search" href="https://www.google.com">
-    <img src="https://www.google.com/favicon.ico" alt="Google">
-    <span>Search with Google</span>
-  </a>
 
-
+<a class="search" href="https://www.google.com">
+  <img src="https://www.google.com/favicon.ico" alt="Google">
+  <span>Search with Google</span>
+</a>
 
 <div class="grid">
 
   <!-- Gmail Card -->
-  <a class="card gmail-card" href="#gmail" id="gmailCard"
-     style="border:1px solid #334155;display:block;text-decoration:none;">
-
+  <a class="card" href="#gmail" id="gmailCard">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-      <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico"
-           alt="Gmail"
-           style="width:42px;height:42px;object-fit:contain;flex-shrink:0;">
-      <div>
-        <strong style="font-size:18px;margin-bottom:5px;">Gmail</strong>
-        <small>Google email accounts</small>
-      </div>
+      <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail" style="width:42px;height:42px;object-fit:contain;flex-shrink:0;">
+      <div><strong style="font-size:18px;">Gmail</strong><small>Google email accounts</small></div>
     </div>
-
     <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div>
-        <small>Connected Gmail</small>
-        <div id="gmailAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px;">0</div>
-        <small>Accounts</small>
-      </div>
-      <div>
-        <small>Total storage</small>
-        <div id="gmailStorage" style="font-size:25px;font-weight:bold;margin-top:8px;">—</div>
-        <small>Google storage</small>
-      </div>
+      <div><small>Connected Gmail</small><div id="gmailAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px;">0</div><small>Accounts</small></div>
+      <div><small>Total storage</small><div id="gmailStorage" style="font-size:20px;font-weight:bold;margin-top:8px;">—</div><small>Google storage</small></div>
     </div>
-
-    <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">
-      View your connected Gmail accounts.
-    </p>
+    <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">View your connected Gmail accounts.</p>
   </a>
-<!-- MEGA Card -->
-<a class="card gmail-card" href="#mega" id="megaCard"
-   style="border:1px solid #334155;display:block;text-decoration:none;">
 
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-    <img src="https://mega.io/favicon.ico"
-         alt="MEGA"
-         style="width:42px;height:42px;object-fit:contain;flex-shrink:0;">
-    <div>
-      <strong style="font-size:18px;margin-bottom:5px;">MEGA</strong>
-      <small>Cloud storage accounts</small>
+  <!-- MEGA Card -->
+  <a class="card" href="#mega" id="megaCard">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <img src="https://mega.io/favicon.ico" alt="MEGA" style="width:42px;height:42px;object-fit:contain;flex-shrink:0;">
+      <div><strong style="font-size:18px;">MEGA</strong><small>Cloud storage accounts</small></div>
     </div>
-  </div>
+    <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div><small>Connected MEGA</small><div id="megaAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px;">0</div><small>Accounts</small></div>
+      <div><small>Total storage</small><div id="megaStorage" style="font-size:20px;font-weight:bold;margin-top:8px;">—</div><small>MEGA storage</small></div>
+    </div>
+    <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">View your connected MEGA accounts.</p>
+  </a>
 
-  <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-    <div>
-      <small>Connected MEGA</small>
-      <div id="megaAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px;">0</div>
-      <small>Accounts</small>
-    </div>
-    <div>
-      <small>Total storage</small>
-      <div id="megaStorage" style="font-size:25px;font-weight:bold;margin-top:8px;">—</div>
-      <small>MEGA storage</small>
-    </div>
-  </div>
-
-  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">
-    View your connected MEGA accounts.
-  </p>
-</a>
   <!-- Media Card -->
-<div class="card" id="mediaCard"
-     style="border:1px solid #334155;display:block;">
-
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-    <div style="font-size:38px;">🖼️</div>
-    <div>
-      <strong style="font-size:18px;margin-bottom:5px;">Media</strong>
-      <small>Your photos and videos in one place</small>
+  <div class="card" id="mediaCard">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="font-size:38px;">🖼️</div>
+      <div><strong style="font-size:18px;">Media</strong><small>Your photos and videos in one place</small></div>
     </div>
+    <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:#1e293b;padding:14px;border-radius:10px;"><div style="font-size:25px;">📷</div><strong>Photos</strong><small style="display:block;margin-top:5px;">View your photo collection</small></div>
+      <div style="background:#1e293b;padding:14px;border-radius:10px;"><div style="font-size:25px;">🎬</div><strong>Videos</strong><small style="display:block;margin-top:5px;">View your video collection</small></div>
+    </div>
+    <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">Explore your media library.</p>
   </div>
 
-  <div style="border-top:1px solid #334155;padding-top:16px;
-              display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-
-    <div style="background:#1e293b;padding:14px;border-radius:10px;">
-      <div style="font-size:25px;">📷</div>
-      <strong>Photos</strong>
-      <small style="display:block;margin-top:5px;">View your photo collection</small>
+  <!-- Profile Card -->
+  <div class="card" id="profileCard">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:#1e3a8a;display:flex;align-items:center;justify-content:center;font-size:24px;">👤</div>
+      <div><strong style="font-size:18px;">My Profile</strong><small>Your DATAONE account</small></div>
     </div>
-
-    <div style="background:#1e293b;padding:14px;border-radius:10px;">
-      <div style="font-size:25px;">🎬</div>
-      <strong>Videos</strong>
-      <small style="display:block;margin-top:5px;">View your video collection</small>
+    <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <button type="button" class="profile-btn" id="profileSettingsBtn">⚙️ Account Settings</button>
+      <button type="button" class="profile-btn" id="profileSecurityBtn">🔒 Security</button>
+      <button type="button" class="profile-btn" id="profileConnectedBtn">🔗 Connected Accounts</button>
+      <button type="button" class="profile-btn" id="profileDataBtn">📁 My Data</button>
     </div>
-
-  </div>
-
-  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">
-    Explore your media library.
-  </p>
-</div>
-<!-- Profile Card -->
-<div class="card" id="profileCard"
-     style="border:1px solid #334155;display:block;">
-
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-    <div style="width:48px;height:48px;border-radius:50%;
-                background:#1e3a8a;display:flex;align-items:center;
-                justify-content:center;font-size:24px;">
-      👤
-    </div>
-    <div>
-      <strong style="font-size:18px;">My Profile</strong>
-      <small style="display:block;">Your DATAONE account</small>
-    </div>
-  </div>
-
-  <div style="border-top:1px solid #334155;padding-top:16px;
-              display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-
-    <button type="button" id="profileSettingsBtn">
-      ⚙️ Account Settings
-    </button>
-
-    <button type="button" id="profileSecurityBtn">
-      🔒 Security
-    </button>
-
-    <button type="button" id="profileConnectedBtn">
-      🔗 Connected Accounts
-    </button>
-
-    <button type="button" id="profileDataBtn">
-      📁 My Data
-    </button>
-
   </div>
 </div>
-  <!-- Connected MEGA Page -->
-<div id="connectedMegaPage"
-     style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px;box-sizing:border-box;">
 
+<!-- Connected MEGA Page -->
+<div id="connectedMegaPage" style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px;box-sizing:border-box;">
   <div style="max-width:600px;margin:0 auto;">
-
-    <button type="button" id="closeMegaPage"
-      style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px;cursor:pointer;">
-      ← Back
-    </button>
-
+    <button type="button" id="closeMegaPage" style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px;cursor:pointer;">← Back</button>
     <h2 style="margin-top:28px;">Connected MEGA Accounts</h2>
-
-    <p style="color:#94a3b8;">
-      Manage your connected MEGA accounts and storage.
-    </p>
-
-    <div id="connectedMegaList" style="margin-top:24px;">
-      Loading accounts...
-    </div>
-
+    <p style="color:#94a3b8;">Manage your connected MEGA accounts and storage.</p>
+    <div id="connectedMegaList" style="margin-top:24px;">Loading accounts...</div>
     <div style="margin-top:28px;padding-bottom:24px;">
-
-      <button type="button" id="addMegaAccountBtn"
-        style="width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white;cursor:pointer;font-size:15px;">
-        + Add More MEGA
-      </button>
-
-      <div id="megaAddAccountForm"
-        style="display:none;margin-top:18px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
-
+      <button type="button" id="addMegaAccountBtn" style="width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white;cursor:pointer;font-size:15px;">+ Add More MEGA</button>
+      <div id="megaAddAccountForm" style="display:none;margin-top:18px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
         <h3>Add MEGA Account</h3>
-
-        <input id="megaAccountEmail" type="email"
-          placeholder="MEGA email address"
-          autocomplete="username"
-          style="width:100%;box-sizing:border-box;margin-top:12px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
-
-        <input id="megaAccountPassword" type="password"
-          placeholder="MEGA password"
-          autocomplete="new-password"
-          style="width:100%;box-sizing:border-box;margin-top:10px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
-
+        <input id="megaAccountEmail" type="email" placeholder="MEGA email address" autocomplete="username" style="width:100%;margin-top:12px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
+        <input id="megaAccountPassword" type="password" placeholder="MEGA password" autocomplete="new-password" style="width:100%;margin-top:10px;padding:12px;border-radius:7px;border:1px solid #475569;background:#0f172a;color:white;">
         <div style="display:flex;gap:10px;margin-top:12px;">
-
-          <button type="button" id="saveMegaAccountBtn"
-            style="background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">
-            Connect Account
-          </button>
-
-          <button type="button" id="cancelMegaAccountBtn"
-            style="background:#334155;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">
-            Cancel
-          </button>
-
+          <button type="button" id="saveMegaAccountBtn" style="background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">Connect Account</button>
+          <button type="button" id="cancelMegaAccountBtn" style="background:#334155;color:white;border:0;padding:10px 14px;border-radius:7px;cursor:pointer;">Cancel</button>
         </div>
-
-        <p id="megaAccountMessage"
-          style="font-size:12px;color:#94a3b8;margin-top:10px;"></p>
-
+        <p id="megaAccountMessage" style="font-size:12px;color:#94a3b8;margin-top:10px;"></p>
       </div>
     </div>
   </div>
 </div>
-<div id="connectedGmailPage"
-     style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px;box-sizing:border-box;">
 
+<!-- Connected Gmail Page -->
+<div id="connectedGmailPage" style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px;box-sizing:border-box;">
   <div style="max-width:600px;margin:0 auto;">
-  <button type="button" id="closeGmailPage" onclick="document.getElementById('connectedGmailPage').style.display='none';"
-      style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px;cursor:pointer;">
-      ← Back
-    </button>
-
+    <button type="button" id="closeGmailPage" style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px;cursor:pointer;">← Back</button>
     <h2 style="margin-top:28px;">Connected Gmail Accounts</h2>
     <p style="color:#94a3b8;">Manage your connected Google accounts.</p>
-
     <div id="connectedGmailList" style="margin-top:24px;"></div>
-
-    <div style="margin-top:28px;padding-bottom:24px;">
-      <div id="googleSignInButton"></div>
-    </div>
+    <div style="margin-top:28px;padding-bottom:24px;"><div id="googleSignInButton"></div></div>
   </div>
 </div>
-  <footer>DATAONE • Version 1.0</footer>  
+
+<footer>DATAONE • Version 1.0</footer>
+
+<!-- App interface script -->
 <script>
-  const sidebar = document.getElementById("sidebar");
-  const backdrop = document.getElementById("sidebarBackdrop");
-  const settingsToggle = document.getElementById("settingsToggle");
-  const settingsPanel = document.getElementById("settingsPanel");
-  const profileAvatar = document.getElementById("profileAvatar");
-  const compactMode = document.getElementById("compactMode");
+const panelModal    = document.getElementById("panelModal");
+const myDataPanel   = document.getElementById("myDataPanel");
+const settingsPanel = document.getElementById("settingsPanel");
+const compactMode   = document.getElementById("compactMode");
 
-  function setSidebar(open) {
-    sidebar.classList.toggle("open", open);
-    backdrop.classList.toggle("open", open);
-    document.body.classList.toggle("sidebar-open", open);
-  }
-
-  // The profile avatar opens the sidebar directly on Settings.
-  profileAvatar.addEventListener("click", () => {
-    document.getElementById("myDataPanel").hidden = true;
-    settingsPanel.hidden = false;
-    setSidebar(true);
-  });
-
-  document.getElementById("vpnButton").addEventListener("click", () => {
-    alert("DATAONE VPN is coming soon!");
-  });
-
-  backdrop.addEventListener("click", () => setSidebar(false));
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setSidebar(false);
-  });
-
- if (settingsToggle) {
-  settingsToggle.addEventListener("click", () => {
-    settingsPanel.hidden = !settingsPanel.hidden;
-  });
+function openPanel(which) {
+  myDataPanel.hidden   = which !== "data";
+  settingsPanel.hidden = which !== "settings";
+  panelModal.hidden = false;
+  document.body.style.overflow = "hidden";
 }
-const storageNav = document.getElementById("storageNav");
-  const gmailNav = document.getElementById("gmailNav");
+function closePanel() {
+  panelModal.hidden = true;
+  document.body.style.overflow = "";
+}
+document.getElementById("panelClose").addEventListener("click", closePanel);
+panelModal.addEventListener("click", (e) => { if (e.target === panelModal) closePanel(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
 
-gmailNav.addEventListener("click", () => {
-  document.getElementById("gmailCard").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-});
-const mediaNav = document.getElementById("mediaNav");
-const profileNav = document.getElementById("profileNav");
-
-storageNav.addEventListener("click", () => {
-  document.getElementById("megaCard").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-});
-
-mediaNav.addEventListener("click", () => {
-  document.getElementById("mediaCard").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
+const navItems = document.querySelectorAll(".sb-nav [data-target]");
+navItems.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    navItems.forEach((b) => b.classList.toggle("active", b === btn));
+    const id = btn.dataset.target;
+    if (id === "top") window.scrollTo({ top: 0, behavior: "smooth" });
+    else document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 });
 
-profileNav.addEventListener("click", () => {
-  document.getElementById("profileCard").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-});
-  document.getElementById("profileSettingsBtn").addEventListener("click", () => {
-  myDataPanel.hidden = true;
-  settingsPanel.hidden = false;
-  setSidebar(true);
-});
-  const myDataToggle = document.getElementById("myDataToggle");
-const myDataPanel = document.getElementById("myDataPanel");
-  document.getElementById("profileDataBtn").addEventListener("click", () => {
-  settingsPanel.hidden = true;
-  myDataPanel.hidden = false;
-  setSidebar(true);
-});
+const doSignOut = () => document.getElementById("signOutButton").click();
+document.getElementById("sbSettings").addEventListener("click", () => openPanel("settings"));
+document.getElementById("sbSignOut").addEventListener("click", doSignOut);
+document.getElementById("panelSignOut").addEventListener("click", doSignOut);
+document.getElementById("profileAvatar").addEventListener("click", () => openPanel("settings"));
+document.getElementById("vpnButton").addEventListener("click", () => alert("DATAONE VPN is coming soon!"));
+document.getElementById("profileSettingsBtn").addEventListener("click", () => openPanel("settings"));
+document.getElementById("profileSecurityBtn").addEventListener("click", () => openPanel("settings"));
+document.getElementById("profileDataBtn").addEventListener("click", () => openPanel("data"));
 document.getElementById("profileConnectedBtn").addEventListener("click", () => {
-  document.getElementById("gmailCard").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-});
-document.getElementById("profileSecurityBtn").addEventListener("click", () => {
-  myDataPanel.hidden = true;
-  settingsPanel.hidden = false;
-  setSidebar(true);
+  document.getElementById("gmailCard").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-if (myDataToggle) {
-  myDataToggle.addEventListener("click", (event) => {
-    event.preventDefault();
-    myDataPanel.hidden = !myDataPanel.hidden;
-    settingsPanel.hidden = true;
+compactMode.addEventListener("change", () => {
+  document.querySelectorAll(".card").forEach((card) => {
+    card.style.minHeight = compactMode.checked ? "90px" : "";
+    card.style.padding = compactMode.checked ? "14px" : "";
   });
-}
-  const dataTitle = document.getElementById("dataTitle");
+});
+
+/* My Data */
+const dataTitle = document.getElementById("dataTitle");
 const dataType = document.getElementById("dataType");
 const dataNote = document.getElementById("dataNote");
 const addDataButton = document.getElementById("addDataButton");
 const dataEntries = document.getElementById("dataEntries");
 
-let myDataEntries = JSON.parse(
-  localStorage.getItem("dataoneMyData") || "[]"
-);
+let myDataEntries = JSON.parse(localStorage.getItem("dataoneMyData") || "[]");
 
 function renderDataEntries() {
   dataEntries.replaceChildren();
-
   myDataEntries.forEach((entry, index) => {
     const card = document.createElement("div");
-    card.style.cssText =
-      "padding:12px;margin-bottom:10px;background:#0b1220;border:1px solid #334155;border-radius:10px;";
+    card.style.cssText = "padding:12px;margin-bottom:10px;background:#0b1220;border:1px solid #334155;border-radius:10px;";
 
     const title = document.createElement("strong");
     title.textContent = entry.title;
-if (entry.fileName) {
-  const fileInfo = document.createElement("p");
-  const sizeKB = (entry.fileSize / 1024).toFixed(1);
+    card.appendChild(title);
 
-  fileInfo.textContent =
-    "📎 File: " + entry.fileName +
-    " (" + sizeKB + " KB)";
-
-  fileInfo.style.color = "#60a5fa";
-  card.appendChild(fileInfo);
-}
+    if (entry.fileName) {
+      const fileInfo = document.createElement("p");
+      fileInfo.textContent = "📎 File: " + entry.fileName + " (" + (entry.fileSize / 1024).toFixed(1) + " KB)";
+      fileInfo.style.color = "#60a5fa";
+      card.appendChild(fileInfo);
+    }
     const type = document.createElement("p");
     type.textContent = "Type: " + entry.type;
-
     const note = document.createElement("p");
     note.textContent = entry.note || "No details added.";
     note.style.color = "#94a3b8";
@@ -1351,60 +354,33 @@ if (entry.fileName) {
     const removeButton = document.createElement("button");
     removeButton.type = "button";
     removeButton.textContent = "Delete";
-    removeButton.style.cssText =
-      "padding:7px 10px;background:#dc2626;color:white;border:0;border-radius:7px;cursor:pointer;";
+    removeButton.style.cssText = "padding:7px 10px;background:#dc2626;color:white;border:0;border-radius:7px;cursor:pointer;";
 
-  
-removeButton.addEventListener("click", async () => {
-  if (!confirm("Delete this entry and its uploaded file?")) {
-    return;
-  }
+    removeButton.addEventListener("click", async () => {
+      if (!confirm("Delete this entry and its uploaded file?")) return;
+      removeButton.disabled = true;
+      removeButton.textContent = "Deleting...";
+      try {
+        const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+        if (userError || !userData.user) throw new Error("Please sign in again.");
+        const entry = myDataEntries[index];
+        if (!entry || !entry.filePath) throw new Error("File information is missing. Entry was not deleted.");
+        if (entry.filePath.split("/")[0] !== userData.user.id) throw new Error("You can only delete your own files.");
+        const { error: deleteError } = await supabaseClient.storage.from("dataone-files").remove([entry.filePath]);
+        if (deleteError) throw deleteError;
+        myDataEntries.splice(index, 1);
+        localStorage.setItem("dataoneMyData", JSON.stringify(myDataEntries));
+        renderDataEntries();
+        alert("Entry and uploaded file deleted successfully!");
+      } catch (error) {
+        console.error("DATAONE delete error:", error);
+        alert("Delete failed: " + error.message);
+        removeButton.disabled = false;
+        removeButton.textContent = "Delete";
+      }
+    });
 
-  removeButton.disabled = true;
-  removeButton.textContent = "Deleting...";
-
-  try {
-    const { data: userData, error: userError } =
-      await supabaseClient.auth.getUser();
-
-    if (userError || !userData.user) {
-      throw new Error("Please sign in again.");
-    }
-
-    const entry = myDataEntries[index];
-
-    if (!entry || !entry.filePath) {
-      throw new Error("File information is missing. Entry was not deleted.");
-    }
-
-    const userId = userData.user.id;
-
-    if (entry.filePath.split("/")[0] !== userId) {
-      throw new Error("You can only delete your own files.");
-    }
-
-    const { error: deleteError } = await supabaseClient.storage
-      .from("dataone-files")
-      .remove([entry.filePath]);
-
-    if (deleteError) throw deleteError;
-
-    myDataEntries.splice(index, 1);
-    localStorage.setItem(
-      "dataoneMyData",
-      JSON.stringify(myDataEntries)
-    );
-
-    renderDataEntries();
-    alert("Entry and uploaded file deleted successfully!");
-  } catch (error) {
-    console.error("DATAONE delete error:", error);
-    alert("Delete failed: " + error.message);
-    removeButton.disabled = false;
-    removeButton.textContent = "Delete";
-  }
-});
-    card.append(title, type, note, removeButton);
+    card.append(type, note, removeButton);
     dataEntries.appendChild(card);
   });
 }
@@ -1412,54 +388,26 @@ removeButton.addEventListener("click", async () => {
 addDataButton.addEventListener("click", async () => {
   const title = dataTitle.value.trim();
   const selectedFile = document.getElementById("dataFile").files[0];
-
-  if (!title) {
-    alert("Please enter a name.");
-    dataTitle.focus();
-    return;
-  }
-
-  if (!selectedFile) {
-    alert("Please choose a file to upload.");
-    return;
-  }
-
-  if (selectedFile.size > 50 * 1024 * 1024) {
-    alert("Please choose a file smaller than 50 MB.");
-    return;
-  }
+  if (!title) { alert("Please enter a name."); dataTitle.focus(); return; }
+  if (!selectedFile) { alert("Please choose a file to upload."); return; }
+  if (selectedFile.size > 50 * 1024 * 1024) { alert("Please choose a file smaller than 50 MB."); return; }
 
   addDataButton.disabled = true;
   addDataButton.textContent = "Uploading...";
-
   try {
-    const { data: userData, error: userError } =
-      await supabaseClient.auth.getUser();
-
-    if (userError || !userData.user) {
-      throw new Error("Please sign in again.");
-    }
-
-    const userId = userData.user.id;
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !userData.user) throw new Error("Please sign in again.");
     const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const filePath = userId + "/" + crypto.randomUUID() + "_" + safeName;
-
-    const { error: uploadError } = await supabaseClient.storage
-      .from("dataone-files")
-      .upload(filePath, selectedFile);
-
+    const filePath = userData.user.id + "/" + crypto.randomUUID() + "_" + safeName;
+    const { error: uploadError } = await supabaseClient.storage.from("dataone-files").upload(filePath, selectedFile);
     if (uploadError) throw uploadError;
 
     myDataEntries.push({
-      title,
-      type: dataType.value,
-      note: dataNote.value.trim(),
-      fileName: selectedFile.name,
-      fileType: selectedFile.type,
-      fileSize: selectedFile.size,
-      filePath
+      title, type: dataType.value, note: dataNote.value.trim(),
+      fileName: selectedFile.name, fileType: selectedFile.type,
+      fileSize: selectedFile.size, filePath
     });
-
+    localStorage.setItem("dataoneMyData", JSON.stringify(myDataEntries));
     renderDataEntries();
     alert("File uploaded successfully!");
   } catch (error) {
@@ -1470,181 +418,120 @@ addDataButton.addEventListener("click", async () => {
     addDataButton.textContent = "+ Add Entry";
   }
 });
-
 renderDataEntries();
-  compactMode.addEventListener("change", () => {
-    document.querySelectorAll(".card").forEach((card) => {
-      card.style.minHeight = compactMode.checked ? "90px" : "";
-      card.style.padding = compactMode.checked ? "14px" : "";
-    });
-  });
-
-  document.querySelector('[data-page="home"]').addEventListener("click", (event) => {
-    event.preventDefault();
-    setSidebar(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-    // Show the signed-in email in Settings
-
 </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Supabase login -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // Replace these two placeholders with your Supabase project details.
-  const SUPABASE_URL = "https://pmzvekfshhgipjxwlwiq.supabase.co";
-  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
-window.supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+const SUPABASE_URL = "https://pmzvekfshhgipjxwlwiq.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
+window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const supabaseClient = window.supabaseClient;
 
-  const authScreen = document.getElementById("authScreen");
-  const authForm = document.getElementById("authForm");
-  const authEmail = document.getElementById("authEmail");
-  const authPassword = document.getElementById("authPassword");
-  const authSubmit = document.getElementById("authSubmit");
-  const authSwitch = document.getElementById("authSwitch");
-  const authMessage = document.getElementById("authMessage");
+const authScreen = document.getElementById("authScreen");
+const authForm = document.getElementById("authForm");
+const authEmail = document.getElementById("authEmail");
+const authPassword = document.getElementById("authPassword");
+const authSubmit = document.getElementById("authSubmit");
+const authSwitch = document.getElementById("authSwitch");
+const authMessage = document.getElementById("authMessage");
+let creatingAccount = false;
 
-  let creatingAccount = false;
-
-  // Hide the existing DATAONE app until Supabase confirms a session.
-  document.querySelectorAll("body > *").forEach((element) => {
-    if (element.id !== "authScreen" &&
-        element.tagName !== "SCRIPT") {
-      element.dataset.authHidden = "true";
-      element.style.display = "none";
-    }
-  });
-
-  function showMessage(message) {
-    authMessage.textContent = message;
+// Hide the app until Supabase confirms a session
+document.querySelectorAll("body > *").forEach((element) => {
+  if (element.id !== "authScreen" && element.tagName !== "SCRIPT") {
+    element.dataset.authHidden = "true";
+    element.style.display = "none";
   }
+});
 
-  authSwitch.addEventListener("click", () => {
-    creatingAccount = !creatingAccount;
-    authSubmit.textContent = creatingAccount ? "Create Account" : "Sign In";
-    authSwitch.textContent = creatingAccount
-      ? "Back to Sign In"
-      : "Create Account";
-    authPassword.autocomplete = creatingAccount
-      ? "new-password"
-      : "current-password";
-    showMessage("");
-  });
+function showMessage(message) { authMessage.textContent = message; }
 
-  authForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    authSubmit.disabled = true;
-    showMessage("Please wait...");
+authSwitch.addEventListener("click", () => {
+  creatingAccount = !creatingAccount;
+  authSubmit.textContent = creatingAccount ? "Create Account" : "Sign In";
+  authSwitch.textContent = creatingAccount ? "Back to Sign In" : "Create Account";
+  authPassword.autocomplete = creatingAccount ? "new-password" : "current-password";
+  showMessage("");
+});
 
-    try {
-      const email = authEmail.value.trim();
-      const password = authPassword.value;
-
-      const result = creatingAccount
-        ? await supabaseClient.auth.signUp({ email, password })
-        : await supabaseClient.auth.signInWithPassword({ email, password });
-
-      if (result.error) throw result.error;
-
-      if (creatingAccount && !result.data.session) {
-        showMessage("Account created. Check your email to confirm it, then sign in.");
-        return;
-      }
-
-      showMessage("Signed in successfully.");
-      await updateAuthView();
-    } catch (error) {
-      showMessage(error.message || "Something went wrong.");
-    } finally {
-      authSubmit.disabled = false;
-    }
-  });
-
-  async function updateAuthView() {
-    const { data, error } = await supabaseClient.auth.getSession();
-
-    if (error) {
-      showMessage("Could not check your session. Please refresh.");
+authForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  authSubmit.disabled = true;
+  showMessage("Please wait...");
+  try {
+    const email = authEmail.value.trim();
+    const password = authPassword.value;
+    const result = creatingAccount
+      ? await supabaseClient.auth.signUp({ email, password })
+      : await supabaseClient.auth.signInWithPassword({ email, password });
+    if (result.error) throw result.error;
+    if (creatingAccount && !result.data.session) {
+      showMessage("Account created. Check your email to confirm it, then sign in.");
       return;
     }
-
-    const signedIn = Boolean(data.session);
-
-    authScreen.style.display = signedIn ? "none" : "block";
-
-    document.querySelectorAll("[data-auth-hidden='true']").forEach((element) => {
-    element.style.display = signedIn
-  ? (element.id === "connectedGmailPage" ? "none" : "")
-  : "none";
-    });
-
-    if (!signedIn) {
-      authSubmit.textContent = creatingAccount ? "Create Account" : "Sign In";
-    }
+    showMessage("Signed in successfully.");
+    await updateAuthView();
+  } catch (error) {
+    showMessage(error.message || "Something went wrong.");
+  } finally {
+    authSubmit.disabled = false;
   }
+});
 
-  supabaseClient.auth.onAuthStateChange(() => {
-    updateAuthView();
-  });
+const HIDDEN_PAGES = ["connectedGmailPage", "connectedMegaPage"];
 
-  updateAuthView();
-    async function updateSettingsEmail() {
-    const emailElement = document.getElementById("settingsEmail");
-    if (!emailElement) return;
-
-    try {
-      const { data, error } = await supabaseClient.auth.getUser();
-
-      if (error) throw error;
-
-      emailElement.textContent = data.user?.email ||
-        "Please sign in to view your email.";
-    } catch (error) {
-      console.error("Settings email error:", error);
-      emailElement.textContent = "Could not load email.";
+async function updateAuthView() {
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error) { showMessage("Could not check your session. Please refresh."); return; }
+  const signedIn = Boolean(data.session);
+  authScreen.style.display = signedIn ? "none" : "block";
+  document.querySelectorAll("[data-auth-hidden='true']").forEach((element) => {
+    if (!signedIn || HIDDEN_PAGES.includes(element.id)) {
+      // Full-screen pages stay closed until opened
+      if (!signedIn || element.style.display !== "block") element.style.display = "none";
+    } else {
+      element.style.display = "";
     }
-  }
-
-  supabaseClient.auth.onAuthStateChange(() => {
-    updateSettingsEmail();
   });
+  if (!signedIn) authSubmit.textContent = creatingAccount ? "Create Account" : "Sign In";
+}
 
-  updateSettingsEmail();
+supabaseClient.auth.onAuthStateChange(() => { updateAuthView(); updateSettingsEmail(); });
+updateAuthView();
+
+async function updateSettingsEmail() {
+  const emailElement = document.getElementById("settingsEmail");
+  if (!emailElement) return;
+  try {
+    const { data, error } = await supabaseClient.auth.getUser();
+    if (error) throw error;
+    emailElement.textContent = data.user?.email || "Please sign in to view your email.";
+  } catch (error) {
+    emailElement.textContent = "Could not load email.";
+  }
+}
+updateSettingsEmail();
 </script>
-<button id="signOutButton"
-  style="position:fixed;bottom:20px;right:20px;z-index:9999;
-  padding:12px 18px;background:#dc2626;color:white;
-  border:0;border-radius:10px;cursor:pointer;display:none;">
-  Sign Out
-</button>
+
+<button id="signOutButton" style="position:fixed;bottom:20px;right:20px;z-index:9999;padding:12px 18px;background:#dc2626;color:white;border:0;border-radius:10px;cursor:pointer;">Sign Out</button>
 
 <script>
-  const signOutButton = document.getElementById("signOutButton");
-
-  async function refreshSignOutButton() {
-    const { data } = await supabaseClient.auth.getSession();
-    signOutButton.style.display = data.session ? "block" : "none";
+const signOutButton = document.getElementById("signOutButton");
+signOutButton.addEventListener("click", async () => {
+  signOutButton.disabled = true;
+  const { error } = await supabaseClient.auth.signOut();
+  if (error) {
+    alert("Sign out failed. Please try again.");
+    signOutButton.disabled = false;
+    return;
   }
-
-  signOutButton.addEventListener("click", async () => {
-    signOutButton.disabled = true;
-    const { error } = await supabaseClient.auth.signOut();
-
-    if (error) {
-      alert("Sign out failed. Please try again.");
-      signOutButton.disabled = false;
-      return;
-    }
-
-    window.location.reload();
-  });
-
-  refreshSignOutButton();
+  window.location.reload();
+});
 </script>
 
-
+<!-- Gmail -->
 <script>
 window.addEventListener("load", function () {
   const clientId = "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
@@ -1656,8 +543,7 @@ window.addEventListener("load", function () {
   const closeGmailPage = document.getElementById("closeGmailPage");
   const accountList = document.getElementById("connectedGmailList");
 
-  if (!window.google || !button || !storageDisplay || !countDisplay ||
-      !gmailCard || !gmailPage || !closeGmailPage || !accountList) {
+  if (!window.google || !button || !storageDisplay || !countDisplay || !gmailCard || !gmailPage || !closeGmailPage || !accountList) {
     console.error("DATAONE Gmail elements are missing.");
     return;
   }
@@ -1665,23 +551,14 @@ window.addEventListener("load", function () {
   const GB = 1024 * 1024 * 1024;
   const savedKey = "dataoneGoogleAccounts";
   let accounts = {};
-
-  try {
-    accounts = JSON.parse(localStorage.getItem(savedKey) || "{}");
-  } catch (error) {
-    accounts = {};
-  }
+  try { accounts = JSON.parse(localStorage.getItem(savedKey) || "{}"); } catch (e) { accounts = {}; }
 
   function updateDashboard() {
     const list = Object.values(accounts);
-    const totalUsed = list.reduce((sum, a) => sum + a.used, 0);
-    const totalLimit = list.reduce((sum, a) => sum + a.limit, 0);
-
+    const totalUsed = list.reduce((s, a) => s + a.used, 0);
+    const totalLimit = list.reduce((s, a) => s + a.limit, 0);
     countDisplay.textContent = String(list.length);
-    storageDisplay.textContent =
-      (totalUsed / GB).toFixed(2) + " / " +
-      (totalLimit / GB).toFixed(2) + " GB";
-
+    storageDisplay.textContent = (totalUsed / GB).toFixed(2) + " / " + (totalLimit / GB).toFixed(2) + " GB";
     localStorage.setItem(savedKey, JSON.stringify(accounts));
     accountList.innerHTML = "";
 
@@ -1692,41 +569,30 @@ window.addEventListener("load", function () {
       accountList.appendChild(empty);
     }
 
-   list.forEach(function (account, index) {
+    list.forEach(function (account) {
       const row = document.createElement("div");
-      row.style.cssText =
-        "display:flex;align-items:center;gap:12px;padding:16px;" +
-        "margin-bottom:12px;background:#1e293b;" +
-        "border:1px solid #334155;border-radius:12px;";
-
+      row.style.cssText = "display:flex;align-items:center;gap:12px;padding:16px;margin-bottom:12px;background:#1e293b;border:1px solid #334155;border-radius:12px;";
       const details = document.createElement("div");
       details.style.cssText = "flex:1;min-width:0;";
-    const email = document.createElement("a");
-email.textContent = account.email;
-email.href = "https://mail.google.com/mail/?authuser=" + encodeURIComponent(account.email);
-email.target = "_blank";
-email.rel = "noopener noreferrer";
-email.style.cssText =
-  "font-weight:600;overflow-wrap:anywhere;color:#60a5fa;text-decoration:none;display:block;";
+
+      const email = document.createElement("a");
+      email.textContent = account.email;
+      email.href = "https://mail.google.com/mail/?authuser=" + encodeURIComponent(account.email);
+      email.target = "_blank";
+      email.rel = "noopener noreferrer";
+      email.style.cssText = "font-weight:600;overflow-wrap:anywhere;color:#60a5fa;text-decoration:none;display:block;";
 
       const storage = document.createElement("small");
-      storage.style.cssText =
-        "display:block;color:#94a3b8;margin-top:6px;";
-      storage.textContent =
-        (account.used / GB).toFixed(2) + " GB used of " +
-        (account.limit > 0
-          ? (account.limit / GB).toFixed(2) + " GB"
-          : "unknown total");
+      storage.style.cssText = "display:block;color:#94a3b8;margin-top:6px;";
+      storage.textContent = (account.used / GB).toFixed(2) + " GB used of " +
+        (account.limit > 0 ? (account.limit / GB).toFixed(2) + " GB" : "unknown total");
 
       details.appendChild(email);
       details.appendChild(storage);
 
       const removeButton = document.createElement("button");
       removeButton.textContent = "Remove";
-      removeButton.style.cssText =
-        "background:#7f1d1d;color:white;border:0;" +
-        "border-radius:8px;padding:9px 12px;cursor:pointer;";
-
+      removeButton.style.cssText = "background:#7f1d1d;color:white;border:0;border-radius:8px;padding:9px 12px;cursor:pointer;";
       removeButton.addEventListener("click", function () {
         if (confirm("Remove " + account.email + " from DATAONE's list?")) {
           delete accounts[account.email];
@@ -1745,46 +611,24 @@ email.style.cssText =
     gmailPage.style.display = "block";
     updateDashboard();
   });
-
-closeGmailPage.addEventListener("click", function () {
-  gmailPage.style.display = "none";
-});
+  closeGmailPage.addEventListener("click", function () { gmailPage.style.display = "none"; });
 
   const tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: clientId,
     scope: "openid email https://www.googleapis.com/auth/drive.metadata.readonly",
-
     callback: async function (response) {
       if (response.error || !response.access_token) {
         alert("Google connection failed. Please try again.");
         return;
       }
-
       try {
-        const headers = {
-          Authorization: "Bearer " + response.access_token
-        };
-
-        const profileResponse = await fetch(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
-          { headers: headers }
-        );
-
-        if (!profileResponse.ok) {
-          throw new Error("Could not identify Google account.");
-        }
-
+        const headers = { Authorization: "Bearer " + response.access_token };
+        const profileResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", { headers });
+        if (!profileResponse.ok) throw new Error("Could not identify Google account.");
         const profile = await profileResponse.json();
 
-        const driveResponse = await fetch(
-          "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
-          { headers: headers }
-        );
-
-        if (!driveResponse.ok) {
-          throw new Error("Could not read Drive storage.");
-        }
-
+        const driveResponse = await fetch("https://www.googleapis.com/drive/v3/about?fields=storageQuota", { headers });
+        if (!driveResponse.ok) throw new Error("Could not read Drive storage.");
         const driveData = await driveResponse.json();
         const quota = driveData.storageQuota || {};
 
@@ -1793,7 +637,6 @@ closeGmailPage.addEventListener("click", function () {
           used: Number(quota.usage || 0),
           limit: Number(quota.limit || 0)
         };
-
         updateDashboard();
         alert("Connected successfully: " + profile.email);
       } catch (error) {
@@ -1804,42 +647,31 @@ closeGmailPage.addEventListener("click", function () {
   });
 
   button.innerHTML = "";
-
   const connectButton = document.createElement("button");
   connectButton.textContent = "+ Add More Gmail";
-  connectButton.style.cssText =
-    "width:100%;padding:14px 18px;border:0;border-radius:10px;" +
-    "background:#2563eb;color:white;cursor:pointer;font-size:15px;";
-
+  connectButton.style.cssText = "width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white;cursor:pointer;font-size:15px;";
   connectButton.addEventListener("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
     tokenClient.requestAccessToken({ prompt: "select_account" });
   });
-
   button.appendChild(connectButton);
   updateDashboard();
 });
 </script>
-<script>
-const MEGA_FUNCTION_URL =
-  "https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/mega-storage";
 
-const MEGA_API_KEY =
-  "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
+<!-- MEGA -->
+<script>
+const MEGA_FUNCTION_URL = "https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/mega-storage";
+const MEGA_API_KEY = "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
 
 function formatMegaStorage(bytes) {
   return (Number(bytes || 0) / (1024 ** 3)).toFixed(2) + " GB";
 }
 
 async function callMegaFunction(payload = {}) {
-  const { data, error } =
-    await window.supabaseClient.auth.getSession();
-
-  if (error || !data.session) {
-    throw new Error("Please sign in to DATAONE.");
-  }
-
+  const { data, error } = await window.supabaseClient.auth.getSession();
+  if (error || !data.session) throw new Error("Please sign in to DATAONE.");
   const response = await fetch(MEGA_FUNCTION_URL, {
     method: "POST",
     headers: {
@@ -1849,13 +681,8 @@ async function callMegaFunction(payload = {}) {
     },
     body: JSON.stringify(payload)
   });
-
   const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.error || "MEGA request failed.");
-  }
-
+  if (!response.ok) throw new Error(result.error || "MEGA request failed.");
   return result;
 }
 
@@ -1863,7 +690,6 @@ async function loadMegaStorage() {
   const countEl = document.getElementById("megaAccountCount");
   const storageEl = document.getElementById("megaStorage");
   const listEl = document.getElementById("connectedMegaList");
-
   if (countEl) countEl.textContent = "Loading...";
   if (storageEl) storageEl.textContent = "Loading...";
   if (listEl) listEl.textContent = "Loading accounts...";
@@ -1871,110 +697,61 @@ async function loadMegaStorage() {
   try {
     const result = await callMegaFunction({ action: "list" });
     const accounts = result.accounts || [];
-
-    if (countEl) {
-      countEl.textContent = String(accounts.length);
-    }
-
-    if (storageEl) {
-      storageEl.textContent =
-        formatMegaStorage(result.usedBytes) + " / " +
-        formatMegaStorage(result.totalBytes);
-    }
-
+    if (countEl) countEl.textContent = String(accounts.length);
+    if (storageEl) storageEl.textContent = formatMegaStorage(result.usedBytes) + " / " + formatMegaStorage(result.totalBytes);
     if (!listEl) return;
-
     listEl.replaceChildren();
-
-    if (accounts.length === 0) {
-      listEl.textContent = "No MEGA accounts connected yet.";
-      return;
-    }
+    if (accounts.length === 0) { listEl.textContent = "No MEGA accounts connected yet."; return; }
 
     accounts.forEach((account) => {
       const card = document.createElement("div");
-
-      card.style.cssText =
-        "padding:16px;margin-bottom:12px;" +
-        "background:#1e293b;border:1px solid #334155;" +
-        "border-radius:12px;";
+      card.style.cssText = "padding:16px;margin-bottom:12px;background:#1e293b;border:1px solid #334155;border-radius:12px;";
 
       const heading = document.createElement("div");
-
-      heading.style.cssText =
-        "display:flex;justify-content:space-between;" +
-        "align-items:center;gap:10px;flex-wrap:wrap;";
-
+      heading.style.cssText = "display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;";
       const email = document.createElement("strong");
       email.textContent = account.email;
-      email.style.cssText =
-        "font-size:14px;overflow-wrap:anywhere;";
-
+      email.style.cssText = "font-size:14px;overflow-wrap:anywhere;";
       heading.appendChild(email);
 
       if (account.id !== "legacy") {
         const removeBtn = document.createElement("button");
-
         removeBtn.type = "button";
         removeBtn.textContent = "Remove";
-
-        removeBtn.style.cssText =
-          "background:#7f1d1d;color:white;border:0;" +
-          "padding:8px 12px;border-radius:8px;cursor:pointer;";
-
+        removeBtn.style.cssText = "background:#7f1d1d;color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;";
         removeBtn.addEventListener("click", async () => {
-          if (!confirm("Remove this MEGA account from DATAONE?")) {
-            return;
-          }
-
+          if (!confirm("Remove this MEGA account from DATAONE?")) return;
           removeBtn.disabled = true;
           removeBtn.textContent = "Removing...";
-
           try {
-            await callMegaFunction({
-              action: "remove",
-              id: account.id
-            });
-
+            await callMegaFunction({ action: "remove", id: account.id });
             await loadMegaStorage();
-
           } catch (error) {
             alert(error.message);
             removeBtn.disabled = false;
             removeBtn.textContent = "Remove";
           }
         });
-
         heading.appendChild(removeBtn);
       }
-
       card.appendChild(heading);
 
       const storage = document.createElement("p");
-
-      storage.style.cssText =
-        "color:#94a3b8;font-size:13px;" +
-        "line-height:1.8;margin:12px 0 0;";
-
+      storage.style.cssText = "color:#94a3b8;font-size:13px;line-height:1.8;margin:12px 0 0;";
       if (account.error) {
         storage.style.color = "#f87171";
         storage.textContent = account.error;
       } else {
-        storage.textContent =
-          "Used: " + formatMegaStorage(account.usedBytes) +
+        storage.textContent = "Used: " + formatMegaStorage(account.usedBytes) +
           "\nAvailable: " + formatMegaStorage(account.availableBytes) +
           "\nTotal: " + formatMegaStorage(account.totalBytes);
-
         storage.style.whiteSpace = "pre-line";
       }
-
       card.appendChild(storage);
       listEl.appendChild(card);
     });
-
   } catch (error) {
     console.error("MEGA error:", error);
-
     if (countEl) countEl.textContent = "—";
     if (storageEl) storageEl.textContent = "Unavailable";
     if (listEl) listEl.textContent = error.message;
@@ -1985,44 +762,31 @@ function setupMegaAccountButtons() {
   const megaCard = document.getElementById("megaCard");
   const megaPage = document.getElementById("connectedMegaPage");
   const closeBtn = document.getElementById("closeMegaPage");
-
   const addBtn = document.getElementById("addMegaAccountBtn");
   const cancelBtn = document.getElementById("cancelMegaAccountBtn");
   const saveBtn = document.getElementById("saveMegaAccountBtn");
-
   const form = document.getElementById("megaAddAccountForm");
   const emailInput = document.getElementById("megaAccountEmail");
   const passwordInput = document.getElementById("megaAccountPassword");
   const message = document.getElementById("megaAccountMessage");
 
-  if (
-    !megaCard || !megaPage || !closeBtn ||
-    !addBtn || !cancelBtn || !saveBtn ||
-    !form || !emailInput || !passwordInput || !message
-  ) {
+  if (!megaCard || !megaPage || !closeBtn || !addBtn || !cancelBtn || !saveBtn || !form || !emailInput || !passwordInput || !message) {
     console.error("MEGA page elements are missing.");
     return;
   }
 
   megaCard.addEventListener("click", (event) => {
     event.preventDefault();
-
     megaPage.style.display = "block";
     form.style.display = "none";
-
     loadMegaStorage();
   });
-
-  closeBtn.addEventListener("click", () => {
-    megaPage.style.display = "none";
-  });
-
+  closeBtn.addEventListener("click", () => { megaPage.style.display = "none"; });
   addBtn.addEventListener("click", () => {
     form.style.display = "block";
     message.textContent = "";
     emailInput.focus();
   });
-
   cancelBtn.addEventListener("click", () => {
     form.style.display = "none";
     emailInput.value = "";
@@ -2033,38 +797,21 @@ function setupMegaAccountButtons() {
   saveBtn.addEventListener("click", async () => {
     const email = emailInput.value.trim();
     const password = passwordInput.value;
-
-    if (!email || !password) {
-      message.textContent =
-        "Enter your MEGA email and password.";
-      return;
-    }
+    if (!email || !password) { message.textContent = "Enter your MEGA email and password."; return; }
 
     saveBtn.disabled = true;
     saveBtn.textContent = "Connecting...";
     message.textContent = "Verifying your MEGA account...";
-
     try {
-      await callMegaFunction({
-        action: "add",
-        email,
-        password
-      });
-
+      await callMegaFunction({ action: "add", email, password });
       emailInput.value = "";
       passwordInput.value = "";
-
-      message.textContent =
-        "MEGA account connected successfully!";
-
+      message.textContent = "MEGA account connected successfully!";
       await loadMegaStorage();
-
       form.style.display = "none";
-
     } catch (error) {
       console.error("MEGA add account error:", error);
       message.textContent = error.message;
-
     } finally {
       saveBtn.disabled = false;
       saveBtn.textContent = "Connect Account";
@@ -2076,18 +823,8 @@ function initializeMegaAccounts() {
   setupMegaAccountButtons();
   loadMegaStorage();
 }
-
-if (document.readyState === "loading") {
-  document.addEventListener(
-    "DOMContentLoaded",
-    initializeMegaAccounts
-  );
-} else {
-  initializeMegaAccounts();
-}
-  
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initializeMegaAccounts);
+else initializeMegaAccounts();
 </script>
-  <!-- DATAONE deployment refresh -->
 </body>
 </html>
-  
