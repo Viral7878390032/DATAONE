@@ -200,8 +200,6 @@ body.sidebar-collapsed {
         <h4 style="margin:0 0 12px;color:#94a3b8;">Preferences</h4>
         <label><input id="compactMode" type="checkbox"> Compact cards</label>
       </div>
-
-      <button type="button" class="panel-signout" id="panelSignOut">Sign out</button>
     </div>
   </div>
 </div>
@@ -335,13 +333,18 @@ navItems.forEach((btn) => {
   });
 });
 
-const doSignOut = () => document.getElementById("signOutButton").click();
+const doSignOut = async () => {
+  const confirmed = confirm("Are you sure you want to sign out of DATAONE?");
+
+  if (!confirmed) return;
+
+  document.getElementById("signOutButton").click();
+};
 document.getElementById("sbSettings").addEventListener("click", () => {
   openPanel("settings");
   if (isMobileOrTablet()) setSidebarOpen(false);
 });
 document.getElementById("sbSignOut").addEventListener("click", doSignOut);
-document.getElementById("panelSignOut").addEventListener("click", doSignOut);
 
 // DATAONE Universal Sidebar Controller
 
