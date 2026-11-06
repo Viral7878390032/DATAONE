@@ -133,76 +133,61 @@ body.sidebar-collapsed {
   <button id="authSwitch" type="button" style="width:100%;margin-top:14px;padding:12px;background:transparent;color:#93c5fd;border:1px solid #334155;border-radius:10px;cursor:pointer;">Create Account</button>
   <p id="authMessage" role="status" style="color:#cbd5e1;font-size:14px;text-align:center;"></p>
 </div>
-
-<!-- Sidebar -->
+<!-- DATAONE Modern Sidebar -->
 <aside id="sidebar" class="sidebar" aria-label="Main menu">
+
   <div class="sb-brand">
     <div class="sb-logo">D</div>
-    <div><strong>DATAONE</strong><small>Your digital space</small></div>
+    <div>
+      <strong>DATAONE</strong>
+      <small>Your digital space</small>
+    </div>
   </div>
+
+  <!-- Profile at top -->
+  <div class="sb-user-profile">
+    <div class="sb-user-avatar" id="sidebarUserAvatar">👤</div>
+    <div class="sb-user-info">
+      <strong id="sidebarUserName">My Profile</strong>
+      <small id="sidebarUserEmail">Loading email...</small>
+    </div>
+  </div>
+
   <nav class="sb-nav">
-    <span class="sb-label">Menu</span>
-    <button type="button" class="active" data-target="top"><i>🏠</i><span>Home</span></button>
-    <button type="button" data-target="gmailCard"><i>✉️</i><span>Gmail</span></button>
-    <button type="button" data-target="megaCard"><i>☁️</i><span>Storage</span></button>
-    <button type="button" data-target="mediaCard"><i>🖼️</i><span>Media</span></button>
+    <span class="sb-label">MAIN MENU</span>
+
+    <button type="button" class="active" data-target="top">
+      <i>🏠</i><span>Home</span>
+    </button>
+    <button type="button" data-target="gmailCard">
+      <i>✉️</i><span>Gmail</span>
+    </button>
+    <button type="button" data-target="megaCard">
+      <i>☁️</i><span>Storage</span>
+    </button>
+    <button type="button" data-target="mediaCard">
+      <i>🖼️</i><span>Media</span>
+    </button>
   </nav>
+
   <div class="sb-footer">
-    <button type="button" id="sbSettings"><i>⚙️</i><span>Settings & Profile</span></button>
-    <button type="button" id="sbSignOut" class="danger"><i>🚪</i><span>Sign out</span></button>
+
+    <button type="button" id="themeToggle">
+      <i>☀️</i><span>Light mode</span>
+    </button>
+
+    <button type="button" id="sbSettings">
+      <i>⚙️</i><span>Settings</span>
+    </button>
+
+    <div class="sb-footer-divider"></div>
+
+    <button type="button" id="sbSignOut" class="danger">
+      <span>Sign out</span>
+    </button>
+
   </div>
 </aside>
-<div id="sidebarBackdrop"
-     class="sidebar-backdrop"
-     hidden>
-</div>
-<!-- Popup panels -->
-<div id="panelModal" class="panel-modal" hidden>
-  <div class="panel-card">
-    <button type="button" class="panel-close" id="panelClose" aria-label="Close">✕</button>
-
-    <div id="myDataPanel" hidden>
-      <h3 style="margin-top:0;">📁 My Data</h3>
-      <p style="color:#94a3b8;">Organize your personal files and information.</p>
-      <label for="dataFile">Choose a file</label>
-      <input id="dataFile" type="file" accept="image/*,video/*,.pdf,.doc,.docx,.txt" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
-      <input id="dataTitle" type="text" placeholder="e.g. My documents" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
-      <label for="dataType">Type</label>
-      <select id="dataType" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;">
-        <option>Document</option><option>Photo</option><option>Video</option><option>Note</option><option>Other</option>
-      </select>
-      <label for="dataNote">Details (optional)</label>
-      <textarea id="dataNote" placeholder="Add a short description" style="display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569;"></textarea>
-      <button id="addDataButton" type="button" style="padding:12px 16px;background:#2563eb;color:white;border:0;border-radius:8px;cursor:pointer;">+ Add Entry</button>
-      <div id="dataEntries" style="margin-top:16px;"></div>
-    </div>
-
-    <!-- Settings & Profile Panel -->
-    <div id="settingsPanel" hidden>
-      <p class="panel-title">Settings & Profile</p>
-
-      <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div style="width:40px;height:40px;border-radius:50%;background:#1e3a8a;display:flex;align-items:center;justify-content:center;font-size:20px;">👤</div>
-          <div>
-            <strong style="font-size:15px;display:block;">My Profile</strong>
-            <small id="settingsEmail" style="color:#94a3b8;overflow-wrap:anywhere;display:block;">Loading email...</small>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
-          <button type="button" class="profile-btn" id="profileSecurityBtn">🔒 Security</button>
-          <button type="button" class="profile-btn" id="profileConnectedBtn">🔗 Accounts</button>
-          <button type="button" class="profile-btn" id="profileDataBtn" style="grid-column: span 2;">📁 My Data</button>
-        </div>
-      </div>
-
-      <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
-        <h4 style="margin:0 0 12px;color:#94a3b8;">Preferences</h4>
-        <label><input id="compactMode" type="checkbox"> Compact cards</label>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Header -->
 <header class="dataone-header">
