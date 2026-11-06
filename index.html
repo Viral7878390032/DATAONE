@@ -19,7 +19,8 @@ img,video,iframe{max-width:100%}
 .header-brand{display:flex;align-items:center;gap:10px}
 .header-brand h1{margin:0;font-size:16px;font-weight:700;letter-spacing:1px;line-height:1.2}
 .subtitle{color:#94a3b8;font-size:12px}
-.profile-avatar{width:42px;height:42px;flex-shrink:0;border-radius:50%;border:1px solid #3b82f6;background:#263449;color:#fff;font-size:21px;cursor:pointer}
+.profile-avatar{width:42px;height:42px;flex-shrink:0;border-radius:50%;border:1px solid #3b82f6;background:#263449;color:#fff;font-size:21px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.profile-avatar:hover{background:#1e293b}
 .vpn-button{padding:10px 16px;border:1px solid #3b82f6;border-radius:10px;background:#1e293b;color:#fff;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
 .vpn-button:hover{background:#2563eb}
 
@@ -34,12 +35,12 @@ img,video,iframe{max-width:100%}
 .card:focus-visible{outline:2px solid #60a5fa;outline-offset:3px}
 .card small{color:#94a3b8}
 .card strong{display:block}
-.profile-btn{padding:12px;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#fff;font-size:13px;cursor:pointer}
-.profile-btn:hover{border-color:#60a5fa}
+.profile-btn{padding:12px;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#fff;font-size:13px;cursor:pointer;text-align:left;width:100%;display:flex;align-items:center;gap:8px}
+.profile-btn:hover{border-color:#60a5fa;background:#263449}
 footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
 
 /* Sidebar */
-.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sb-w);z-index:1003;display:flex;flex-direction:column;padding:20px 14px;background:radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),var(--sb-bg);border-right:1px solid var(--sb-border);overflow-y:auto}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sb-w);z-index:1003;display:flex;flex-direction:column;padding:20px 14px;background:radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),var(--sb-bg);border-right:1px solid var(--sb-border);overflow-y:auto;transition:transform .3s ease}
 .sb-brand{display:flex;align-items:center;gap:12px;padding:6px 8px 22px;border-bottom:1px solid var(--sb-border)}
 .sb-logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;border:1px solid #60a5fa66;background:linear-gradient(145deg,#2563eb,#172554);box-shadow:0 0 24px #3b82f633;font-weight:800;font-size:19px}
 .sb-brand strong{display:block;letter-spacing:1.6px;font-size:16px}
@@ -60,14 +61,15 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
 .panel-card{position:relative;width:100%;max-width:460px;max-height:85vh;overflow-y:auto;padding:22px;background:#111e33;border:1px solid var(--sb-border);border-radius:18px;box-shadow:0 24px 60px #0008}
 .panel-close{position:absolute;top:10px;right:10px;width:34px;height:34px;border:0;border-radius:10px;background:#ffffff0f;color:#fff;font-size:16px;cursor:pointer}
 .panel-close:hover{background:#ffffff1f}
-.panel-title{margin:0 0 12px;font-weight:700;color:#93c5fd}
+.panel-title{margin:0 0 12px;font-weight:700;color:#93c5fd;font-size:18px}
 .panel-signout{width:100%;margin-top:16px;padding:12px;border:0;border-radius:10px;background:#dc2626;color:#fff;font-weight:700;cursor:pointer}
 #settingsPanel label{display:flex;align-items:center;gap:9px;cursor:pointer}
 
 @media(min-width:769px){body{padding-left:calc(var(--sb-w) + 28px)}}
 @media(max-width:768px){
   body{padding:14px 14px 92px}
-  .sidebar{inset:auto 0 0 0;width:100%;flex-direction:row;padding:0 0 env(safe-area-inset-bottom);background:rgba(13,22,40,.96);backdrop-filter:blur(14px);border-right:0;border-top:1px solid var(--sb-border);overflow:visible}
+  .sidebar{inset:auto 0 0 0;width:100%;flex-direction:row;padding:0 0 env(safe-area-inset-bottom);background:rgba(13,22,40,.96);backdrop-filter:blur(14px);border-right:0;border-top:1px solid var(--sb-border);overflow:visible;transform:none!important}
+  .sidebar.mobile-open{display:flex}
   .sb-brand,.sb-label,.sb-footer{display:none}
   .sb-nav{flex-direction:row;margin:0;padding:6px 4px;gap:2px}
   .sb-nav button{flex:1;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:56px;padding:4px 2px;font-size:11px;text-align:center}
@@ -118,10 +120,9 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
     <button type="button" data-target="gmailCard"><i>✉️</i><span>Gmail</span></button>
     <button type="button" data-target="megaCard"><i>☁️</i><span>Storage</span></button>
     <button type="button" data-target="mediaCard"><i>🖼️</i><span>Media</span></button>
-    <button type="button" data-target="profileCard"><i>👤</i><span>Profile</span></button>
   </nav>
   <div class="sb-footer">
-    <button type="button" id="sbSettings"><i>⚙️</i><span>Settings</span></button>
+    <button type="button" id="sbSettings"><i>⚙️</i><span>Settings & Profile</span></button>
     <button type="button" id="sbSignOut" class="danger"><i>🚪</i><span>Sign out</span></button>
   </div>
 </aside>
@@ -147,14 +148,30 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
       <div id="dataEntries" style="margin-top:16px;"></div>
     </div>
 
+    <!-- Settings & Profile Panel -->
     <div id="settingsPanel" hidden>
-      <p class="panel-title">DATAONE Settings</p>
+      <p class="panel-title">Settings & Profile</p>
+
       <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
-        <h3 style="margin-top:0;">My Account</h3>
-        <p style="color:#94a3b8;margin-bottom:6px;">Signed-in email</p>
-        <p id="settingsEmail" style="overflow-wrap:anywhere;">Loading email...</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#1e3a8a;display:flex;align-items:center;justify-content:center;font-size:20px;">👤</div>
+          <div>
+            <strong style="font-size:15px;display:block;">My Profile</strong>
+            <small id="settingsEmail" style="color:#94a3b8;overflow-wrap:anywhere;display:block;">Loading email...</small>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+          <button type="button" class="profile-btn" id="profileSecurityBtn">🔒 Security</button>
+          <button type="button" class="profile-btn" id="profileConnectedBtn">🔗 Accounts</button>
+          <button type="button" class="profile-btn" id="profileDataBtn" style="grid-column: span 2;">📁 My Data</button>
+        </div>
       </div>
-      <label><input id="compactMode" type="checkbox"> Compact cards</label>
+
+      <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px;">
+        <h4 style="margin:0 0 12px;color:#94a3b8;">Preferences</h4>
+        <label><input id="compactMode" type="checkbox"> Compact cards</label>
+      </div>
+
       <button type="button" class="panel-signout" id="panelSignOut">Sign out</button>
     </div>
   </div>
@@ -163,7 +180,7 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
 <!-- Header -->
 <header class="dataone-header">
   <div class="header-brand">
-    <button class="profile-avatar" id="profileAvatar" aria-label="Profile">👤</button>
+    <button class="profile-avatar" id="profileAvatar" aria-label="Toggle Sidebar Menu">👤</button>
     <div>
       <h1>DATAONE</h1>
       <div class="subtitle">Your simple digital space</div>
@@ -218,19 +235,6 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
     <p style="color:#94a3b8;font-size:12px;margin:18px 0 0;">Explore your media library.</p>
   </div>
 
-  <!-- Profile Card -->
-  <div class="card" id="profileCard">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-      <div style="width:48px;height:48px;border-radius:50%;background:#1e3a8a;display:flex;align-items:center;justify-content:center;font-size:24px;">👤</div>
-      <div><strong style="font-size:18px;">My Profile</strong><small>Your DATAONE account</small></div>
-    </div>
-    <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <button type="button" class="profile-btn" id="profileSettingsBtn">⚙️ Account Settings</button>
-      <button type="button" class="profile-btn" id="profileSecurityBtn">🔒 Security</button>
-      <button type="button" class="profile-btn" id="profileConnectedBtn">🔗 Connected Accounts</button>
-      <button type="button" class="profile-btn" id="profileDataBtn">📁 My Data</button>
-    </div>
-  </div>
 </div>
 
 <!-- Connected MEGA Page -->
@@ -275,6 +279,7 @@ const panelModal    = document.getElementById("panelModal");
 const myDataPanel   = document.getElementById("myDataPanel");
 const settingsPanel = document.getElementById("settingsPanel");
 const compactMode   = document.getElementById("compactMode");
+const sidebar       = document.getElementById("sidebar");
 
 function openPanel(which) {
   myDataPanel.hidden   = which !== "data";
@@ -304,12 +309,21 @@ const doSignOut = () => document.getElementById("signOutButton").click();
 document.getElementById("sbSettings").addEventListener("click", () => openPanel("settings"));
 document.getElementById("sbSignOut").addEventListener("click", doSignOut);
 document.getElementById("panelSignOut").addEventListener("click", doSignOut);
-document.getElementById("profileAvatar").addEventListener("click", () => openPanel("settings"));
+
+// Click avatar opens sidebar (and focuses navigation)
+document.getElementById("profileAvatar").addEventListener("click", () => {
+  if (window.innerWidth <= 768) {
+    sidebar.scrollIntoView({ behavior: "smooth" });
+  } else {
+    sidebar.focus();
+  }
+});
+
 document.getElementById("vpnButton").addEventListener("click", () => alert("DATAONE VPN is coming soon!"));
-document.getElementById("profileSettingsBtn").addEventListener("click", () => openPanel("settings"));
-document.getElementById("profileSecurityBtn").addEventListener("click", () => openPanel("settings"));
+document.getElementById("profileSecurityBtn").addEventListener("click", () => alert("Security Settings coming soon!"));
 document.getElementById("profileDataBtn").addEventListener("click", () => openPanel("data"));
 document.getElementById("profileConnectedBtn").addEventListener("click", () => {
+  closePanel();
   document.getElementById("gmailCard").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
