@@ -1647,11 +1647,7 @@ const supabaseClient = window.supabaseClient;
 
 <script>
 window.addEventListener("load", function () {
-  const SUPABASE_FUNCTIONS_URL =
-    "https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1";
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
-
+  const clientId = "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
   const button = document.getElementById("googleSignInButton");
   const storageDisplay = document.getElementById("gmailStorage");
   const countDisplay = document.getElementById("gmailAccountCount");
@@ -1660,70 +1656,43 @@ window.addEventListener("load", function () {
   const closeGmailPage = document.getElementById("closeGmailPage");
   const accountList = document.getElementById("connectedGmailList");
 
-  if (!button || !storageDisplay || !countDisplay ||
+  if (!window.google || !button || !storageDisplay || !countDisplay ||
       !gmailCard || !gmailPage || !closeGmailPage || !accountList) {
     console.error("DATAONE Gmail elements are missing.");
     return;
   }
 
   const GB = 1024 * 1024 * 1024;
-  let accounts = [];
+  const savedKey = "dataoneGoogleAccounts";
+  let accounts = {};
 
-  function showMessage(message, color) {
-    accountList.replaceChildren();
-    const messageElement = document.createElement("p");
-    messageElement.textContent = message;
-    messageElement.style.color = color || "#94a3b8";
-    accountList.appendChild(messageElement);
-  }
-
-  async function getSession() {
-    if (!window.supabaseClient) {
-      throw new Error("DATAONE sign-in is not ready. Refresh the page.");
-    }
-
-    const { data, error } = await window.supabaseClient.auth.getSession();
-    if (error) throw error;
-    if (!data.session) {
-      throw new Error("Please sign in to DATAONE first.");
-    }
-    return data.session;
-  }
-
-  async function callFunction(functionName, session) {
-    const response = await fetch(
-      SUPABASE_FUNCTIONS_URL + "/" + functionName,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_PUBLISHABLE_KEY,
-          "Authorization": "Bearer " + session.access_token
-        },
-        body: JSON.stringify({})
-      }
-    );
-
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(result.error || result.message ||
-        functionName + " request failed (" + response.status + ").");
-    }
-    return result;
+  try {
+    accounts = JSON.parse(localStorage.getItem(savedKey) || "{}");
+  } catch (error) {
+    accounts = {};
   }
 
   function updateDashboard() {
-    countDisplay.textContent = String(accounts.length);
-    // Storage quota is not yet retrieved by the secure backend.
-    storageDisplay.textContent = "—";
-    accountList.replaceChildren();
+    const list = Object.values(accounts);
+    const totalUsed = list.reduce((sum, a) => sum + a.used, 0);
+    const totalLimit = list.reduce((sum, a) => sum + a.limit, 0);
 
-    if (accounts.length === 0) {
-      showMessage("No Google accounts connected yet.");
-      return;
+    countDisplay.textContent = String(list.length);
+    storageDisplay.textContent =
+      (totalUsed / GB).toFixed(2) + " / " +
+      (totalLimit / GB).toFixed(2) + " GB";
+
+    localStorage.setItem(savedKey, JSON.stringify(accounts));
+    accountList.innerHTML = "";
+
+    if (list.length === 0) {
+      const empty = document.createElement("p");
+      empty.textContent = "No Gmail accounts connected yet.";
+      empty.style.color = "#94a3b8";
+      accountList.appendChild(empty);
     }
 
-    accounts.forEach(function (account) {
+   list.forEach(function (account, index) {
       const row = document.createElement("div");
       row.style.cssText =
         "display:flex;align-items:center;gap:12px;padding:16px;" +
@@ -1732,107 +1701,124 @@ window.addEventListener("load", function () {
 
       const details = document.createElement("div");
       details.style.cssText = "flex:1;min-width:0;";
+    const email = document.createElement("a");
+email.textContent = account.email;
+email.href = "https://mail.google.com/mail/?authuser=" + encodeURIComponent(account.email);
+email.target = "_blank";
+email.rel = "noopener noreferrer";
+email.style.cssText =
+  "font-weight:600;overflow-wrap:anywhere;color:#60a5fa;text-decoration:none;display:block;";
 
-      const email = document.createElement("a");
-      email.textContent = account.email || "Google account";
-      email.href = "https://mail.google.com/mail/?authuser=" +
-        encodeURIComponent(account.email || "");
-      email.target = "_blank";
-      email.rel = "noopener noreferrer";
-      email.style.cssText =
-        "font-weight:600;overflow-wrap:anywhere;color:#60a5fa;" +
-        "text-decoration:none;display:block;";
-
-      const connected = document.createElement("small");
-      connected.textContent = "Connected to DATAONE";
-      connected.style.cssText =
+      const storage = document.createElement("small");
+      storage.style.cssText =
         "display:block;color:#94a3b8;margin-top:6px;";
+      storage.textContent =
+        (account.used / GB).toFixed(2) + " GB used of " +
+        (account.limit > 0
+          ? (account.limit / GB).toFixed(2) + " GB"
+          : "unknown total");
 
-      details.append(email, connected);
+      details.appendChild(email);
+      details.appendChild(storage);
+
+      const removeButton = document.createElement("button");
+      removeButton.textContent = "Remove";
+      removeButton.style.cssText =
+        "background:#7f1d1d;color:white;border:0;" +
+        "border-radius:8px;padding:9px 12px;cursor:pointer;";
+
+      removeButton.addEventListener("click", function () {
+        if (confirm("Remove " + account.email + " from DATAONE's list?")) {
+          delete accounts[account.email];
+          updateDashboard();
+        }
+      });
+
       row.appendChild(details);
+      row.appendChild(removeButton);
       accountList.appendChild(row);
     });
-  }
-
-  async function loadGoogleAccounts() {
-    showMessage("Loading connected accounts...");
-    try {
-      const session = await getSession();
-      const result = await callFunction("google-oauth-list", session);
-      accounts = Array.isArray(result.accounts) ? result.accounts : [];
-      updateDashboard();
-    } catch (error) {
-      console.error("DATAONE Google account loading error:", error);
-      showMessage(error.message || "Could not load Google accounts.", "#fca5a5");
-      countDisplay.textContent = "0";
-      storageDisplay.textContent = "—";
-    }
-  }
-
-  async function connectGoogleAccount() {
-    const connectButton = button.querySelector("button");
-    if (connectButton) {
-      connectButton.disabled = true;
-      connectButton.textContent = "Connecting...";
-    }
-
-    try {
-      const session = await getSession();
-      const result = await callFunction("google-oauth-start", session);
-
-      if (!result.authorization_url) {
-        throw new Error("The Google authorization link was not returned.");
-      }
-
-      window.location.assign(result.authorization_url);
-    } catch (error) {
-      console.error("DATAONE Google connection error:", error);
-      alert(error.message || "Could not start Google connection.");
-      if (connectButton) {
-        connectButton.disabled = false;
-        connectButton.textContent = "+ Add More Gmail";
-      }
-    }
   }
 
   gmailCard.addEventListener("click", function (event) {
     event.preventDefault();
     gmailPage.style.display = "block";
-    loadGoogleAccounts();
+    updateDashboard();
   });
 
-  closeGmailPage.addEventListener("click", function () {
-    gmailPage.style.display = "none";
+closeGmailPage.addEventListener("click", function () {
+  gmailPage.style.display = "none";
+});
+
+  const tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: "openid email https://www.googleapis.com/auth/drive.metadata.readonly",
+
+    callback: async function (response) {
+      if (response.error || !response.access_token) {
+        alert("Google connection failed. Please try again.");
+        return;
+      }
+
+      try {
+        const headers = {
+          Authorization: "Bearer " + response.access_token
+        };
+
+        const profileResponse = await fetch(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          { headers: headers }
+        );
+
+        if (!profileResponse.ok) {
+          throw new Error("Could not identify Google account.");
+        }
+
+        const profile = await profileResponse.json();
+
+        const driveResponse = await fetch(
+          "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
+          { headers: headers }
+        );
+
+        if (!driveResponse.ok) {
+          throw new Error("Could not read Drive storage.");
+        }
+
+        const driveData = await driveResponse.json();
+        const quota = driveData.storageQuota || {};
+
+        accounts[profile.email] = {
+          email: profile.email,
+          used: Number(quota.usage || 0),
+          limit: Number(quota.limit || 0)
+        };
+
+        updateDashboard();
+        alert("Connected successfully: " + profile.email);
+      } catch (error) {
+        console.error(error);
+        alert("Could not load this account. Check Google permissions.");
+      }
+    }
   });
 
   button.innerHTML = "";
+
   const connectButton = document.createElement("button");
-  connectButton.type = "button";
   connectButton.textContent = "+ Add More Gmail";
   connectButton.style.cssText =
     "width:100%;padding:14px 18px;border:0;border-radius:10px;" +
     "background:#2563eb;color:white;cursor:pointer;font-size:15px;";
-  connectButton.addEventListener("click", connectGoogleAccount);
+
+  connectButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    tokenClient.requestAccessToken({ prompt: "select_account" });
+  });
+
   button.appendChild(connectButton);
-
-  const googleStatus = new URLSearchParams(window.location.search).get("google");
-  if (googleStatus) {
-    if (googleStatus === "connected") {
-      alert("Google account connected. DATAONE will now load your account.");
-    } else {
-      alert("Google connection was not completed: " + googleStatus);
-    }
-
-    const cleanUrl = new URL(window.location.href);
-    cleanUrl.searchParams.delete("google");
-    window.history.replaceState({}, document.title, cleanUrl.pathname +
-      cleanUrl.search + cleanUrl.hash);
-  }
-
   updateDashboard();
-  if (googleStatus === "connected") {
-    loadGoogleAccounts();
-  }
 });
 </script>
 <script>
