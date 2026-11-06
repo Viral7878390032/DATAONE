@@ -1,3 +1,30 @@
+Here is your complete updated index.html, from top to bottom.
+
+Changes included:
+
+Professional sidebar with SVG icons.
+
+Profile at the top.
+
+Settings completely removed.
+
+My Data completely removed, including its upload and storage code.
+
+Gmail and MEGA functionality preserved.
+
+Media section preserved.
+
+Dark/Light theme toggle preserved.
+
+Red Sign out button preserved.
+
+Mobile, tablet and desktop sidebar support preserved.
+
+
+Replace your entire existing index.html with this code.
+
+writing?variant="standard" id="73519" title="Complete DATAONE index.html"
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,307 +33,703 @@
 <meta name="theme-color" content="#0b1220">
 <link rel="manifest" href="./manifest.json">
 <title>DATAONE</title>
+
 <style>
 *{box-sizing:border-box}
-:root{--sb-w:264px;--sb-bg:#0d1628;--sb-border:rgba(148,163,184,.14);--sb-accent:#60a5fa;--sb-muted:#94a3b8}
+:root{
+ --sb-w:264px;
+ --sb-bg:#0d1628;
+ --sb-border:rgba(148,163,184,.14);
+ --sb-accent:#60a5fa;
+ --sb-muted:#94a3b8
+}
 [hidden]{display:none!important}
-body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#fff;padding:24px;line-height:1.5;overflow-x:hidden;-webkit-text-size-adjust:100%}
+
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#0b1220;
+ color:#fff;
+ padding:24px;
+ line-height:1.5;
+ overflow-x:hidden;
+ -webkit-text-size-adjust:100%
+}
+
 img,video,iframe{max-width:100%}
-.dataone-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;margin:0 0 24px}
+
+.dataone-header{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:8px;
+ padding:6px 12px;
+ margin:0 0 24px
+}
+
 .header-brand{display:flex;align-items:center;gap:10px}
 .header-brand h1{margin:0;font-size:16px;letter-spacing:1px;line-height:1.2}
 .subtitle{color:#94a3b8;font-size:12px}
-.profile-avatar{width:42px;height:42px;flex-shrink:0;border-radius:50%;border:1px solid #3b82f6;background:#263449;color:#fff;font-size:21px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.vpn-button{padding:10px 16px;border:1px solid #3b82f6;border-radius:10px;background:#1e293b;color:#fff;font-size:14px;font-weight:600;cursor:pointer}
-.search{display:flex;align-items:center;gap:10px;height:42px;width:100%;padding:0 14px;background:#fff;color:#334155;border-radius:30px;text-decoration:none;margin-bottom:30px}
+
+.profile-avatar{
+ width:42px;
+ height:42px;
+ flex-shrink:0;
+ border-radius:50%;
+ border:1px solid #3b82f6;
+ background:#263449;
+ color:#fff;
+ font-size:21px;
+ cursor:pointer;
+ display:flex;
+ align-items:center;
+ justify-content:center
+}
+
+.vpn-button{
+ padding:10px 16px;
+ border:1px solid #3b82f6;
+ border-radius:10px;
+ background:#1e293b;
+ color:#fff;
+ font-size:14px;
+ font-weight:600;
+ cursor:pointer
+}
+
+.search{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ height:42px;
+ width:100%;
+ padding:0 14px;
+ background:#fff;
+ color:#334155;
+ border-radius:30px;
+ text-decoration:none;
+ margin-bottom:30px
+}
 .search img{width:20px;height:20px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
-.card{background:#17243a;color:#fff;text-decoration:none;border:1px solid #263650;border-radius:18px;padding:22px 16px;min-height:125px;min-width:0;overflow-wrap:anywhere;transition:transform .2s,border-color .2s,box-shadow .2s}
-.card:hover{transform:translateY(-3px);border-color:#60a5fa;box-shadow:0 8px 22px #0003}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:14px;
+ width:100%
+}
+
+.card{
+ background:#17243a;
+ color:#fff;
+ text-decoration:none;
+ border:1px solid #263650;
+ border-radius:18px;
+ padding:22px 16px;
+ min-height:125px;
+ min-width:0;
+ overflow-wrap:anywhere;
+ transition:transform .2s,border-color .2s,box-shadow .2s
+}
+.card:hover{
+ transform:translateY(-3px);
+ border-color:#60a5fa;
+ box-shadow:0 8px 22px #0003
+}
 .card small{color:#94a3b8}
 .card strong{display:block}
-footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
 
-/* Sidebar */
-.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sb-w);z-index:1200;display:flex;flex-direction:column;padding:20px 14px;background:radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),var(--sb-bg);border-right:1px solid var(--sb-border);overflow-y:auto;transition:transform .3s ease}
-.sb-brand{display:flex;align-items:center;gap:12px;padding:6px 8px 22px;border-bottom:1px solid var(--sb-border)}
-.sb-logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;border:1px solid #60a5fa66;background:linear-gradient(145deg,#2563eb,#172554);font-weight:800;font-size:19px}
-.sb-brand strong{display:block;letter-spacing:1.6px;font-size:16px}
-.sb-brand small{display:block;margin-top:3px;color:var(--sb-muted);font-size:12px}
-.sb-user-profile{display:flex;align-items:center;gap:12px;padding:16px 12px;margin:18px 0;background:#ffffff0d;border:1px solid var(--sb-border);border-radius:12px}
-.sb-user-avatar{width:44px;height:44px;min-width:44px;border-radius:50%;background:#1e3a8a;display:flex;align-items:center;justify-content:center;font-size:22px}
-.sb-user-info{min-width:0;display:flex;flex-direction:column;gap:5px}
-.sb-user-info strong{font-size:14px;color:white;overflow-wrap:anywhere}
-.sb-user-info small{font-size:11px;color:#94a3b8;overflow-wrap:anywhere}
-.sb-nav{flex:1;display:flex;flex-direction:column;gap:6px;margin-top:4px}
-.sb-label{padding:0 14px 6px;color:#64748b;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
-.sb-nav button,.sb-footer button{display:flex;align-items:center;gap:12px;width:100%;min-height:46px;padding:0 14px;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--sb-muted);font:500 14px Arial,sans-serif;text-align:left;cursor:pointer}
-.sb-nav i,.sb-footer i{font-style:normal;font-size:18px;width:24px;text-align:center}
-.sb-nav button:hover,.sb-footer button:hover{background:#ffffff0a;border-color:var(--sb-border);color:#fff}
-.sb-nav button.active{background:linear-gradient(100deg,#2563eb38,#3b82f60a);border-color:#60a5fa35;color:#93c5fd}
-.sb-nav button.active::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--sb-accent)}
-.sb-nav button{position:relative}
-.sb-footer{display:grid;gap:6px;padding-top:14px;border-top:1px solid var(--sb-border)}
-.sb-footer-divider{height:1px;background:var(--sb-border);margin:8px 0}
-.sb-footer .danger{background:#dc2626;color:white;border:1px solid #dc2626}
-.sb-footer .danger:hover{background:#b91c1c;color:white}
+footer{
+ color:#64748b;
+ text-align:center;
+ margin-top:40px;
+ font-size:12px
+}
 
-/* Sidebar control and overlay */
+/* SIDEBAR */
+.sidebar{
+ position:fixed;
+ inset:0 auto 0 0;
+ width:var(--sb-w);
+ z-index:1200;
+ display:flex;
+ flex-direction:column;
+ padding:20px 14px;
+ background:
+  radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),
+  var(--sb-bg);
+ border-right:1px solid var(--sb-border);
+ overflow-y:auto;
+ transition:transform .3s ease
+}
+
+.sb-brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:6px 8px 22px;
+ border-bottom:1px solid var(--sb-border)
+}
+
+.sb-logo{
+ width:44px;
+ height:44px;
+ display:grid;
+ place-items:center;
+ border-radius:14px;
+ border:1px solid #60a5fa66;
+ background:linear-gradient(145deg,#2563eb,#172554);
+ font-weight:800;
+ font-size:19px
+}
+
+.sb-brand strong{
+ display:block;
+ letter-spacing:1.6px;
+ font-size:16px
+}
+
+.sb-brand small{
+ display:block;
+ margin-top:3px;
+ color:var(--sb-muted);
+ font-size:12px
+}
+
+/* PROFILE AT TOP */
+.sb-user-profile{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:16px 12px;
+ margin:18px 0;
+ background:#ffffff0d;
+ border:1px solid var(--sb-border);
+ border-radius:14px
+}
+
+.sb-user-avatar{
+ width:44px;
+ height:44px;
+ min-width:44px;
+ border-radius:50%;
+ background:linear-gradient(145deg,#2563eb,#1e3a8a);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:18px;
+ font-weight:bold;
+ color:white
+}
+
+.sb-user-info{
+ min-width:0;
+ display:flex;
+ flex-direction:column;
+ gap:5px
+}
+
+.sb-user-info strong{
+ font-size:14px;
+ color:white;
+ overflow-wrap:anywhere
+}
+
+.sb-user-info small{
+ font-size:11px;
+ color:#94a3b8;
+ overflow-wrap:anywhere
+}
+
+/* NAVIGATION */
+.sb-nav{
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ gap:7px;
+ margin-top:8px
+}
+
+.sb-label{
+ padding:0 14px 8px;
+ color:#64748b;
+ font-size:11px;
+ font-weight:700;
+ letter-spacing:1.4px;
+ text-transform:uppercase
+}
+
+.sb-nav button,.sb-footer button{
+ display:flex;
+ align-items:center;
+ gap:13px;
+ width:100%;
+ min-height:48px;
+ padding:0 14px;
+ border:1px solid transparent;
+ border-radius:12px;
+ background:transparent;
+ color:var(--sb-muted);
+ font:500 14px Arial,sans-serif;
+ text-align:left;
+ cursor:pointer;
+ transition:all .2s ease
+}
+
+.sb-icon{
+ width:22px;
+ height:22px;
+ min-width:22px;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center
+}
+
+.sb-icon svg{
+ width:21px;
+ height:21px;
+ fill:none;
+ stroke:currentColor;
+ stroke-width:1.8;
+ stroke-linecap:round;
+ stroke-linejoin:round
+}
+
+.sb-nav button:hover,.sb-footer button:hover{
+ background:#ffffff0a;
+ border-color:var(--sb-border);
+ color:#fff;
+ transform:translateX(3px)
+}
+
+.sb-nav button.active{
+ background:linear-gradient(100deg,#2563eb38,#3b82f60a);
+ border-color:#60a5fa35;
+ color:#93c5fd;
+ box-shadow:inset 3px 0 0 #60a5fa
+}
+
+/* FOOTER */
+.sb-footer{
+ display:grid;
+ gap:7px;
+ padding-top:14px;
+ border-top:1px solid var(--sb-border)
+}
+
+.sb-footer-divider{
+ height:1px;
+ background:var(--sb-border);
+ margin:8px 0
+}
+
+.sb-footer .danger{
+ background:#dc2626;
+ color:white;
+ border:1px solid #dc2626;
+ justify-content:center;
+ font-weight:600
+}
+
+.sb-footer .danger:hover{
+ background:#b91c1c;
+ color:white;
+ border-color:#b91c1c
+}
+
+/* SIDEBAR CONTROL */
 .sidebar.desktop-closed{transform:translateX(-100%)}
 body.sidebar-collapsed{padding-left:24px}
-.sidebar-backdrop{position:fixed;inset:0;z-index:1199;background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
-@media(min-width:1025px){body{padding-left:calc(var(--sb-w) + 28px)}}
+
+.sidebar-backdrop{
+ position:fixed;
+ inset:0;
+ z-index:1199;
+ background:rgba(0,0,0,.55);
+ backdrop-filter:blur(2px)
+}
+
+@media(min-width:1025px){
+ body{padding-left:calc(var(--sb-w) + 28px)}
+}
+
 @media(max-width:1024px){
  body{padding:14px 14px 92px}
- .sidebar{width:280px;transform:translateX(-100%)}
+ .sidebar{
+  width:280px;
+  transform:translateX(-100%)
+ }
  .sidebar.mobile-open{transform:translateX(0)}
 }
-@media(max-width:480px){body{font-size:15px}.grid{grid-template-columns:minmax(0,1fr)}.card{border-radius:14px;padding:18px 14px;min-height:110px}.vpn-button{padding:8px 12px;font-size:12px}.profile-avatar{width:38px;height:38px}}
-/* Panels */
-.panel-modal{position:fixed;inset:0;z-index:1300;display:flex;align-items:center;justify-content:center;padding:16px;background:#020617b8;backdrop-filter:blur(3px)}
-.panel-card{position:relative;width:100%;max-width:460px;max-height:85vh;overflow-y:auto;padding:22px;background:#111e33;border:1px solid var(--sb-border);border-radius:18px;box-shadow:0 24px 60px #0008}
-.panel-close{position:absolute;top:10px;right:10px;width:34px;height:34px;border:0;border-radius:10px;background:#ffffff0f;color:#fff;font-size:16px;cursor:pointer}
-.panel-title{margin:0 0 12px;font-weight:700;color:#93c5fd;font-size:18px}
-.profile-btn{padding:12px;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#fff;font-size:13px;cursor:pointer;text-align:left;width:100%}
-.panel-field{display:block;width:100%;padding:12px;margin:8px 0 14px;border-radius:8px;background:#0b1220;color:white;border:1px solid #475569}
-@media(max-width:1024px){.panel-modal{align-items:flex-end;padding:0}.panel-card{max-width:100%;border-radius:20px 20px 0 0;max-height:88vh}}
-/* Light theme */
-html[data-theme="light"] body{background:#f1f5f9;color:#0f172a}
-html[data-theme="light"] .sidebar{background:#fff;border-color:#dbe3ee}
-html[data-theme="light"] .sb-brand strong,html[data-theme="light"] .sb-user-info strong{color:#0f172a}
-html[data-theme="light"] .sb-user-profile{background:#f1f5f9;border-color:#dbe3ee}
-html[data-theme="light"] .sb-nav button,html[data-theme="light"] .sb-footer button{color:#475569}
-html[data-theme="light"] .sb-nav button:hover,html[data-theme="light"] .sb-footer button:hover{background:#e2e8f0;color:#0f172a}
-html[data-theme="light"] .sb-nav button.active{color:#1d4ed8;background:#dbeafe}
-html[data-theme="light"] .card{background:#fff;color:#0f172a;border-color:#dbe3ee}
+
+@media(max-width:480px){
+ body{font-size:15px}
+ .grid{grid-template-columns:minmax(0,1fr)}
+ .card{border-radius:14px;padding:18px 14px;min-height:110px}
+ .vpn-button{padding:8px 12px;font-size:12px}
+ .profile-avatar{width:38px;height:38px}
+}
+
+/* LIGHT THEME */
+html[data-theme="light"] body{
+ background:#f1f5f9;
+ color:#0f172a
+}
+
+html[data-theme="light"] .sidebar{
+ background:#fff;
+ border-color:#dbe3ee
+}
+
+html[data-theme="light"] .sb-brand strong,
+html[data-theme="light"] .sb-user-info strong{
+ color:#0f172a
+}
+
+html[data-theme="light"] .sb-user-profile{
+ background:#f1f5f9;
+ border-color:#dbe3ee
+}
+
+html[data-theme="light"] .sb-nav button,
+html[data-theme="light"] .sb-footer button{
+ color:#475569
+}
+
+html[data-theme="light"] .sb-nav button:hover,
+html[data-theme="light"] .sb-footer button:hover{
+ background:#e2e8f0;
+ color:#0f172a
+}
+
+html[data-theme="light"] .sb-nav button.active{
+ color:#1d4ed8;
+ background:#dbeafe
+}
+
+html[data-theme="light"] .card{
+ background:#fff;
+ color:#0f172a;
+ border-color:#dbe3ee
+}
+
 html[data-theme="light"] .card small{color:#64748b}
-html[data-theme="light"] .panel-card{background:#fff;color:#0f172a}
-html[data-theme="light"] .panel-close{background:#e2e8f0;color:#0f172a}
-html[data-theme="light"] .profile-btn{background:#f1f5f9;color:#0f172a;border-color:#cbd5e1}
+
 html[data-theme="light"] .dataone-header .subtitle{color:#64748b}
 html[data-theme="light"] footer{color:#64748b}
-html[data-theme="light"] .sb-footer .danger{background:#dc2626;color:#fff}
-@media(prefers-reduced-motion:reduce){.card,.sb-nav button,.sb-footer button,.sidebar{transition:none}.card:hover{transform:none}}
+html[data-theme="light"] .sb-footer .danger{
+ background:#dc2626;
+ color:#fff
+}
+
+@media(prefers-reduced-motion:reduce){
+ .card,.sb-nav button,.sb-footer button,.sidebar{transition:none}
+ .card:hover,.sb-nav button:hover,.sb-footer button:hover{transform:none}
+}
 </style>
+
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
+
 <body>
 
-<!-- Sign in screen -->
+<!-- SIGN IN SCREEN -->
 <div id="authScreen" style="max-width:400px;margin:40px auto;padding:28px;background:#17243a;border:1px solid #334155;border-radius:20px;color:white;font-family:Arial,sans-serif;">
+
  <div style="text-align:center;margin-bottom:24px">
   <div style="display:inline-block;background:#2563eb;padding:14px 18px;border-radius:14px;font-size:24px;font-weight:bold">D</div>
   <h2>DATAONE</h2>
   <p style="color:#94a3b8">Sign in to your digital space</p>
  </div>
+
  <form id="authForm">
   <label for="authEmail">Email address</label>
   <input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white">
+
   <label for="authPassword">Password</label>
   <input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Enter password" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white">
+
   <button id="authSubmit" type="submit" style="width:100%;padding:13px;background:#2563eb;color:white;border:0;border-radius:10px;font-weight:bold;cursor:pointer">Sign In</button>
  </form>
+
  <button id="authSwitch" type="button" style="width:100%;margin-top:14px;padding:12px;background:transparent;color:#93c5fd;border:1px solid #334155;border-radius:10px;cursor:pointer">Create Account</button>
+
  <p id="authMessage" role="status" style="color:#cbd5e1;font-size:14px;text-align:center"></p>
 </div>
 
-<!-- Sidebar -->
+<!-- SIDEBAR -->
 <aside id="sidebar" class="sidebar" aria-label="Main menu">
+
  <div class="sb-brand">
   <div class="sb-logo">D</div>
-  <div><strong>DATAONE</strong><small>Your digital space</small></div>
+  <div>
+   <strong>DATAONE</strong>
+   <small>Your digital space</small>
+  </div>
  </div>
 
+ <!-- PROFILE -->
  <div class="sb-user-profile">
-  <div class="sb-user-avatar" id="sidebarUserAvatar">👤</div>
+  <div class="sb-user-avatar" id="sidebarUserAvatar">U</div>
   <div class="sb-user-info">
    <strong id="sidebarUserName">My Profile</strong>
    <small id="sidebarUserEmail">Loading email...</small>
   </div>
  </div>
 
+ <!-- MAIN MENU -->
  <nav class="sb-nav">
+
   <span class="sb-label">MAIN MENU</span>
-  <button type="button" class="active" data-target="top"><i>🏠</i><span>Home</span></button>
-  <button type="button" data-target="gmailCard"><i>✉️</i><span>Gmail</span></button>
-  <button type="button" data-target="megaCard"><i>☁️</i><span>Storage</span></button>
-  <button type="button" data-target="mediaCard"><i>🖼️</i><span>Media</span></button>
+
+  <button type="button" class="active" data-target="top">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/>
+    </svg>
+   </span>
+   <span>Home</span>
+  </button>
+
+  <button type="button" data-target="gmailCard">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <rect x="3" y="5" width="18" height="14" rx="2"/>
+     <path d="m3 7 9 7 9-7"/>
+    </svg>
+   </span>
+   <span>Gmail</span>
+  </button>
+
+  <button type="button" data-target="megaCard">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <path d="M7 18h11a4 4 0 0 0 0-8 6 6 0 0 0-11-1 4.5 4.5 0 0 0 0 9z"/>
+    </svg>
+   </span>
+   <span>Storage</span>
+  </button>
+
+  <button type="button" data-target="mediaCard">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <rect x="3" y="3" width="18" height="18" rx="3"/>
+     <circle cx="8.5" cy="8.5" r="1.5"/>
+     <path d="m21 15-5-5L5 21"/>
+    </svg>
+   </span>
+   <span>Media</span>
+  </button>
+
  </nav>
 
+ <!-- FOOTER -->
  <div class="sb-footer">
-  <button type="button" id="themeToggle"><i>☀️</i><span>Light mode</span></button>
-  <button type="button" id="sbSettings"><i>⚙️</i><span>Settings</span></button>
+
+  <button type="button" id="themeToggle">
+   <span class="sb-icon" id="themeIcon"></span>
+   <span id="themeLabel">Light mode</span>
+  </button>
+
   <div class="sb-footer-divider"></div>
-  <button type="button" id="sbSignOut" class="danger"><span>Sign out</span></button>
+
+  <button type="button" id="sbSignOut" class="danger">
+   <span>Sign out</span>
+  </button>
+
  </div>
 </aside>
 
 <div id="sidebarBackdrop" class="sidebar-backdrop" hidden></div>
 
-<!-- Header -->
+<!-- HEADER -->
 <header class="dataone-header">
+
  <div class="header-brand">
   <button class="profile-avatar" id="profileAvatar" aria-label="Toggle Sidebar Menu" aria-expanded="false">👤</button>
+
   <div>
    <h1>DATAONE</h1>
    <div class="subtitle">Your simple digital space</div>
   </div>
  </div>
+
  <button class="vpn-button" id="vpnButton">🛡️ VPN</button>
+
 </header>
 
+<!-- GOOGLE SEARCH -->
 <a class="search" href="https://www.google.com">
  <img src="https://www.google.com/favicon.ico" alt="Google">
  <span>Search with Google</span>
 </a>
 
-<!-- Dashboard cards -->
+<!-- DASHBOARD -->
 <div class="grid">
 
+ <!-- GMAIL CARD -->
  <a class="card" href="#gmail" id="gmailCard">
+
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
    <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail" style="width:42px;height:42px;object-fit:contain">
-   <div><strong style="font-size:18px">Gmail</strong><small>Google email accounts</small></div>
+
+   <div>
+    <strong style="font-size:18px">Gmail</strong>
+    <small>Google email accounts</small>
+   </div>
   </div>
+
   <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-   <div><small>Connected Gmail</small><div id="gmailAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px">0</div><small>Accounts</small></div>
-   <div><small>Total storage</small><div id="gmailStorage" style="font-size:20px;font-weight:bold;margin-top:8px">—</div><small>Google storage</small></div>
+
+   <div>
+    <small>Connected Gmail</small>
+    <div id="gmailAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px">0</div>
+    <small>Accounts</small>
+   </div>
+
+   <div>
+    <small>Total storage</small>
+    <div id="gmailStorage" style="font-size:20px;font-weight:bold;margin-top:8px">—</div>
+    <small>Google storage</small>
+   </div>
+
   </div>
+
   <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">View your connected Gmail accounts.</p>
  </a>
 
+ <!-- MEGA CARD -->
  <a class="card" href="#mega" id="megaCard">
+
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
    <img src="https://mega.io/favicon.ico" alt="MEGA" style="width:42px;height:42px;object-fit:contain">
-   <div><strong style="font-size:18px">MEGA</strong><small>Cloud storage accounts</small></div>
+
+   <div>
+    <strong style="font-size:18px">MEGA</strong>
+    <small>Cloud storage accounts</small>
+   </div>
   </div>
+
   <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-   <div><small>Connected MEGA</small><div id="megaAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px">0</div><small>Accounts</small></div>
-   <div><small>Total storage</small><div id="megaStorage" style="font-size:20px;font-weight:bold;margin-top:8px">—</div><small>MEGA storage</small></div>
+
+   <div>
+    <small>Connected MEGA</small>
+    <div id="megaAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px">0</div>
+    <small>Accounts</small>
+   </div>
+
+   <div>
+    <small>Total storage</small>
+    <div id="megaStorage" style="font-size:20px;font-weight:bold;margin-top:8px">—</div>
+    <small>MEGA storage</small>
+   </div>
+
   </div>
+
   <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">View your connected MEGA accounts.</p>
  </a>
 
+ <!-- MEDIA CARD -->
  <div class="card" id="mediaCard">
+
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
    <div style="font-size:38px">🖼️</div>
-   <div><strong style="font-size:18px">Media</strong><small>Your photos and videos in one place</small></div>
+
+   <div>
+    <strong style="font-size:18px">Media</strong>
+    <small>Your photos and videos in one place</small>
+   </div>
   </div>
+
   <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
    <div style="background:#1e293b;padding:14px;border-radius:10px">
-    <div style="font-size:25px">📷</div><strong>Photos</strong>
+    <div style="font-size:25px">📷</div>
+    <strong>Photos</strong>
     <small style="display:block;margin-top:5px">View your photo collection</small>
    </div>
+
    <div style="background:#1e293b;padding:14px;border-radius:10px">
-    <div style="font-size:25px">🎬</div><strong>Videos</strong>
+    <div style="font-size:25px">🎬</div>
+    <strong>Videos</strong>
     <small style="display:block;margin-top:5px">View your video collection</small>
    </div>
+
   </div>
+
   <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">Explore your media library.</p>
  </div>
 
 </div>
-<!-- Popup panels -->
-<div id="panelModal" class="panel-modal" hidden>
- <div class="panel-card">
-  <button type="button" class="panel-close" id="panelClose" aria-label="Close">✕</button>
 
-  <!-- My Data -->
-  <div id="myDataPanel" hidden>
-   <h3 style="margin-top:0">📁 My Data</h3>
-   <p style="color:#94a3b8">Organize your personal files and information.</p>
-
-   <label for="dataFile">Choose a file</label>
-   <input id="dataFile" type="file" accept="image/*,video/*,.pdf,.doc,.docx,.txt" class="panel-field">
-
-   <input id="dataTitle" type="text" placeholder="e.g. My documents" class="panel-field">
-
-   <label for="dataType">Type</label>
-   <select id="dataType" class="panel-field">
-    <option>Document</option>
-    <option>Photo</option>
-    <option>Video</option>
-    <option>Note</option>
-    <option>Other</option>
-   </select>
-
-   <label for="dataNote">Details (optional)</label>
-   <textarea id="dataNote" placeholder="Add a short description" class="panel-field"></textarea>
-
-   <button id="addDataButton" type="button" style="padding:12px 16px;background:#2563eb;color:white;border:0;border-radius:8px;cursor:pointer">+ Add Entry</button>
-
-   <div id="dataEntries" style="margin-top:16px"></div>
-  </div>
-
-  <!-- Settings -->
-  <div id="settingsPanel" hidden>
-   <p class="panel-title">Settings &amp; Profile</p>
-
-   <div style="margin:16px 0;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-     <div style="width:40px;height:40px;border-radius:50%;background:#1e3a8a;display:flex;align-items:center;justify-content:center;font-size:20px">👤</div>
-     <div>
-      <strong style="font-size:15px;display:block">My Profile</strong>
-      <small id="settingsEmail" style="color:#94a3b8;overflow-wrap:anywhere;display:block">Loading email...</small>
-     </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-     <button type="button" class="profile-btn" id="profileSecurityBtn">🔒 Security</button>
-     <button type="button" class="profile-btn" id="profileConnectedBtn">🔗 Accounts</button>
-     <button type="button" class="profile-btn" id="profileDataBtn" style="grid-column:span 2">📁 My Data</button>
-    </div>
-   </div>
-  </div>
- </div>
-</div>
-
-<!-- Connected MEGA Page -->
+<!-- CONNECTED MEGA PAGE -->
 <div id="connectedMegaPage" style="display:none;position:fixed;inset:0;z-index:1400;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px">
+
  <div style="max-width:600px;margin:0 auto">
+
   <button type="button" id="closeMegaPage" style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px">← Back</button>
+
   <h2 style="margin-top:28px">Connected MEGA Accounts</h2>
+
   <p style="color:#94a3b8">Manage your connected MEGA accounts and storage.</p>
 
   <div id="connectedMegaList" style="margin-top:24px">Loading accounts...</div>
 
   <div style="margin-top:28px;padding-bottom:24px">
+
    <button type="button" id="addMegaAccountBtn" style="width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white">+ Add More MEGA</button>
 
    <div id="megaAddAccountForm" style="display:none;margin-top:18px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px">
+
     <h3>Add MEGA Account</h3>
+
     <input id="megaAccountEmail" type="email" placeholder="MEGA email address" style="width:100%;margin-top:12px;padding:12px;background:#0f172a;color:white">
+
     <input id="megaAccountPassword" type="password" placeholder="MEGA password" style="width:100%;margin-top:10px;padding:12px;background:#0f172a;color:white">
 
     <div style="display:flex;gap:10px;margin-top:12px">
+
      <button type="button" id="saveMegaAccountBtn" style="background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:7px">Connect Account</button>
+
      <button type="button" id="cancelMegaAccountBtn" style="background:#334155;color:white;border:0;padding:10px 14px;border-radius:7px">Cancel</button>
+
     </div>
+
     <p id="megaAccountMessage" style="font-size:12px;color:#94a3b8;margin-top:10px"></p>
+
    </div>
   </div>
  </div>
 </div>
 
-<!-- Connected Gmail Page -->
+<!-- CONNECTED GMAIL PAGE -->
 <div id="connectedGmailPage" style="display:none;position:fixed;inset:0;z-index:1400;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px">
+
  <div style="max-width:600px;margin:0 auto">
+
   <button type="button" id="closeGmailPage" style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px">← Back</button>
+
   <h2 style="margin-top:28px">Connected Gmail Accounts</h2>
+
   <p style="color:#94a3b8">Manage your connected Google accounts.</p>
+
   <div id="connectedGmailList" style="margin-top:24px"></div>
+
   <div style="margin-top:28px;padding-bottom:24px">
    <div id="googleSignInButton"></div>
   </div>
+
  </div>
 </div>
 
 <footer>DATAONE • Version 1.0</footer>
 
-<!-- Supabase -->
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 const SUPABASE_URL="https://pmzvekfshhgipjxwlwiq.supabase.co";
+
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
 
 window.supabaseClient=window.supabase.createClient(
@@ -325,7 +748,11 @@ const authSwitch=document.getElementById("authSwitch");
 const authMessage=document.getElementById("authMessage");
 
 let creatingAccount=false;
-const HIDDEN_PAGES=["connectedGmailPage","connectedMegaPage"];
+
+const HIDDEN_PAGES=[
+ "connectedGmailPage",
+ "connectedMegaPage"
+];
 
 document.querySelectorAll("body > *").forEach(el=>{
  if(el.id!=="authScreen" && el.tagName!=="SCRIPT"){
@@ -340,18 +767,27 @@ function showMessage(message){
 
 authSwitch.addEventListener("click",()=>{
  creatingAccount=!creatingAccount;
- authSubmit.textContent=creatingAccount?"Create Account":"Sign In";
- authSwitch.textContent=creatingAccount?"Back to Sign In":"Create Account";
- authPassword.autocomplete=creatingAccount?"new-password":"current-password";
+
+ authSubmit.textContent=
+  creatingAccount?"Create Account":"Sign In";
+
+ authSwitch.textContent=
+  creatingAccount?"Back to Sign In":"Create Account";
+
+ authPassword.autocomplete=
+  creatingAccount?"new-password":"current-password";
+
  showMessage("");
 });
 
 authForm.addEventListener("submit",async event=>{
  event.preventDefault();
+
  authSubmit.disabled=true;
  showMessage("Please wait...");
 
  try{
+
   const result=creatingAccount
    ?await supabaseClient.auth.signUp({
       email:authEmail.value.trim(),
@@ -370,16 +806,22 @@ authForm.addEventListener("submit",async event=>{
   }
 
   showMessage("Signed in successfully.");
+
   await updateAuthView();
 
  }catch(error){
+
   showMessage(error.message||"Something went wrong.");
+
  }finally{
+
   authSubmit.disabled=false;
+
  }
 });
 
 async function updateAuthView(){
+
  const {data,error}=await supabaseClient.auth.getSession();
 
  if(error){
@@ -388,61 +830,91 @@ async function updateAuthView(){
  }
 
  const signedIn=Boolean(data.session);
+
  authScreen.style.display=signedIn?"none":"block";
 
  document.querySelectorAll("[data-auth-hidden='true']").forEach(el=>{
+
   if(!signedIn||HIDDEN_PAGES.includes(el.id)){
    el.style.display="none";
   }else{
    el.style.display="";
   }
+
  });
 
  if(!signedIn){
-  authSubmit.textContent=creatingAccount?"Create Account":"Sign In";
+  authSubmit.textContent=
+   creatingAccount?"Create Account":"Sign In";
  }
+
 }
 
-async function updateSettingsEmail(){
- const emailElement=document.getElementById("settingsEmail");
+/* UPDATE SIDEBAR PROFILE */
+async function updateSidebarProfile(){
+
  const sidebarEmail=document.getElementById("sidebarUserEmail");
  const sidebarName=document.getElementById("sidebarUserName");
+ const sidebarAvatar=document.getElementById("sidebarUserAvatar");
 
  try{
+
   const {data,error}=await supabaseClient.auth.getUser();
+
   if(error)throw error;
 
   const user=data.user;
-  const email=user?.email||"Please sign in to view your email.";
-  const metadataName=user?.user_metadata?.full_name||
-                    user?.user_metadata?.name||"";
-  const displayName=metadataName||
-                    ((user?.email||"").split("@")[0])||
-                    "My Profile";
 
-  if(emailElement)emailElement.textContent=email;
+  const email=user?.email||"Please sign in";
+
+  const metadataName=
+   user?.user_metadata?.full_name||
+   user?.user_metadata?.name||"";
+
+  const displayName=
+   metadataName||
+   ((user?.email||"").split("@")[0])||
+   "My Profile";
+
   if(sidebarEmail)sidebarEmail.textContent=email;
+
   if(sidebarName)sidebarName.textContent=displayName;
 
+  if(sidebarAvatar){
+   sidebarAvatar.textContent=
+    displayName.charAt(0).toUpperCase();
+  }
+
  }catch(error){
-  if(emailElement)emailElement.textContent="Could not load email.";
+
   if(sidebarEmail)sidebarEmail.textContent="Could not load email.";
+
   if(sidebarName)sidebarName.textContent="My Profile";
+
+  if(sidebarAvatar)sidebarAvatar.textContent="U";
+
  }
 }
 
 supabaseClient.auth.onAuthStateChange(()=>{
  updateAuthView();
- updateSettingsEmail();
+ updateSidebarProfile();
 });
 
 updateAuthView();
-updateSettingsEmail();
+updateSidebarProfile();
+
 </script>
+
+<!-- SIDEBAR AND DASHBOARD CONTROLS -->
 <script>
-/* Sidebar controller */
+
+/* SIDEBAR CONTROLLER */
+
 const sidebar=document.getElementById("sidebar");
+
 const profileAvatar=document.getElementById("profileAvatar");
+
 const sidebarBackdrop=document.getElementById("sidebarBackdrop");
 
 function isMobileOrTablet(){
@@ -450,32 +922,52 @@ function isMobileOrTablet(){
 }
 
 function setSidebarOpen(open){
+
  if(isMobileOrTablet()){
+
   sidebar.classList.toggle("mobile-open",Boolean(open));
+
   sidebar.classList.remove("desktop-closed");
+
   sidebarBackdrop.hidden=!open;
+
   document.body.classList.remove("sidebar-collapsed");
+
  }else{
+
   sidebar.classList.remove("mobile-open");
+
   sidebar.classList.toggle("desktop-closed",!open);
+
   sidebarBackdrop.hidden=true;
+
   document.body.classList.toggle("sidebar-collapsed",!open);
+
  }
 
- profileAvatar.setAttribute("aria-expanded",String(Boolean(open)));
+ profileAvatar.setAttribute(
+  "aria-expanded",
+  String(Boolean(open))
+ );
+
 }
 
 function sidebarIsOpen(){
+
  return isMobileOrTablet()
   ?sidebar.classList.contains("mobile-open")
   :!sidebar.classList.contains("desktop-closed");
+
 }
 
 setSidebarOpen(!isMobileOrTablet());
 
 profileAvatar.addEventListener("click",event=>{
+
  event.stopPropagation();
+
  setSidebarOpen(!sidebarIsOpen());
+
 });
 
 sidebarBackdrop.addEventListener("click",()=>{
@@ -483,21 +975,26 @@ sidebarBackdrop.addEventListener("click",()=>{
 });
 
 document.addEventListener("click",event=>{
+
  if(
   !isMobileOrTablet() &&
   sidebarIsOpen() &&
   !sidebar.contains(event.target) &&
   !profileAvatar.contains(event.target)
  ){
+
   setSidebarOpen(false);
+
  }
+
 });
 
 document.addEventListener("keydown",event=>{
+
  if(event.key==="Escape"){
   setSidebarOpen(false);
-  closePanel();
  }
+
 });
 
 window.addEventListener("resize",()=>{
@@ -505,11 +1002,14 @@ window.addEventListener("resize",()=>{
 });
 
 
-/* Sidebar navigation */
+/* SIDEBAR NAVIGATION */
+
 const navItems=document.querySelectorAll(".sb-nav [data-target]");
 
 navItems.forEach(btn=>{
+
  btn.addEventListener("click",()=>{
+
   navItems.forEach(item=>{
    item.classList.toggle("active",item===btn);
   });
@@ -517,116 +1017,83 @@ navItems.forEach(btn=>{
   const target=btn.dataset.target;
 
   if(target==="top"){
-   window.scrollTo({top:0,behavior:"smooth"});
+
+   window.scrollTo({
+    top:0,
+    behavior:"smooth"
+   });
+
   }else{
+
    document.getElementById(target)?.scrollIntoView({
     behavior:"smooth",
     block:"center"
    });
+
   }
 
   if(isMobileOrTablet()){
    setSidebarOpen(false);
   }
+
  });
+
 });
 
 
-/* Theme toggle */
+/* THEME TOGGLE */
+
 const themeToggle=document.getElementById("themeToggle");
 
 function applyTheme(theme){
+
  const selected=theme==="light"?"light":"dark";
 
  document.documentElement.dataset.theme=selected;
 
- themeToggle.querySelector("i").textContent=
-  selected==="light"?"🌙":"☀️";
+ document.getElementById("themeIcon").innerHTML=
+  selected==="light"
+   ?`<svg viewBox="0 0 24 24"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5z"/></svg>`
+   :`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>`;
 
- themeToggle.querySelector("span").textContent=
+ document.getElementById("themeLabel").textContent=
   selected==="light"?"Dark mode":"Light mode";
 
  localStorage.setItem("dataoneTheme",selected);
+
 }
 
 applyTheme(localStorage.getItem("dataoneTheme")||"dark");
 
 themeToggle.addEventListener("click",()=>{
+
  const next=
   document.documentElement.dataset.theme==="light"
    ?"dark"
    :"light";
 
  applyTheme(next);
+
 });
 
 
-/* Popup panels */
-const panelModal=document.getElementById("panelModal");
-const myDataPanel=document.getElementById("myDataPanel");
-const settingsPanel=document.getElementById("settingsPanel");
+/* SIGN OUT */
 
-function openPanel(which){
- myDataPanel.hidden=which!=="data";
- settingsPanel.hidden=which!=="settings";
- panelModal.hidden=false;
- document.body.style.overflow="hidden";
-}
-
-function closePanel(){
- if(panelModal){
-  panelModal.hidden=true;
-  document.body.style.overflow="";
- }
-}
-
-document.getElementById("panelClose")
- .addEventListener("click",closePanel);
-
-panelModal.addEventListener("click",event=>{
- if(event.target===panelModal){
-  closePanel();
- }
-});
-
-document.getElementById("sbSettings")
- .addEventListener("click",()=>{
-  openPanel("settings");
-
-  if(isMobileOrTablet()){
-   setSidebarOpen(false);
-  }
- });
-
-document.getElementById("profileSecurityBtn")
- .addEventListener("click",()=>{
-  alert("Security Settings coming soon!");
- });
-
-document.getElementById("profileDataBtn")
- .addEventListener("click",()=>{
-  openPanel("data");
- });
-
-document.getElementById("profileConnectedBtn")
- .addEventListener("click",()=>{
-  closePanel();
-  document.getElementById("gmailCard").click();
- });
-
-
-/* Sign out */
 document.getElementById("sbSignOut")
  .addEventListener("click",async()=>{
+
   if(!confirm("Are you sure you want to sign out of DATAONE?")){
    return;
   }
 
   const button=document.getElementById("sbSignOut");
+
   button.disabled=true;
+
   button.querySelector("span").textContent="Signing out...";
 
   try{
+
    const {error}=await supabaseClient.auth.signOut();
 
    if(error)throw error;
@@ -634,230 +1101,47 @@ document.getElementById("sbSignOut")
    window.location.reload();
 
   }catch(error){
+
    alert("Sign out failed: "+(error.message||"Please try again."));
+
    button.disabled=false;
+
    button.querySelector("span").textContent="Sign out";
+
   }
+
  });
 
 
-/* VPN button */
+/* VPN BUTTON */
+
 document.getElementById("vpnButton")
  .addEventListener("click",()=>{
   alert("DATAONE VPN is coming soon!");
  });
 
+</script>
 
-/* My Data */
-const dataTitle=document.getElementById("dataTitle");
-const dataType=document.getElementById("dataType");
-const dataNote=document.getElementById("dataNote");
-const addDataButton=document.getElementById("addDataButton");
-const dataEntries=document.getElementById("dataEntries");
+<!-- GMAIL CONNECTION -->
+<script>
 
-let myDataEntries=[];
-
-try{
- myDataEntries=JSON.parse(
-  localStorage.getItem("dataoneMyData")||"[]"
- );
-
- if(!Array.isArray(myDataEntries)){
-  myDataEntries=[];
- }
-}catch(error){
- myDataEntries=[];
-}
-
-function renderDataEntries(){
- dataEntries.replaceChildren();
-
- myDataEntries.forEach((entry,index)=>{
-  const card=document.createElement("div");
-
-  card.style.cssText=
-   "padding:12px;margin-bottom:10px;background:#0b1220;border:1px solid #334155;border-radius:10px;";
-
-  const title=document.createElement("strong");
-  title.textContent=entry.title||"Untitled";
-  card.appendChild(title);
-
-  if(entry.fileName){
-   const fileInfo=document.createElement("p");
-   fileInfo.textContent=
-    "📎 File: "+entry.fileName+
-    " ("+(Number(entry.fileSize||0)/1024).toFixed(1)+" KB)";
-
-   fileInfo.style.color="#60a5fa";
-   card.appendChild(fileInfo);
-  }
-
-  const type=document.createElement("p");
-  type.textContent="Type: "+(entry.type||"Other");
-
-  const note=document.createElement("p");
-  note.textContent=entry.note||"No details added.";
-  note.style.color="#94a3b8";
-
-  const removeButton=document.createElement("button");
-  removeButton.type="button";
-  removeButton.textContent="Delete";
-
-  removeButton.style.cssText=
-   "padding:7px 10px;background:#dc2626;color:white;border:0;border-radius:7px;cursor:pointer;";
-
-  removeButton.addEventListener("click",async()=>{
-   if(!confirm("Delete this entry and its uploaded file?")){
-    return;
-   }
-
-   removeButton.disabled=true;
-   removeButton.textContent="Deleting...";
-
-   try{
-    const {data:userData,error:userError}=
-     await supabaseClient.auth.getUser();
-
-    if(userError||!userData.user){
-     throw new Error("Please sign in again.");
-    }
-
-    const item=myDataEntries[index];
-
-    if(!item){
-     throw new Error("Entry not found.");
-    }
-
-    if(item.filePath){
-     if(item.filePath.split("/")[0]!==userData.user.id){
-      throw new Error("You can only delete your own files.");
-     }
-
-     const {error:deleteError}=
-      await supabaseClient.storage
-       .from("dataone-files")
-       .remove([item.filePath]);
-
-     if(deleteError)throw deleteError;
-    }
-
-    myDataEntries.splice(index,1);
-
-    localStorage.setItem(
-     "dataoneMyData",
-     JSON.stringify(myDataEntries)
-    );
-
-    renderDataEntries();
-
-   }catch(error){
-    alert("Delete failed: "+error.message);
-    removeButton.disabled=false;
-    removeButton.textContent="Delete";
-   }
-  });
-
-  card.append(type,note,removeButton);
-  dataEntries.appendChild(card);
- });
-}
-
-addDataButton.addEventListener("click",async()=>{
- const title=dataTitle.value.trim();
- const selectedFile=
-  document.getElementById("dataFile").files[0];
-
- if(!title){
-  alert("Please enter a name.");
-  dataTitle.focus();
-  return;
- }
-
- if(!selectedFile){
-  alert("Please choose a file to upload.");
-  return;
- }
-
- if(selectedFile.size>50*1024*1024){
-  alert("Please choose a file smaller than 50 MB.");
-  return;
- }
-
- addDataButton.disabled=true;
- addDataButton.textContent="Uploading...";
-
- try{
-  const {data:userData,error:userError}=
-   await supabaseClient.auth.getUser();
-
-  if(userError||!userData.user){
-   throw new Error("Please sign in again.");
-  }
-
-  const safeName=selectedFile.name.replace(
-   /[^a-zA-Z0-9._-]/g,
-   "_"
-  );
-
-  const filePath=
-   userData.user.id+"/"+
-   crypto.randomUUID()+"_"+safeName;
-
-  const {error:uploadError}=
-   await supabaseClient.storage
-    .from("dataone-files")
-    .upload(filePath,selectedFile);
-
-  if(uploadError)throw uploadError;
-
-  myDataEntries.push({
-   title:title,
-   type:dataType.value,
-   note:dataNote.value.trim(),
-   fileName:selectedFile.name,
-   fileType:selectedFile.type,
-   fileSize:selectedFile.size,
-   filePath:filePath
-  });
-
-  localStorage.setItem(
-   "dataoneMyData",
-   JSON.stringify(myDataEntries)
-  );
-
-  renderDataEntries();
-
-  alert("File uploaded successfully!");
-
-  dataTitle.value="";
-  dataNote.value="";
-  document.getElementById("dataFile").value="";
-
- }catch(error){
-  console.error("DATAONE upload error:",error);
-  alert("Upload failed: "+error.message);
-
- }finally{
-  addDataButton.disabled=false;
-  addDataButton.textContent="+ Add Entry";
- }
-});
-
-renderDataEntries();
-
-
-/* Gmail connection */
 window.addEventListener("load",function(){
 
  const clientId=
   "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
 
  const button=document.getElementById("googleSignInButton");
+
  const storageDisplay=document.getElementById("gmailStorage");
+
  const countDisplay=document.getElementById("gmailAccountCount");
+
  const gmailCard=document.getElementById("gmailCard");
+
  const gmailPage=document.getElementById("connectedGmailPage");
+
  const closeGmailPage=document.getElementById("closeGmailPage");
+
  const accountList=document.getElementById("connectedGmailList");
 
  if(
@@ -870,24 +1154,33 @@ window.addEventListener("load",function(){
   !closeGmailPage||
   !accountList
  ){
+
   console.error(
    "DATAONE Gmail elements are missing or Google Identity Services did not load."
   );
+
   return;
+
  }
 
  const GB=1024*1024*1024;
+
  const savedKey="dataoneGoogleAccounts";
 
  let accounts={};
 
  try{
+
   accounts=JSON.parse(localStorage.getItem(savedKey)||"{}");
+
  }catch(error){
+
   accounts={};
+
  }
 
  function updateDashboard(){
+
   const list=Object.values(accounts);
 
   const used=list.reduce(
@@ -913,28 +1206,38 @@ window.addEventListener("load",function(){
   accountList.replaceChildren();
 
   if(!list.length){
+
    const empty=document.createElement("p");
+
    empty.textContent="No Gmail accounts connected yet.";
+
    empty.style.color="#94a3b8";
+
    accountList.appendChild(empty);
+
   }
 
   list.forEach(account=>{
+
    const row=document.createElement("div");
 
    row.style.cssText=
     "display:flex;align-items:center;gap:12px;padding:16px;margin-bottom:12px;background:#1e293b;border:1px solid #334155;border-radius:12px;";
 
    const details=document.createElement("div");
+
    details.style.cssText="flex:1;min-width:0;";
 
    const email=document.createElement("a");
+
    email.textContent=account.email;
+
    email.href=
     "https://mail.google.com/mail/?authuser="+
     encodeURIComponent(account.email);
 
    email.target="_blank";
+
    email.rel="noopener noreferrer";
 
    email.style.cssText=
@@ -956,27 +1259,40 @@ window.addEventListener("load",function(){
    details.append(email,storage);
 
    const remove=document.createElement("button");
+
    remove.textContent="Remove";
 
    remove.style.cssText=
     "background:#7f1d1d;color:white;border:0;border-radius:8px;padding:9px 12px;cursor:pointer;";
 
    remove.addEventListener("click",()=>{
+
     if(confirm("Remove "+account.email+" from DATAONE's list?")){
+
      delete accounts[account.email];
+
      updateDashboard();
+
     }
+
    });
 
    row.append(details,remove);
+
    accountList.appendChild(row);
+
   });
+
  }
 
  gmailCard.addEventListener("click",event=>{
+
   event.preventDefault();
+
   gmailPage.style.display="block";
+
   updateDashboard();
+
  });
 
  closeGmailPage.addEventListener("click",()=>{
@@ -984,18 +1300,24 @@ window.addEventListener("load",function(){
  });
 
  const tokenClient=google.accounts.oauth2.initTokenClient({
+
   client_id:clientId,
 
   scope:
    "openid email https://www.googleapis.com/auth/drive.metadata.readonly",
 
   callback:async response=>{
+
    if(response.error||!response.access_token){
+
     alert("Google connection failed. Please try again.");
+
     return;
+
    }
 
    try{
+
     const headers={
      Authorization:"Bearer "+response.access_token
     };
@@ -1023,9 +1345,13 @@ window.addEventListener("load",function(){
     const quota=(await driveResponse.json()).storageQuota||{};
 
     accounts[profile.email]={
+
      email:profile.email,
+
      used:Number(quota.usage||0),
+
      limit:Number(quota.limit||0)
+
     };
 
     updateDashboard();
@@ -1033,10 +1359,15 @@ window.addEventListener("load",function(){
     alert("Connected successfully: "+profile.email);
 
    }catch(error){
+
     console.error(error);
+
     alert("Could not load this account. Check Google permissions.");
+
    }
+
   }
+
  });
 
  button.replaceChildren();
@@ -1049,21 +1380,28 @@ window.addEventListener("load",function(){
   "width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white;cursor:pointer;font-size:15px;";
 
  connectButton.addEventListener("click",event=>{
+
   event.preventDefault();
+
   event.stopPropagation();
 
   tokenClient.requestAccessToken({
    prompt:"select_account"
   });
+
  });
 
  button.appendChild(connectButton);
+
  updateDashboard();
 
 });
 
+</script>
 
-/* MEGA connection */
+<!-- MEGA CONNECTION -->
+<script>
+
 const MEGA_FUNCTION_URL=
  "https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/mega-storage";
 
@@ -1071,10 +1409,13 @@ const MEGA_API_KEY=
  "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
 
 function formatMegaStorage(bytes){
+
  return (Number(bytes||0)/(1024**3)).toFixed(2)+" GB";
+
 }
 
 async function callMegaFunction(payload={}){
+
  const {data,error}=
   await window.supabaseClient.auth.getSession();
 
@@ -1083,13 +1424,21 @@ async function callMegaFunction(payload={}){
  }
 
  const response=await fetch(MEGA_FUNCTION_URL,{
+
   method:"POST",
+
   headers:{
+
    "Content-Type":"application/json",
+
    "Authorization":"Bearer "+data.session.access_token,
+
    "apikey":MEGA_API_KEY
+
   },
+
   body:JSON.stringify(payload)
+
  });
 
  const result=await response.json();
@@ -1099,29 +1448,38 @@ async function callMegaFunction(payload={}){
  }
 
  return result;
+
 }
 
 async function loadMegaStorage(){
 
  const countEl=document.getElementById("megaAccountCount");
+
  const storageEl=document.getElementById("megaStorage");
+
  const listEl=document.getElementById("connectedMegaList");
 
  if(countEl)countEl.textContent="Loading...";
+
  if(storageEl)storageEl.textContent="Loading...";
+
  if(listEl)listEl.textContent="Loading accounts...";
 
  try{
+
   const result=await callMegaFunction({action:"list"});
+
   const accounts=result.accounts||[];
 
   if(countEl)countEl.textContent=String(accounts.length);
 
   if(storageEl){
+
    storageEl.textContent=
     formatMegaStorage(result.usedBytes)+
     " / "+
     formatMegaStorage(result.totalBytes);
+
   }
 
   if(!listEl)return;
@@ -1129,11 +1487,15 @@ async function loadMegaStorage(){
   listEl.replaceChildren();
 
   if(!accounts.length){
+
    listEl.textContent="No MEGA accounts connected yet.";
+
    return;
+
   }
 
   accounts.forEach(account=>{
+
    const card=document.createElement("div");
 
    card.style.cssText=
@@ -1145,6 +1507,7 @@ async function loadMegaStorage(){
     "display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;";
 
    const email=document.createElement("strong");
+
    email.textContent=account.email;
 
    email.style.cssText=
@@ -1153,23 +1516,28 @@ async function loadMegaStorage(){
    heading.appendChild(email);
 
    if(account.id!=="legacy"){
+
     const removeBtn=document.createElement("button");
 
     removeBtn.type="button";
+
     removeBtn.textContent="Remove";
 
     removeBtn.style.cssText=
      "background:#7f1d1d;color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;";
 
     removeBtn.addEventListener("click",async()=>{
+
      if(!confirm("Remove this MEGA account from DATAONE?")){
       return;
      }
 
      removeBtn.disabled=true;
+
      removeBtn.textContent="Removing...";
 
      try{
+
       await callMegaFunction({
        action:"remove",
        id:account.id
@@ -1178,13 +1546,19 @@ async function loadMegaStorage(){
       await loadMegaStorage();
 
      }catch(error){
+
       alert(error.message);
+
       removeBtn.disabled=false;
+
       removeBtn.textContent="Remove";
+
      }
+
     });
 
     heading.appendChild(removeBtn);
+
    }
 
    card.appendChild(heading);
@@ -1195,51 +1569,77 @@ async function loadMegaStorage(){
     "color:#94a3b8;font-size:13px;line-height:1.8;margin:12px 0 0;";
 
    if(account.error){
+
     storage.style.color="#f87171";
+
     storage.textContent=account.error;
+
    }else{
+
     storage.textContent=
      "Used: "+formatMegaStorage(account.usedBytes)+
      "\nAvailable: "+formatMegaStorage(account.availableBytes)+
      "\nTotal: "+formatMegaStorage(account.totalBytes);
 
     storage.style.whiteSpace="pre-line";
+
    }
 
    card.appendChild(storage);
+
    listEl.appendChild(card);
+
   });
 
  }catch(error){
+
   console.error("MEGA error:",error);
 
   if(countEl)countEl.textContent="—";
+
   if(storageEl)storageEl.textContent="Unavailable";
+
   if(listEl)listEl.textContent=error.message;
+
  }
+
 }
 
 
-/* MEGA page buttons */
+/* MEGA PAGE BUTTONS */
+
 function setupMegaAccountButtons(){
 
  const megaCard=document.getElementById("megaCard");
+
  const megaPage=document.getElementById("connectedMegaPage");
+
  const closeBtn=document.getElementById("closeMegaPage");
+
  const addBtn=document.getElementById("addMegaAccountBtn");
+
  const cancelBtn=document.getElementById("cancelMegaAccountBtn");
+
  const saveBtn=document.getElementById("saveMegaAccountBtn");
 
  const form=document.getElementById("megaAddAccountForm");
+
  const emailInput=document.getElementById("megaAccountEmail");
+
  const passwordInput=document.getElementById("megaAccountPassword");
+
  const message=document.getElementById("megaAccountMessage");
 
  megaCard.addEventListener("click",event=>{
+
   event.preventDefault();
+
   megaPage.style.display="block";
+
   form.style.display="none";
+
   loadMegaStorage();
+
  });
 
  closeBtn.addEventListener("click",()=>{
@@ -1247,39 +1647,61 @@ function setupMegaAccountButtons(){
  });
 
  addBtn.addEventListener("click",()=>{
+
   form.style.display="block";
+
   message.textContent="";
+
   emailInput.focus();
+
  });
 
  cancelBtn.addEventListener("click",()=>{
+
   form.style.display="none";
+
   emailInput.value="";
+
   passwordInput.value="";
+
   message.textContent="";
+
  });
 
  saveBtn.addEventListener("click",async()=>{
+
   const email=emailInput.value.trim();
+
   const password=passwordInput.value;
 
   if(!email||!password){
+
    message.textContent="Enter your MEGA email and password.";
+
    return;
+
   }
 
   saveBtn.disabled=true;
+
   saveBtn.textContent="Connecting...";
+
   message.textContent="Verifying your MEGA account...";
 
   try{
+
    await callMegaFunction({
+
     action:"add",
+
     email:email,
+
     password:password
+
    });
 
    emailInput.value="";
+
    passwordInput.value="";
 
    message.textContent="MEGA account connected successfully!";
@@ -1289,19 +1711,1743 @@ function setupMegaAccountButtons(){
    form.style.display="none";
 
   }catch(error){
+
    console.error("MEGA add account error:",error);
+
    message.textContent=error.message;
 
   }finally{
+
    saveBtn.disabled=false;
+
    saveBtn.textContent="Connect Account";
+
   }
+
  });
+
 }
 
 setupMegaAccountButtons();
+
 loadMegaStorage();
 
 </script>
+
 </body>
 </html>
+
+writing?variant="standard" id="73519" title="Complete DATAONE index.html"
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1220">
+<link rel="manifest" href="./manifest.json">
+<title>DATAONE</title>
+
+<style>
+*{box-sizing:border-box}
+:root{
+ --sb-w:264px;
+ --sb-bg:#0d1628;
+ --sb-border:rgba(148,163,184,.14);
+ --sb-accent:#60a5fa;
+ --sb-muted:#94a3b8
+}
+[hidden]{display:none!important}
+
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#0b1220;
+ color:#fff;
+ padding:24px;
+ line-height:1.5;
+ overflow-x:hidden;
+ -webkit-text-size-adjust:100%
+}
+
+img,video,iframe{max-width:100%}
+
+.dataone-header{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:8px;
+ padding:6px 12px;
+ margin:0 0 24px
+}
+
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-brand h1{margin:0;font-size:16px;letter-spacing:1px;line-height:1.2}
+.subtitle{color:#94a3b8;font-size:12px}
+
+.profile-avatar{
+ width:42px;
+ height:42px;
+ flex-shrink:0;
+ border-radius:50%;
+ border:1px solid #3b82f6;
+ background:#263449;
+ color:#fff;
+ font-size:21px;
+ cursor:pointer;
+ display:flex;
+ align-items:center;
+ justify-content:center
+}
+
+.vpn-button{
+ padding:10px 16px;
+ border:1px solid #3b82f6;
+ border-radius:10px;
+ background:#1e293b;
+ color:#fff;
+ font-size:14px;
+ font-weight:600;
+ cursor:pointer
+}
+
+.search{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ height:42px;
+ width:100%;
+ padding:0 14px;
+ background:#fff;
+ color:#334155;
+ border-radius:30px;
+ text-decoration:none;
+ margin-bottom:30px
+}
+.search img{width:20px;height:20px}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:14px;
+ width:100%
+}
+
+.card{
+ background:#17243a;
+ color:#fff;
+ text-decoration:none;
+ border:1px solid #263650;
+ border-radius:18px;
+ padding:22px 16px;
+ min-height:125px;
+ min-width:0;
+ overflow-wrap:anywhere;
+ transition:transform .2s,border-color .2s,box-shadow .2s
+}
+.card:hover{
+ transform:translateY(-3px);
+ border-color:#60a5fa;
+ box-shadow:0 8px 22px #0003
+}
+.card small{color:#94a3b8}
+.card strong{display:block}
+
+footer{
+ color:#64748b;
+ text-align:center;
+ margin-top:40px;
+ font-size:12px
+}
+
+/* SIDEBAR */
+.sidebar{
+ position:fixed;
+ inset:0 auto 0 0;
+ width:var(--sb-w);
+ z-index:1200;
+ display:flex;
+ flex-direction:column;
+ padding:20px 14px;
+ background:
+  radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),
+  var(--sb-bg);
+ border-right:1px solid var(--sb-border);
+ overflow-y:auto;
+ transition:transform .3s ease
+}
+
+.sb-brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:6px 8px 22px;
+ border-bottom:1px solid var(--sb-border)
+}
+
+.sb-logo{
+ width:44px;
+ height:44px;
+ display:grid;
+ place-items:center;
+ border-radius:14px;
+ border:1px solid #60a5fa66;
+ background:linear-gradient(145deg,#2563eb,#172554);
+ font-weight:800;
+ font-size:19px
+}
+
+.sb-brand strong{
+ display:block;
+ letter-spacing:1.6px;
+ font-size:16px
+}
+
+.sb-brand small{
+ display:block;
+ margin-top:3px;
+ color:var(--sb-muted);
+ font-size:12px
+}
+
+/* PROFILE AT TOP */
+.sb-user-profile{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:16px 12px;
+ margin:18px 0;
+ background:#ffffff0d;
+ border:1px solid var(--sb-border);
+ border-radius:14px
+}
+
+.sb-user-avatar{
+ width:44px;
+ height:44px;
+ min-width:44px;
+ border-radius:50%;
+ background:linear-gradient(145deg,#2563eb,#1e3a8a);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:18px;
+ font-weight:bold;
+ color:white
+}
+
+.sb-user-info{
+ min-width:0;
+ display:flex;
+ flex-direction:column;
+ gap:5px
+}
+
+.sb-user-info strong{
+ font-size:14px;
+ color:white;
+ overflow-wrap:anywhere
+}
+
+.sb-user-info small{
+ font-size:11px;
+ color:#94a3b8;
+ overflow-wrap:anywhere
+}
+
+/* NAVIGATION */
+.sb-nav{
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ gap:7px;
+ margin-top:8px
+}
+
+.sb-label{
+ padding:0 14px 8px;
+ color:#64748b;
+ font-size:11px;
+ font-weight:700;
+ letter-spacing:1.4px;
+ text-transform:uppercase
+}
+
+.sb-nav button,.sb-footer button{
+ display:flex;
+ align-items:center;
+ gap:13px;
+ width:100%;
+ min-height:48px;
+ padding:0 14px;
+ border:1px solid transparent;
+ border-radius:12px;
+ background:transparent;
+ color:var(--sb-muted);
+ font:500 14px Arial,sans-serif;
+ text-align:left;
+ cursor:pointer;
+ transition:all .2s ease
+}
+
+.sb-icon{
+ width:22px;
+ height:22px;
+ min-width:22px;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center
+}
+
+.sb-icon svg{
+ width:21px;
+ height:21px;
+ fill:none;
+ stroke:currentColor;
+ stroke-width:1.8;
+ stroke-linecap:round;
+ stroke-linejoin:round
+}
+
+.sb-nav button:hover,.sb-footer button:hover{
+ background:#ffffff0a;
+ border-color:var(--sb-border);
+ color:#fff;
+ transform:translateX(3px)
+}
+
+.sb-nav button.active{
+ background:linear-gradient(100deg,#2563eb38,#3b82f60a);
+ border-color:#60a5fa35;
+ color:#93c5fd;
+ box-shadow:inset 3px 0 0 #60a5fa
+}
+
+/* FOOTER */
+.sb-footer{
+ display:grid;
+ gap:7px;
+ padding-top:14px;
+ border-top:1px solid var(--sb-border)
+}
+
+.sb-footer-divider{
+ height:1px;
+ background:var(--sb-border);
+ margin:8px 0
+}
+
+.sb-footer .danger{
+ background:#dc2626;
+ color:white;
+ border:1px solid #dc2626;
+ justify-content:center;
+ font-weight:600
+}
+
+.sb-footer .danger:hover{
+ background:#b91c1c;
+ color:white;
+ border-color:#b91c1c
+}
+
+/* SIDEBAR CONTROL */
+.sidebar.desktop-closed{transform:translateX(-100%)}
+body.sidebar-collapsed{padding-left:24px}
+
+.sidebar-backdrop{
+ position:fixed;
+ inset:0;
+ z-index:1199;
+ background:rgba(0,0,0,.55);
+ backdrop-filter:blur(2px)
+}
+
+@media(min-width:1025px){
+ body{padding-left:calc(var(--sb-w) + 28px)}
+}
+
+@media(max-width:1024px){
+ body{padding:14px 14px 92px}
+ .sidebar{
+  width:280px;
+  transform:translateX(-100%)
+ }
+ .sidebar.mobile-open{transform:translateX(0)}
+}
+
+@media(max-width:480px){
+ body{font-size:15px}
+ .grid{grid-template-columns:minmax(0,1fr)}
+ .card{border-radius:14px;padding:18px 14px;min-height:110px}
+ .vpn-button{padding:8px 12px;font-size:12px}
+ .profile-avatar{width:38px;height:38px}
+}
+
+/* LIGHT THEME */
+html[data-theme="light"] body{
+ background:#f1f5f9;
+ color:#0f172a
+}
+
+html[data-theme="light"] .sidebar{
+ background:#fff;
+ border-color:#dbe3ee
+}
+
+html[data-theme="light"] .sb-brand strong,
+html[data-theme="light"] .sb-user-info strong{
+ color:#0f172a
+}
+
+html[data-theme="light"] .sb-user-profile{
+ background:#f1f5f9;
+ border-color:#dbe3ee
+}
+
+html[data-theme="light"] .sb-nav button,
+html[data-theme="light"] .sb-footer button{
+ color:#475569
+}
+
+html[data-theme="light"] .sb-nav button:hover,
+html[data-theme="light"] .sb-footer button:hover{
+ background:#e2e8f0;
+ color:#0f172a
+}
+
+html[data-theme="light"] .sb-nav button.active{
+ color:#1d4ed8;
+ background:#dbeafe
+}
+
+html[data-theme="light"] .card{
+ background:#fff;
+ color:#0f172a;
+ border-color:#dbe3ee
+}
+
+html[data-theme="light"] .card small{color:#64748b}
+
+html[data-theme="light"] .dataone-header .subtitle{color:#64748b}
+html[data-theme="light"] footer{color:#64748b}
+html[data-theme="light"] .sb-footer .danger{
+ background:#dc2626;
+ color:#fff
+}
+
+@media(prefers-reduced-motion:reduce){
+ .card,.sb-nav button,.sb-footer button,.sidebar{transition:none}
+ .card:hover,.sb-nav button:hover,.sb-footer button:hover{transform:none}
+}
+</style>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+
+<!-- SIGN IN SCREEN -->
+<div id="authScreen" style="max-width:400px;margin:40px auto;padding:28px;background:#17243a;border:1px solid #334155;border-radius:20px;color:white;font-family:Arial,sans-serif;">
+
+ <div style="text-align:center;margin-bottom:24px">
+  <div style="display:inline-block;background:#2563eb;padding:14px 18px;border-radius:14px;font-size:24px;font-weight:bold">D</div>
+  <h2>DATAONE</h2>
+  <p style="color:#94a3b8">Sign in to your digital space</p>
+ </div>
+
+ <form id="authForm">
+  <label for="authEmail">Email address</label>
+  <input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white">
+
+  <label for="authPassword">Password</label>
+  <input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Enter password" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white">
+
+  <button id="authSubmit" type="submit" style="width:100%;padding:13px;background:#2563eb;color:white;border:0;border-radius:10px;font-weight:bold;cursor:pointer">Sign In</button>
+ </form>
+
+ <button id="authSwitch" type="button" style="width:100%;margin-top:14px;padding:12px;background:transparent;color:#93c5fd;border:1px solid #334155;border-radius:10px;cursor:pointer">Create Account</button>
+
+ <p id="authMessage" role="status" style="color:#cbd5e1;font-size:14px;text-align:center"></p>
+</div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="sidebar" aria-label="Main menu">
+
+ <div class="sb-brand">
+  <div class="sb-logo">D</div>
+  <div>
+   <strong>DATAONE</strong>
+   <small>Your digital space</small>
+  </div>
+ </div>
+
+ <!-- PROFILE -->
+ <div class="sb-user-profile">
+  <div class="sb-user-avatar" id="sidebarUserAvatar">U</div>
+  <div class="sb-user-info">
+   <strong id="sidebarUserName">My Profile</strong>
+   <small id="sidebarUserEmail">Loading email...</small>
+  </div>
+ </div>
+
+ <!-- MAIN MENU -->
+ <nav class="sb-nav">
+
+  <span class="sb-label">MAIN MENU</span>
+
+  <button type="button" class="active" data-target="top">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/>
+    </svg>
+   </span>
+   <span>Home</span>
+  </button>
+
+  <button type="button" data-target="gmailCard">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <rect x="3" y="5" width="18" height="14" rx="2"/>
+     <path d="m3 7 9 7 9-7"/>
+    </svg>
+   </span>
+   <span>Gmail</span>
+  </button>
+
+  <button type="button" data-target="megaCard">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <path d="M7 18h11a4 4 0 0 0 0-8 6 6 0 0 0-11-1 4.5 4.5 0 0 0 0 9z"/>
+    </svg>
+   </span>
+   <span>Storage</span>
+  </button>
+
+  <button type="button" data-target="mediaCard">
+   <span class="sb-icon">
+    <svg viewBox="0 0 24 24">
+     <rect x="3" y="3" width="18" height="18" rx="3"/>
+     <circle cx="8.5" cy="8.5" r="1.5"/>
+     <path d="m21 15-5-5L5 21"/>
+    </svg>
+   </span>
+   <span>Media</span>
+  </button>
+
+ </nav>
+
+ <!-- FOOTER -->
+ <div class="sb-footer">
+
+  <button type="button" id="themeToggle">
+   <span class="sb-icon" id="themeIcon"></span>
+   <span id="themeLabel">Light mode</span>
+  </button>
+
+  <div class="sb-footer-divider"></div>
+
+  <button type="button" id="sbSignOut" class="danger">
+   <span>Sign out</span>
+  </button>
+
+ </div>
+</aside>
+
+<div id="sidebarBackdrop" class="sidebar-backdrop" hidden></div>
+
+<!-- HEADER -->
+<header class="dataone-header">
+
+ <div class="header-brand">
+  <button class="profile-avatar" id="profileAvatar" aria-label="Toggle Sidebar Menu" aria-expanded="false">👤</button>
+
+  <div>
+   <h1>DATAONE</h1>
+   <div class="subtitle">Your simple digital space</div>
+  </div>
+ </div>
+
+ <button class="vpn-button" id="vpnButton">🛡️ VPN</button>
+
+</header>
+
+<!-- GOOGLE SEARCH -->
+<a class="search" href="https://www.google.com">
+ <img src="https://www.google.com/favicon.ico" alt="Google">
+ <span>Search with Google</span>
+</a>
+
+<!-- DASHBOARD -->
+<div class="grid">
+
+ <!-- GMAIL CARD -->
+ <a class="card" href="#gmail" id="gmailCard">
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+   <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail" style="width:42px;height:42px;object-fit:contain">
+
+   <div>
+    <strong style="font-size:18px">Gmail</strong>
+    <small>Google email accounts</small>
+   </div>
+  </div>
+
+  <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+   <div>
+    <small>Connected Gmail</small>
+    <div id="gmailAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px">0</div>
+    <small>Accounts</small>
+   </div>
+
+   <div>
+    <small>Total storage</small>
+    <div id="gmailStorage" style="font-size:20px;font-weight:bold;margin-top:8px">—</div>
+    <small>Google storage</small>
+   </div>
+
+  </div>
+
+  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">View your connected Gmail accounts.</p>
+ </a>
+
+ <!-- MEGA CARD -->
+ <a class="card" href="#mega" id="megaCard">
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+   <img src="https://mega.io/favicon.ico" alt="MEGA" style="width:42px;height:42px;object-fit:contain">
+
+   <div>
+    <strong style="font-size:18px">MEGA</strong>
+    <small>Cloud storage accounts</small>
+   </div>
+  </div>
+
+  <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+   <div>
+    <small>Connected MEGA</small>
+    <div id="megaAccountCount" style="font-size:25px;font-weight:bold;margin-top:8px">0</div>
+    <small>Accounts</small>
+   </div>
+
+   <div>
+    <small>Total storage</small>
+    <div id="megaStorage" style="font-size:20px;font-weight:bold;margin-top:8px">—</div>
+    <small>MEGA storage</small>
+   </div>
+
+  </div>
+
+  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">View your connected MEGA accounts.</p>
+ </a>
+
+ <!-- MEDIA CARD -->
+ <div class="card" id="mediaCard">
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+   <div style="font-size:38px">🖼️</div>
+
+   <div>
+    <strong style="font-size:18px">Media</strong>
+    <small>Your photos and videos in one place</small>
+   </div>
+  </div>
+
+  <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+   <div style="background:#1e293b;padding:14px;border-radius:10px">
+    <div style="font-size:25px">📷</div>
+    <strong>Photos</strong>
+    <small style="display:block;margin-top:5px">View your photo collection</small>
+   </div>
+
+   <div style="background:#1e293b;padding:14px;border-radius:10px">
+    <div style="font-size:25px">🎬</div>
+    <strong>Videos</strong>
+    <small style="display:block;margin-top:5px">View your video collection</small>
+   </div>
+
+  </div>
+
+  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">Explore your media library.</p>
+ </div>
+
+</div>
+
+<!-- CONNECTED MEGA PAGE -->
+<div id="connectedMegaPage" style="display:none;position:fixed;inset:0;z-index:1400;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px">
+
+ <div style="max-width:600px;margin:0 auto">
+
+  <button type="button" id="closeMegaPage" style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px">← Back</button>
+
+  <h2 style="margin-top:28px">Connected MEGA Accounts</h2>
+
+  <p style="color:#94a3b8">Manage your connected MEGA accounts and storage.</p>
+
+  <div id="connectedMegaList" style="margin-top:24px">Loading accounts...</div>
+
+  <div style="margin-top:28px;padding-bottom:24px">
+
+   <button type="button" id="addMegaAccountBtn" style="width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white">+ Add More MEGA</button>
+
+   <div id="megaAddAccountForm" style="display:none;margin-top:18px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px">
+
+    <h3>Add MEGA Account</h3>
+
+    <input id="megaAccountEmail" type="email" placeholder="MEGA email address" style="width:100%;margin-top:12px;padding:12px;background:#0f172a;color:white">
+
+    <input id="megaAccountPassword" type="password" placeholder="MEGA password" style="width:100%;margin-top:10px;padding:12px;background:#0f172a;color:white">
+
+    <div style="display:flex;gap:10px;margin-top:12px">
+
+     <button type="button" id="saveMegaAccountBtn" style="background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:7px">Connect Account</button>
+
+     <button type="button" id="cancelMegaAccountBtn" style="background:#334155;color:white;border:0;padding:10px 14px;border-radius:7px">Cancel</button>
+
+    </div>
+
+    <p id="megaAccountMessage" style="font-size:12px;color:#94a3b8;margin-top:10px"></p>
+
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- CONNECTED GMAIL PAGE -->
+<div id="connectedGmailPage" style="display:none;position:fixed;inset:0;z-index:1400;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px">
+
+ <div style="max-width:600px;margin:0 auto">
+
+  <button type="button" id="closeGmailPage" style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px">← Back</button>
+
+  <h2 style="margin-top:28px">Connected Gmail Accounts</h2>
+
+  <p style="color:#94a3b8">Manage your connected Google accounts.</p>
+
+  <div id="connectedGmailList" style="margin-top:24px"></div>
+
+  <div style="margin-top:28px;padding-bottom:24px">
+   <div id="googleSignInButton"></div>
+  </div>
+
+ </div>
+</div>
+
+<footer>DATAONE • Version 1.0</footer>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL="https://pmzvekfshhgipjxwlwiq.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
+
+window.supabaseClient=window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_PUBLISHABLE_KEY
+);
+
+const supabaseClient=window.supabaseClient;
+
+const authScreen=document.getElementById("authScreen");
+const authForm=document.getElementById("authForm");
+const authEmail=document.getElementById("authEmail");
+const authPassword=document.getElementById("authPassword");
+const authSubmit=document.getElementById("authSubmit");
+const authSwitch=document.getElementById("authSwitch");
+const authMessage=document.getElementById("authMessage");
+
+let creatingAccount=false;
+
+const HIDDEN_PAGES=[
+ "connectedGmailPage",
+ "connectedMegaPage"
+];
+
+document.querySelectorAll("body > *").forEach(el=>{
+ if(el.id!=="authScreen" && el.tagName!=="SCRIPT"){
+  el.dataset.authHidden="true";
+  el.style.display="none";
+ }
+});
+
+function showMessage(message){
+ authMessage.textContent=message;
+}
+
+authSwitch.addEventListener("click",()=>{
+ creatingAccount=!creatingAccount;
+
+ authSubmit.textContent=
+  creatingAccount?"Create Account":"Sign In";
+
+ authSwitch.textContent=
+  creatingAccount?"Back to Sign In":"Create Account";
+
+ authPassword.autocomplete=
+  creatingAccount?"new-password":"current-password";
+
+ showMessage("");
+});
+
+authForm.addEventListener("submit",async event=>{
+ event.preventDefault();
+
+ authSubmit.disabled=true;
+ showMessage("Please wait...");
+
+ try{
+
+  const result=creatingAccount
+   ?await supabaseClient.auth.signUp({
+      email:authEmail.value.trim(),
+      password:authPassword.value
+    })
+   :await supabaseClient.auth.signInWithPassword({
+      email:authEmail.value.trim(),
+      password:authPassword.value
+    });
+
+  if(result.error)throw result.error;
+
+  if(creatingAccount&&!result.data.session){
+   showMessage("Account created. Check your email to confirm it, then sign in.");
+   return;
+  }
+
+  showMessage("Signed in successfully.");
+
+  await updateAuthView();
+
+ }catch(error){
+
+  showMessage(error.message||"Something went wrong.");
+
+ }finally{
+
+  authSubmit.disabled=false;
+
+ }
+});
+
+async function updateAuthView(){
+
+ const {data,error}=await supabaseClient.auth.getSession();
+
+ if(error){
+  showMessage("Could not check your session. Please refresh.");
+  return;
+ }
+
+ const signedIn=Boolean(data.session);
+
+ authScreen.style.display=signedIn?"none":"block";
+
+ document.querySelectorAll("[data-auth-hidden='true']").forEach(el=>{
+
+  if(!signedIn||HIDDEN_PAGES.includes(el.id)){
+   el.style.display="none";
+  }else{
+   el.style.display="";
+  }
+
+ });
+
+ if(!signedIn){
+  authSubmit.textContent=
+   creatingAccount?"Create Account":"Sign In";
+ }
+
+}
+
+/* UPDATE SIDEBAR PROFILE */
+async function updateSidebarProfile(){
+
+ const sidebarEmail=document.getElementById("sidebarUserEmail");
+ const sidebarName=document.getElementById("sidebarUserName");
+ const sidebarAvatar=document.getElementById("sidebarUserAvatar");
+
+ try{
+
+  const {data,error}=await supabaseClient.auth.getUser();
+
+  if(error)throw error;
+
+  const user=data.user;
+
+  const email=user?.email||"Please sign in";
+
+  const metadataName=
+   user?.user_metadata?.full_name||
+   user?.user_metadata?.name||"";
+
+  const displayName=
+   metadataName||
+   ((user?.email||"").split("@")[0])||
+   "My Profile";
+
+  if(sidebarEmail)sidebarEmail.textContent=email;
+
+  if(sidebarName)sidebarName.textContent=displayName;
+
+  if(sidebarAvatar){
+   sidebarAvatar.textContent=
+    displayName.charAt(0).toUpperCase();
+  }
+
+ }catch(error){
+
+  if(sidebarEmail)sidebarEmail.textContent="Could not load email.";
+
+  if(sidebarName)sidebarName.textContent="My Profile";
+
+  if(sidebarAvatar)sidebarAvatar.textContent="U";
+
+ }
+}
+
+supabaseClient.auth.onAuthStateChange(()=>{
+ updateAuthView();
+ updateSidebarProfile();
+});
+
+updateAuthView();
+updateSidebarProfile();
+
+</script>
+
+<!-- SIDEBAR AND DASHBOARD CONTROLS -->
+<script>
+
+/* SIDEBAR CONTROLLER */
+
+const sidebar=document.getElementById("sidebar");
+
+const profileAvatar=document.getElementById("profileAvatar");
+
+const sidebarBackdrop=document.getElementById("sidebarBackdrop");
+
+function isMobileOrTablet(){
+ return window.matchMedia("(max-width: 1024px)").matches;
+}
+
+function setSidebarOpen(open){
+
+ if(isMobileOrTablet()){
+
+  sidebar.classList.toggle("mobile-open",Boolean(open));
+
+  sidebar.classList.remove("desktop-closed");
+
+  sidebarBackdrop.hidden=!open;
+
+  document.body.classList.remove("sidebar-collapsed");
+
+ }else{
+
+  sidebar.classList.remove("mobile-open");
+
+  sidebar.classList.toggle("desktop-closed",!open);
+
+  sidebarBackdrop.hidden=true;
+
+  document.body.classList.toggle("sidebar-collapsed",!open);
+
+ }
+
+ profileAvatar.setAttribute(
+  "aria-expanded",
+  String(Boolean(open))
+ );
+
+}
+
+function sidebarIsOpen(){
+
+ return isMobileOrTablet()
+  ?sidebar.classList.contains("mobile-open")
+  :!sidebar.classList.contains("desktop-closed");
+
+}
+
+setSidebarOpen(!isMobileOrTablet());
+
+profileAvatar.addEventListener("click",event=>{
+
+ event.stopPropagation();
+
+ setSidebarOpen(!sidebarIsOpen());
+
+});
+
+sidebarBackdrop.addEventListener("click",()=>{
+ setSidebarOpen(false);
+});
+
+document.addEventListener("click",event=>{
+
+ if(
+  !isMobileOrTablet() &&
+  sidebarIsOpen() &&
+  !sidebar.contains(event.target) &&
+  !profileAvatar.contains(event.target)
+ ){
+
+  setSidebarOpen(false);
+
+ }
+
+});
+
+document.addEventListener("keydown",event=>{
+
+ if(event.key==="Escape"){
+  setSidebarOpen(false);
+ }
+
+});
+
+window.addEventListener("resize",()=>{
+ setSidebarOpen(!isMobileOrTablet());
+});
+
+
+/* SIDEBAR NAVIGATION */
+
+const navItems=document.querySelectorAll(".sb-nav [data-target]");
+
+navItems.forEach(btn=>{
+
+ btn.addEventListener("click",()=>{
+
+  navItems.forEach(item=>{
+   item.classList.toggle("active",item===btn);
+  });
+
+  const target=btn.dataset.target;
+
+  if(target==="top"){
+
+   window.scrollTo({
+    top:0,
+    behavior:"smooth"
+   });
+
+  }else{
+
+   document.getElementById(target)?.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+   });
+
+  }
+
+  if(isMobileOrTablet()){
+   setSidebarOpen(false);
+  }
+
+ });
+
+});
+
+
+/* THEME TOGGLE */
+
+const themeToggle=document.getElementById("themeToggle");
+
+function applyTheme(theme){
+
+ const selected=theme==="light"?"light":"dark";
+
+ document.documentElement.dataset.theme=selected;
+
+ document.getElementById("themeIcon").innerHTML=
+  selected==="light"
+   ?`<svg viewBox="0 0 24 24"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5z"/></svg>`
+   :`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>`;
+
+ document.getElementById("themeLabel").textContent=
+  selected==="light"?"Dark mode":"Light mode";
+
+ localStorage.setItem("dataoneTheme",selected);
+
+}
+
+applyTheme(localStorage.getItem("dataoneTheme")||"dark");
+
+themeToggle.addEventListener("click",()=>{
+
+ const next=
+  document.documentElement.dataset.theme==="light"
+   ?"dark"
+   :"light";
+
+ applyTheme(next);
+
+});
+
+
+/* SIGN OUT */
+
+document.getElementById("sbSignOut")
+ .addEventListener("click",async()=>{
+
+  if(!confirm("Are you sure you want to sign out of DATAONE?")){
+   return;
+  }
+
+  const button=document.getElementById("sbSignOut");
+
+  button.disabled=true;
+
+  button.querySelector("span").textContent="Signing out...";
+
+  try{
+
+   const {error}=await supabaseClient.auth.signOut();
+
+   if(error)throw error;
+
+   window.location.reload();
+
+  }catch(error){
+
+   alert("Sign out failed: "+(error.message||"Please try again."));
+
+   button.disabled=false;
+
+   button.querySelector("span").textContent="Sign out";
+
+  }
+
+ });
+
+
+/* VPN BUTTON */
+
+document.getElementById("vpnButton")
+ .addEventListener("click",()=>{
+  alert("DATAONE VPN is coming soon!");
+ });
+
+</script>
+
+<!-- GMAIL CONNECTION -->
+<script>
+
+window.addEventListener("load",function(){
+
+ const clientId=
+  "31734827045-dnj52nooisr8alcmf9vdqffmg35ldjdc.apps.googleusercontent.com";
+
+ const button=document.getElementById("googleSignInButton");
+
+ const storageDisplay=document.getElementById("gmailStorage");
+
+ const countDisplay=document.getElementById("gmailAccountCount");
+
+ const gmailCard=document.getElementById("gmailCard");
+
+ const gmailPage=document.getElementById("connectedGmailPage");
+
+ const closeGmailPage=document.getElementById("closeGmailPage");
+
+ const accountList=document.getElementById("connectedGmailList");
+
+ if(
+  !window.google||
+  !button||
+  !storageDisplay||
+  !countDisplay||
+  !gmailCard||
+  !gmailPage||
+  !closeGmailPage||
+  !accountList
+ ){
+
+  console.error(
+   "DATAONE Gmail elements are missing or Google Identity Services did not load."
+  );
+
+  return;
+
+ }
+
+ const GB=1024*1024*1024;
+
+ const savedKey="dataoneGoogleAccounts";
+
+ let accounts={};
+
+ try{
+
+  accounts=JSON.parse(localStorage.getItem(savedKey)||"{}");
+
+ }catch(error){
+
+  accounts={};
+
+ }
+
+ function updateDashboard(){
+
+  const list=Object.values(accounts);
+
+  const used=list.reduce(
+   (sum,account)=>sum+Number(account.used||0),
+   0
+  );
+
+  const limit=list.reduce(
+   (sum,account)=>sum+Number(account.limit||0),
+   0
+  );
+
+  countDisplay.textContent=String(list.length);
+
+  storageDisplay.textContent=
+   (used/GB).toFixed(2)+
+   " / "+
+   (limit/GB).toFixed(2)+
+   " GB";
+
+  localStorage.setItem(savedKey,JSON.stringify(accounts));
+
+  accountList.replaceChildren();
+
+  if(!list.length){
+
+   const empty=document.createElement("p");
+
+   empty.textContent="No Gmail accounts connected yet.";
+
+   empty.style.color="#94a3b8";
+
+   accountList.appendChild(empty);
+
+  }
+
+  list.forEach(account=>{
+
+   const row=document.createElement("div");
+
+   row.style.cssText=
+    "display:flex;align-items:center;gap:12px;padding:16px;margin-bottom:12px;background:#1e293b;border:1px solid #334155;border-radius:12px;";
+
+   const details=document.createElement("div");
+
+   details.style.cssText="flex:1;min-width:0;";
+
+   const email=document.createElement("a");
+
+   email.textContent=account.email;
+
+   email.href=
+    "https://mail.google.com/mail/?authuser="+
+    encodeURIComponent(account.email);
+
+   email.target="_blank";
+
+   email.rel="noopener noreferrer";
+
+   email.style.cssText=
+    "font-weight:600;overflow-wrap:anywhere;color:#60a5fa;text-decoration:none;display:block;";
+
+   const storage=document.createElement("small");
+
+   storage.style.cssText=
+    "display:block;color:#94a3b8;margin-top:6px;";
+
+   storage.textContent=
+    (Number(account.used||0)/GB).toFixed(2)+
+    " GB used of "+
+    (account.limit>0?
+     (Number(account.limit)/GB).toFixed(2)+" GB":
+     "unknown total"
+    );
+
+   details.append(email,storage);
+
+   const remove=document.createElement("button");
+
+   remove.textContent="Remove";
+
+   remove.style.cssText=
+    "background:#7f1d1d;color:white;border:0;border-radius:8px;padding:9px 12px;cursor:pointer;";
+
+   remove.addEventListener("click",()=>{
+
+    if(confirm("Remove "+account.email+" from DATAONE's list?")){
+
+     delete accounts[account.email];
+
+     updateDashboard();
+
+    }
+
+   });
+
+   row.append(details,remove);
+
+   accountList.appendChild(row);
+
+  });
+
+ }
+
+ gmailCard.addEventListener("click",event=>{
+
+  event.preventDefault();
+
+  gmailPage.style.display="block";
+
+  updateDashboard();
+
+ });
+
+ closeGmailPage.addEventListener("click",()=>{
+  gmailPage.style.display="none";
+ });
+
+ const tokenClient=google.accounts.oauth2.initTokenClient({
+
+  client_id:clientId,
+
+  scope:
+   "openid email https://www.googleapis.com/auth/drive.metadata.readonly",
+
+  callback:async response=>{
+
+   if(response.error||!response.access_token){
+
+    alert("Google connection failed. Please try again.");
+
+    return;
+
+   }
+
+   try{
+
+    const headers={
+     Authorization:"Bearer "+response.access_token
+    };
+
+    const profileResponse=await fetch(
+     "https://www.googleapis.com/oauth2/v3/userinfo",
+     {headers}
+    );
+
+    if(!profileResponse.ok){
+     throw new Error("Could not identify Google account.");
+    }
+
+    const profile=await profileResponse.json();
+
+    const driveResponse=await fetch(
+     "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
+     {headers}
+    );
+
+    if(!driveResponse.ok){
+     throw new Error("Could not read Drive storage.");
+    }
+
+    const quota=(await driveResponse.json()).storageQuota||{};
+
+    accounts[profile.email]={
+
+     email:profile.email,
+
+     used:Number(quota.usage||0),
+
+     limit:Number(quota.limit||0)
+
+    };
+
+    updateDashboard();
+
+    alert("Connected successfully: "+profile.email);
+
+   }catch(error){
+
+    console.error(error);
+
+    alert("Could not load this account. Check Google permissions.");
+
+   }
+
+  }
+
+ });
+
+ button.replaceChildren();
+
+ const connectButton=document.createElement("button");
+
+ connectButton.textContent="+ Add More Gmail";
+
+ connectButton.style.cssText=
+  "width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white;cursor:pointer;font-size:15px;";
+
+ connectButton.addEventListener("click",event=>{
+
+  event.preventDefault();
+
+  event.stopPropagation();
+
+  tokenClient.requestAccessToken({
+   prompt:"select_account"
+  });
+
+ });
+
+ button.appendChild(connectButton);
+
+ updateDashboard();
+
+});
+
+</script>
+
+<!-- MEGA CONNECTION -->
+<script>
+
+const MEGA_FUNCTION_URL=
+ "https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/mega-storage";
+
+const MEGA_API_KEY=
+ "sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
+
+function formatMegaStorage(bytes){
+
+ return (Number(bytes||0)/(1024**3)).toFixed(2)+" GB";
+
+}
+
+async function callMegaFunction(payload={}){
+
+ const {data,error}=
+  await window.supabaseClient.auth.getSession();
+
+ if(error||!data.session){
+  throw new Error("Please sign in to DATAONE.");
+ }
+
+ const response=await fetch(MEGA_FUNCTION_URL,{
+
+  method:"POST",
+
+  headers:{
+
+   "Content-Type":"application/json",
+
+   "Authorization":"Bearer "+data.session.access_token,
+
+   "apikey":MEGA_API_KEY
+
+  },
+
+  body:JSON.stringify(payload)
+
+ });
+
+ const result=await response.json();
+
+ if(!response.ok){
+  throw new Error(result.error||"MEGA request failed.");
+ }
+
+ return result;
+
+}
+
+async function loadMegaStorage(){
+
+ const countEl=document.getElementById("megaAccountCount");
+
+ const storageEl=document.getElementById("megaStorage");
+
+ const listEl=document.getElementById("connectedMegaList");
+
+ if(countEl)countEl.textContent="Loading...";
+
+ if(storageEl)storageEl.textContent="Loading...";
+
+ if(listEl)listEl.textContent="Loading accounts...";
+
+ try{
+
+  const result=await callMegaFunction({action:"list"});
+
+  const accounts=result.accounts||[];
+
+  if(countEl)countEl.textContent=String(accounts.length);
+
+  if(storageEl){
+
+   storageEl.textContent=
+    formatMegaStorage(result.usedBytes)+
+    " / "+
+    formatMegaStorage(result.totalBytes);
+
+  }
+
+  if(!listEl)return;
+
+  listEl.replaceChildren();
+
+  if(!accounts.length){
+
+   listEl.textContent="No MEGA accounts connected yet.";
+
+   return;
+
+  }
+
+  accounts.forEach(account=>{
+
+   const card=document.createElement("div");
+
+   card.style.cssText=
+    "padding:16px;margin-bottom:12px;background:#1e293b;border:1px solid #334155;border-radius:12px;";
+
+   const heading=document.createElement("div");
+
+   heading.style.cssText=
+    "display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;";
+
+   const email=document.createElement("strong");
+
+   email.textContent=account.email;
+
+   email.style.cssText=
+    "font-size:14px;overflow-wrap:anywhere;";
+
+   heading.appendChild(email);
+
+   if(account.id!=="legacy"){
+
+    const removeBtn=document.createElement("button");
+
+    removeBtn.type="button";
+
+    removeBtn.textContent="Remove";
+
+    removeBtn.style.cssText=
+     "background:#7f1d1d;color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;";
+
+    removeBtn.addEventListener("click",async()=>{
+
+     if(!confirm("Remove this MEGA account from DATAONE?")){
+      return;
+     }
+
+     removeBtn.disabled=true;
+
+     removeBtn.textContent="Removing...";
+
+     try{
+
+      await callMegaFunction({
+       action:"remove",
+       id:account.id
+      });
+
+      await loadMegaStorage();
+
+     }catch(error){
+
+      alert(error.message);
+
+      removeBtn.disabled=false;
+
+      removeBtn.textContent="Remove";
+
+     }
+
+    });
+
+    heading.appendChild(removeBtn);
+
+   }
+
+   card.appendChild(heading);
+
+   const storage=document.createElement("p");
+
+   storage.style.cssText=
+    "color:#94a3b8;font-size:13px;line-height:1.8;margin:12px 0 0;";
+
+   if(account.error){
+
+    storage.style.color="#f87171";
+
+    storage.textContent=account.error;
+
+   }else{
+
+    storage.textContent=
+     "Used: "+formatMegaStorage(account.usedBytes)+
+     "\nAvailable: "+formatMegaStorage(account.availableBytes)+
+     "\nTotal: "+formatMegaStorage(account.totalBytes);
+
+    storage.style.whiteSpace="pre-line";
+
+   }
+
+   card.appendChild(storage);
+
+   listEl.appendChild(card);
+
+  });
+
+ }catch(error){
+
+  console.error("MEGA error:",error);
+
+  if(countEl)countEl.textContent="—";
+
+  if(storageEl)storageEl.textContent="Unavailable";
+
+  if(listEl)listEl.textContent=error.message;
+
+ }
+
+}
+
+
+/* MEGA PAGE BUTTONS */
+
+function setupMegaAccountButtons(){
+
+ const megaCard=document.getElementById("megaCard");
+
+ const megaPage=document.getElementById("connectedMegaPage");
+
+ const closeBtn=document.getElementById("closeMegaPage");
+
+ const addBtn=document.getElementById("addMegaAccountBtn");
+
+ const cancelBtn=document.getElementById("cancelMegaAccountBtn");
+
+ const saveBtn=document.getElementById("saveMegaAccountBtn");
+
+ const form=document.getElementById("megaAddAccountForm");
+
+ const emailInput=document.getElementById("megaAccountEmail");
+
+ const passwordInput=document.getElementById("megaAccountPassword");
+
+ const message=document.getElementById("megaAccountMessage");
+
+ megaCard.addEventListener("click",event=>{
+
+  event.preventDefault();
+
+  megaPage.style.display="block";
+
+  form.style.display="none";
+
+  loadMegaStorage();
+
+ });
+
+ closeBtn.addEventListener("click",()=>{
+  megaPage.style.display="none";
+ });
+
+ addBtn.addEventListener("click",()=>{
+
+  form.style.display="block";
+
+  message.textContent="";
+
+  emailInput.focus();
+
+ });
+
+ cancelBtn.addEventListener("click",()=>{
+
+  form.style.display="none";
+
+  emailInput.value="";
+
+  passwordInput.value="";
+
+  message.textContent="";
+
+ });
+
+ saveBtn.addEventListener("click",async()=>{
+
+  const email=emailInput.value.trim();
+
+  const password=passwordInput.value;
+
+  if(!email||!password){
+
+   message.textContent="Enter your MEGA email and password.";
+
+   return;
+
+  }
+
+  saveBtn.disabled=true;
+
+  saveBtn.textContent="Connecting...";
+
+  message.textContent="Verifying your MEGA account...";
+
+  try{
+
+   await callMegaFunction({
+
+    action:"add",
+
+    email:email,
+
+    password:password
+
+   });
+
+   emailInput.value="";
+
+   passwordInput.value="";
+
+   message.textContent="MEGA account connected successfully!";
+
+   await loadMegaStorage();
+
+   form.style.display="none";
+
+  }catch(error){
+
+   console.error("MEGA add account error:",error);
+
+   message.textContent=error.message;
+
+  }finally{
+
+   saveBtn.disabled=false;
+
+   saveBtn.textContent="Connect Account";
+
+  }
+
+ });
+
+}
+
+setupMegaAccountButtons();
+
+loadMegaStorage();
+
+</script>
+
+</body>
+</html>
+
