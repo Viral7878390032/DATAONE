@@ -66,7 +66,7 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
 #settingsPanel label{display:flex;align-items:center;gap:9px;cursor:pointer}
 
 @media(min-width:769px){body{padding-left:calc(var(--sb-w) + 28px)}}
-@media(max-width:768px){
+@media(max-width:1024px){
   body{padding:14px 14px 92px}
   .sidebar{transform:translateX(-100%);z-index:1200;width:280px;border-right:1px solid var(--sb-border);background:radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),var(--sb-bg)}
   .sidebar.mobile-open{transform:translateX(0)}
@@ -352,7 +352,7 @@ const profileAvatar = document.getElementById("profileAvatar");
 const sidebarBackdrop = document.getElementById("sidebarBackdrop");
 
 function isMobileOrTablet() {
-  return window.innerWidth <= 768;
+  return window.innerWidth <= 1024;
 }
 
 function setSidebarOpen(open) {
