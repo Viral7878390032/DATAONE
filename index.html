@@ -68,12 +68,11 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
 @media(min-width:769px){body{padding-left:calc(var(--sb-w) + 28px)}}
 @media(max-width:768px){
   body{padding:14px 14px 92px}
-  .sidebar{inset:auto 0 0 0;width:100%;flex-direction:row;padding:0 0 env(safe-area-inset-bottom);background:rgba(13,22,40,.96);backdrop-filter:blur(14px);border-right:0;border-top:1px solid var(--sb-border);overflow:visible;transform:none!important}
-  .sidebar.mobile-open{display:flex}
-  .sb-brand,.sb-label,.sb-footer{display:none}
-  .sb-nav{flex-direction:row;margin:0;padding:6px 4px;gap:2px}
-  .sb-nav button{flex:1;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:56px;padding:4px 2px;font-size:11px;text-align:center}
-  .sb-nav button.active::before{left:25%;right:25%;top:0;bottom:auto;width:auto;height:3px}
+  .sidebar{transform:translateX(-100%);z-index:1200;width:280px;border-right:1px solid var(--sb-border);background:radial-gradient(ellipse at top left,#1d3c67 0%,transparent 50%),var(--sb-bg)}
+  .sidebar.mobile-open{transform:translateX(0)}
+  .sb-brand,.sb-label,.sb-footer{display:flex}
+  .sb-brand{display:flex}
+  .sb-footer{display:grid}
   .panel-modal{align-items:flex-end;padding:0}
   .panel-card{max-width:100%;border-radius:20px 20px 0 0;max-height:88vh}
 }
@@ -84,7 +83,7 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
   .vpn-button{padding:8px 12px;font-size:12px}
   .profile-avatar{width:38px;height:38px}
 }
-@media(prefers-reduced-motion:reduce){.card,.sb-nav button,.sb-footer button{transition:none}.card:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){.card,.sb-nav button,.sb-footer button,.sidebar{transition:none}.card:hover{transform:none}}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -302,20 +301,32 @@ navItems.forEach((btn) => {
     const id = btn.dataset.target;
     if (id === "top") window.scrollTo({ top: 0, behavior: "smooth" });
     else document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (window.innerWidth <= 768) sidebar.classList.remove("mobile-open");
   });
 });
 
 const doSignOut = () => document.getElementById("signOutButton").click();
-document.getElementById("sbSettings").addEventListener("click", () => openPanel("settings"));
+document.getElementById("sbSettings").addEventListener("click", () => {
+  openPanel("settings");
+  if (window.innerWidth <= 768) sidebar.classList.remove("mobile-open");
+});
 document.getElementById("sbSignOut").addEventListener("click", doSignOut);
 document.getElementById("panelSignOut").addEventListener("click", doSignOut);
 
-// Click avatar opens sidebar (and focuses navigation)
-document.getElementById("profileAvatar").addEventListener("click", () => {
+// Click avatar toggles sidebar on mobile/tablet or focuses it on desktop
+document.getElementById("profileAvatar").addEventListener("click", (e) => {
+  e.stopPropagation();
   if (window.innerWidth <= 768) {
-    sidebar.scrollIntoView({ behavior: "smooth" });
+    sidebar.classList.toggle("mobile-open");
   } else {
     sidebar.focus();
+  }
+});
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener("click", (e) => {
+  if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !e.target.closest("#profileAvatar")) {
+    sidebar.classList.remove("mobile-open");
   }
 });
 
@@ -503,7 +514,6 @@ async function updateAuthView() {
   authScreen.style.display = signedIn ? "none" : "block";
   document.querySelectorAll("[data-auth-hidden='true']").forEach((element) => {
     if (!signedIn || HIDDEN_PAGES.includes(element.id)) {
-      // Full-screen pages stay closed until opened
       if (!signedIn || element.style.display !== "block") element.style.display = "none";
     } else {
       element.style.display = "";
