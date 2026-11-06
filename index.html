@@ -84,6 +84,33 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
   .profile-avatar{width:38px;height:38px}
 }
 @media(prefers-reduced-motion:reduce){.card,.sb-nav button,.sb-footer button,.sidebar{transition:none}.card:hover{transform:none}}
+/* Sidebar open/close improvements */
+
+.sidebar.desktop-closed {
+  transform: translateX(-100%);
+}
+
+body.sidebar-collapsed {
+  padding-left: 24px;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1199;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(2px);
+}
+
+@media(max-width:768px) {
+  body.sidebar-collapsed {
+    padding-left: 14px;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -125,7 +152,10 @@ footer{color:#64748b;text-align:center;margin-top:40px;font-size:12px}
     <button type="button" id="sbSignOut" class="danger"><i>🚪</i><span>Sign out</span></button>
   </div>
 </aside>
-
+<div id="sidebarBackdrop"
+     class="sidebar-backdrop"
+     hidden>
+</div>
 <!-- Popup panels -->
 <div id="panelModal" class="panel-modal" hidden>
   <div class="panel-card">
@@ -301,33 +331,84 @@ navItems.forEach((btn) => {
     const id = btn.dataset.target;
     if (id === "top") window.scrollTo({ top: 0, behavior: "smooth" });
     else document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
-    if (window.innerWidth <= 768) sidebar.classList.remove("mobile-open");
+    if (isMobileOrTablet()) setSidebarOpen(false);
   });
 });
 
 const doSignOut = () => document.getElementById("signOutButton").click();
 document.getElementById("sbSettings").addEventListener("click", () => {
   openPanel("settings");
-  if (window.innerWidth <= 768) sidebar.classList.remove("mobile-open");
+  if (isMobileOrTablet()) setSidebarOpen(false);
 });
 document.getElementById("sbSignOut").addEventListener("click", doSignOut);
 document.getElementById("panelSignOut").addEventListener("click", doSignOut);
 
-// Click avatar toggles sidebar on mobile/tablet or focuses it on desktop
-document.getElementById("profileAvatar").addEventListener("click", (e) => {
-  e.stopPropagation();
-  if (window.innerWidth <= 768) {
-    sidebar.classList.toggle("mobile-open");
+// DATAONE Universal Sidebar Controller
+
+const profileAvatar = document.getElementById("profileAvatar");
+const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+function isMobileOrTablet() {
+  return window.innerWidth <= 768;
+}
+
+function setSidebarOpen(open) {
+  if (isMobileOrTablet()) {
+    sidebar.classList.toggle("mobile-open", open);
+    sidebarBackdrop.hidden = !open;
   } else {
-    sidebar.focus();
+    sidebar.classList.toggle("desktop-closed", !open);
+    document.body.classList.toggle("sidebar-collapsed", !open);
+    sidebarBackdrop.hidden = true;
+  }
+
+  profileAvatar.setAttribute("aria-expanded", String(open));
+}
+
+// Initial state
+setSidebarOpen(!isMobileOrTablet());
+
+// Profile button
+profileAvatar.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  const isOpen = isMobileOrTablet()
+    ? sidebar.classList.contains("mobile-open")
+    : !sidebar.classList.contains("desktop-closed");
+
+  setSidebarOpen(!isOpen);
+});
+
+// Close using background overlay
+sidebarBackdrop.addEventListener("click", () => {
+  setSidebarOpen(false);
+});
+
+// Close when clicking outside on desktop
+document.addEventListener("click", (event) => {
+  if (isMobileOrTablet()) return;
+
+  const isOpen = !sidebar.classList.contains("desktop-closed");
+
+  if (
+    isOpen &&
+    !sidebar.contains(event.target) &&
+    !profileAvatar.contains(event.target)
+  ) {
+    setSidebarOpen(false);
   }
 });
 
-// Close sidebar when clicking outside on mobile
-document.addEventListener("click", (e) => {
-  if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !e.target.closest("#profileAvatar")) {
-    sidebar.classList.remove("mobile-open");
+// Close using Escape
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    setSidebarOpen(false);
   }
+});
+
+// Handle screen resizing
+window.addEventListener("resize", () => {
+  setSidebarOpen(!isMobileOrTablet());
 });
 
 document.getElementById("vpnButton").addEventListener("click", () => alert("DATAONE VPN is coming soon!"));
