@@ -399,6 +399,157 @@ html[data-theme="light"] .sb-footer .danger{
  .card,.sb-nav button,.sb-footer button,.sidebar{transition:none}
  .card:hover,.sb-nav button:hover,.sb-footer button:hover{transform:none}
 }
+
+/* DATAONE HOME DESIGN REFRESH — visual-only overrides */
+body{
+ background:
+  radial-gradient(ellipse at 82% 0%,rgba(37,99,235,.16),transparent 34%),
+  radial-gradient(ellipse at 12% 34%,rgba(14,165,233,.08),transparent 30%),
+  #080f1d;
+ color:#f8fafc;
+}
+.dataone-header{
+ max-width:1180px;
+ margin:0 auto 22px;
+ padding:12px 4px 18px;
+}
+.header-brand{gap:14px}
+.header-brand h1{font-size:19px;letter-spacing:1.8px;font-weight:800}
+.subtitle{margin-top:4px;font-size:13px}
+.profile-avatar{
+ background:linear-gradient(145deg,#2563eb,#172554);
+ box-shadow:0 5px 18px #2563eb35;
+ transition:transform .2s,box-shadow .2s;
+}
+.profile-avatar:hover{transform:translateY(-2px);box-shadow:0 8px 22px #2563eb55}
+.vpn-button{
+ border-color:#3b82f688;
+ background:linear-gradient(135deg,#1d4ed8,#1e3a8a);
+ box-shadow:0 6px 18px #1d4ed833;
+ transition:transform .2s,filter .2s;
+}
+.vpn-button:hover{transform:translateY(-2px);filter:brightness(1.12)}
+.search{
+ max-width:1180px;
+ height:50px;
+ margin:0 auto 24px;
+ padding:0 18px;
+ background:rgba(255,255,255,.96);
+ box-shadow:0 8px 28px #0002;
+}
+.home-intro{
+ max-width:1180px;
+ margin:0 auto 22px;
+ padding:25px 26px;
+ border:1px solid rgba(96,165,250,.22);
+ border-radius:22px;
+ background:linear-gradient(115deg,rgba(30,64,175,.28),rgba(15,23,42,.9) 58%,rgba(14,116,144,.16));
+ box-shadow:0 18px 48px #0003;
+ position:relative;
+ overflow:hidden;
+}
+.home-intro:after{
+ content:"";
+ position:absolute;
+ width:210px;height:210px;
+ right:-65px;top:-105px;
+ border:1px solid #93c5fd22;
+ border-radius:50%;
+ box-shadow:0 0 0 22px #93c5fd08,0 0 0 44px #93c5fd06;
+ pointer-events:none;
+}
+.home-intro .eyebrow{
+ display:inline-flex;align-items:center;gap:8px;
+ color:#93c5fd;font-size:11px;font-weight:700;
+ letter-spacing:1.7px;text-transform:uppercase;
+}
+.home-intro .eyebrow:before{
+ content:"";width:7px;height:7px;border-radius:50%;
+ background:#34d399;box-shadow:0 0 12px #34d399;
+}
+.home-intro h2{
+ margin:10px 0 6px;font-size:clamp(23px,3vw,32px);
+ line-height:1.2;letter-spacing:-.7px;
+}
+.home-intro p{margin:0;color:#a9bad1;font-size:14px;max-width:600px}
+.home-intro .intro-note{
+ display:inline-flex;margin-top:17px;padding:7px 11px;
+ border:1px solid #93c5fd24;border-radius:999px;
+ background:#0b122055;color:#cbd5e1;font-size:11px;
+}
+.grid{
+ max-width:1180px;
+ margin:0 auto;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:18px;
+}
+.card{
+ position:relative;
+ min-height:174px;
+ padding:23px;
+ border-radius:20px;
+ border:1px solid rgba(148,163,184,.16);
+ background:linear-gradient(145deg,rgba(25,41,65,.98),rgba(15,27,45,.98));
+ box-shadow:0 12px 30px #0002;
+}
+.card:hover{
+ transform:translateY(-4px);
+ border-color:#60a5fa88;
+ box-shadow:0 18px 38px #0004,0 0 0 1px #60a5fa18;
+}
+.card strong{letter-spacing:.1px}
+.card small{font-size:12px}
+.card p{line-height:1.55}
+#gmailCard>div:first-child img,#megaCard>div:first-child img{
+ width:46px!important;height:46px!important;
+ padding:9px;border-radius:14px;
+ background:#ffffff0c;border:1px solid #ffffff12;
+}
+#mediaCard>div:first-child>div:first-child{
+ width:46px;height:46px;display:grid;place-items:center;
+ border-radius:14px;background:#ffffff0c;border:1px solid #ffffff12;
+ font-size:27px!important;
+}
+#mediaCard>div:nth-child(2)>div{
+ border:1px solid #ffffff12;
+ background:#ffffff08!important;
+}
+footer{max-width:1180px;margin:38px auto 0}
+html[data-theme="light"] body{
+ background:
+  radial-gradient(ellipse at 82% 0%,rgba(59,130,246,.12),transparent 34%),
+  #f1f5f9;
+}
+html[data-theme="light"] .home-intro{
+ background:linear-gradient(115deg,#dbeafe,#fff 65%,#e0f2fe);
+ border-color:#bfdbfe;
+ box-shadow:0 14px 32px #0f172a0d;
+}
+html[data-theme="light"] .home-intro h2{color:#0f172a}
+html[data-theme="light"] .home-intro p{color:#475569}
+html[data-theme="light"] .home-intro .intro-note{
+ color:#334155;background:#ffffffa8;border-color:#cbd5e1;
+}
+html[data-theme="light"] .card{
+ background:linear-gradient(145deg,#fff,#f8fafc);
+ box-shadow:0 10px 24px #0f172a0b;
+}
+html[data-theme="light"] #mediaCard>div:nth-child(2)>div{
+ background:#eff6ff!important;border-color:#dbeafe;
+}
+@media(max-width:1024px){
+ .dataone-header,.search,.home-intro,.grid{max-width:760px}
+}
+@media(max-width:600px){
+ .dataone-header{padding:6px 2px 14px;margin-bottom:15px}
+ .header-brand h1{font-size:17px}
+ .subtitle{font-size:11px}
+ .home-intro{padding:21px 18px;border-radius:18px;margin-bottom:17px}
+ .home-intro p{font-size:13px}
+ .grid{gap:13px}
+ .card{padding:19px 16px;min-height:155px}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -536,6 +687,15 @@ html[data-theme="light"] .sb-footer .danger{
  <img src="https://www.google.com/favicon.ico" alt="Google">
  <span>Search with Google</span>
 </a>
+
+
+<!-- HOME INTRO -->
+<section class="home-intro" aria-label="DATAONE overview">
+ <span class="eyebrow">YOUR DIGITAL SPACE</span>
+ <h2>Everything, in one place.</h2>
+ <p>A simpler way to keep your connected accounts, cloud storage and media together.</p>
+ <span class="intro-note">One dashboard · Your accounts · Your control</span>
+</section>
 
 <!-- DASHBOARD -->
 <div class="grid">
