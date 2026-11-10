@@ -527,20 +527,21 @@ html[data-theme="light"] .overview-metric strong{color:#0f172a}
 @media(max-width:600px){.dashboard-welcome{padding:21px 18px;border-radius:18px;margin-bottom:13px}.overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}.overview-metric{padding:13px}.overview-metric strong{font-size:19px}.overview-metric:last-child{grid-column:1/-1}}
 
 
-/* LOCAL MEDIA PREVIEW */
-.media-action{border:1px solid rgba(96,165,250,.3);background:rgba(37,99,235,.13);color:#bfdbfe;border-radius:12px;padding:12px 15px;font:600 13px inherit;cursor:pointer}
-.media-action:hover{background:rgba(37,99,235,.24);border-color:#60a5fa}
-.media-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0}
-.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.media-item{min-width:0;overflow:hidden;border:1px solid var(--do-line);border-radius:14px;background:#111d31}
-.media-item img,.media-item video{display:block;width:100%;height:145px;object-fit:cover;background:#020617}
-.media-item p{margin:0;padding:9px 10px;color:#cbd5e1;font-size:12px;overflow-wrap:anywhere}
-#localMediaPage{position:fixed;inset:0;z-index:1450;overflow-y:auto;background:#080f1d;color:#f8fafc;padding:18px}
-#localMediaPage .media-inner{max-width:1100px;margin:0 auto}
-html[data-theme="light"] #localMediaPage{background:#f1f5f9;color:#0f172a}
-html[data-theme="light"] .media-item{background:#fff}
-html[data-theme="light"] .media-item p{color:#334155}
-@media(max-width:600px){#localMediaPage{padding:12px}.media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.media-item img,.media-item video{height:125px}}
+/* CONNECTED MEDIA LIBRARY */
+#connectedMediaPage{position:fixed;inset:0;z-index:1450;overflow-y:auto;background:#080f1d;color:#f8fafc;padding:18px}
+#connectedMediaPage .media-inner{max-width:900px;margin:0 auto}
+.media-back{border:1px solid rgba(96,165,250,.3);background:rgba(37,99,235,.13);color:#bfdbfe;border-radius:12px;padding:11px 15px;font:600 13px inherit;cursor:pointer}
+.media-status-panel{margin-top:22px;padding:24px;border:1px solid var(--do-line);border-radius:18px;background:linear-gradient(145deg,#142744,#101c30)}
+.media-status-panel h3{margin:0 0 8px;font-size:18px}
+.media-status-panel p{margin:0;color:#a9bad0;font-size:14px;line-height:1.7}
+.media-source-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;padding:15px;border:1px solid var(--do-line);border-radius:13px;background:rgba(17,29,49,.72)}
+.media-source-row small{display:block;color:var(--do-muted);margin-top:3px}
+.media-source-state{font-size:11px;color:#fbbf24;background:#78350f33;border:1px solid #f59e0b44;padding:5px 9px;border-radius:20px}
+html[data-theme="light"] #connectedMediaPage{background:#f1f5f9;color:#0f172a}
+html[data-theme="light"] .media-status-panel{background:linear-gradient(145deg,#e7f0ff,#f8fbff)}
+html[data-theme="light"] .media-status-panel p{color:#475569}
+html[data-theme="light"] .media-source-row{background:#fff;border-color:#dbe3ee}
+@media(max-width:600px){#connectedMediaPage{padding:12px}.media-status-panel{padding:18px}}
 
 </style>
 
@@ -794,24 +795,27 @@ html[data-theme="light"] .media-item p{color:#334155}
 </div>
 
 
-<!-- DEVICE MEDIA PREVIEW (LOCAL ONLY; NO FILE UPLOAD) -->
-<section id="localMediaPage" style="display:none" aria-label="Device media preview">
+<!-- CONNECTED MEDIA LIBRARY -->
+<section id="connectedMediaPage" style="display:none" aria-label="Connected media library">
  <div class="media-inner">
-  <button type="button" id="closeLocalMedia" class="media-action">← Back to dashboard</button>
-  <h2 style="margin:24px 0 5px">Media library</h2>
-  <p style="margin:0;color:#94a3b8;font-size:14px">Preview photos and videos selected from this device. Files stay on your device and are not uploaded to DATAONE.</p>
-  <div class="media-toolbar">
-   <button type="button" id="chooseMediaFiles" class="media-action">＋ Select photos &amp; videos</button>
-   <button type="button" id="clearMediaFiles" class="media-action">Clear previews</button>
-   <span id="mediaFileCount" style="color:#94a3b8;font-size:12px">0 items selected</span>
-   <input id="mediaFileInput" type="file" accept="image/*,video/*" multiple hidden>
+  <button type="button" id="closeConnectedMedia" class="media-back">← Back to dashboard</button>
+  <h2 style="margin:24px 0 5px">Your media library</h2>
+  <p style="margin:0;color:#94a3b8;font-size:14px">One place to view photos and videos from your connected services.</p>
+  <div class="media-status-panel">
+   <div style="font-size:30px;margin-bottom:12px">🖼️</div>
+   <h3>Connected media access is not enabled yet</h3>
+   <p>DATAONE will display existing photos and videos from supported accounts when a read-only media connection is available. This page does not ask you to select or upload files from your device.</p>
   </div>
-  <div id="mediaEmptyState" style="padding:44px 18px;text-align:center;border:1px dashed #475569;border-radius:16px;color:#94a3b8">
-   <div style="font-size:34px;margin-bottom:10px">🖼️</div>
-   <strong style="display:block;color:inherit;margin-bottom:5px">Your preview library is empty</strong>
-   Select photos or videos from your device to preview them here.
+  <h3 style="margin:26px 0 10px;font-size:15px">Media sources</h3>
+  <div class="media-source-row">
+   <div><strong>Google Photos / Drive</strong><small>Read-only media browsing connection</small></div>
+   <span class="media-source-state">Not connected</span>
   </div>
-  <div id="mediaPreviewGrid" class="media-grid"></div>
+  <div class="media-source-row">
+   <div><strong>MEGA</strong><small>Current DATAONE connection provides account and storage information only</small></div>
+   <span class="media-source-state">Media browsing unavailable</span>
+  </div>
+  <p style="margin:18px 2px 0;color:#94a3b8;font-size:12px;line-height:1.7">No sample or dummy media is shown. Your existing files remain in their original accounts.</p>
  </div>
 </section>
 
@@ -1856,64 +1860,26 @@ loadMegaStorage();
 
 
 <script>
-/* Device-only media preview. Files are never uploaded or retained. */
+/* Connected media library shell. It never reads or uploads local device files. */
 (function(){
- const card=document.getElementById("mediaCard"),page=document.getElementById("localMediaPage");
- const close=document.getElementById("closeLocalMedia"),choose=document.getElementById("chooseMediaFiles");
- const clear=document.getElementById("clearMediaFiles"),input=document.getElementById("mediaFileInput");
- const grid=document.getElementById("mediaPreviewGrid"),empty=document.getElementById("mediaEmptyState");
- const count=document.getElementById("mediaFileCount");
- if(!card||!page||!close||!choose||!clear||!input||!grid||!empty||!count)return;
- let urls=[];
- const formatSize=bytes=>bytes<1024*1024?(bytes/1024).toFixed(0)+" KB":(bytes/1024/1024).toFixed(1)+" MB";
+ const card=document.getElementById("mediaCard");
+ const page=document.getElementById("connectedMediaPage");
+ const close=document.getElementById("closeConnectedMedia");
+ if(!card||!page||!close)return;
  function open(){page.style.display="block";}
- function cleanup(resetInput=true){
-  urls.forEach(url=>URL.revokeObjectURL(url));urls=[];
-  grid.replaceChildren();if(resetInput)input.value="";
-  count.textContent="0 items selected";empty.style.display="block";
- }
  function closePage(){page.style.display="none";}
- function renderFiles(fileList){
-  const files=Array.from(fileList||[]).filter(file=>file.type.startsWith("image/")||file.type.startsWith("video/"));
-  cleanup(false);
-  const total=files.reduce((sum,file)=>sum+file.size,0);
-  count.textContent=files.length+" item"+(files.length===1?"":"s")+" • "+formatSize(total);
-  empty.style.display=files.length?"none":"block";
-  files.forEach(file=>{
-   const url=URL.createObjectURL(file);urls.push(url);
-   const item=document.createElement("article");item.className="media-item";
-   let preview;
-   if(file.type.startsWith("video/")){
-    preview=document.createElement("video");preview.controls=true;preview.preload="metadata";preview.playsInline=true;
-   }else{
-    preview=document.createElement("img");preview.alt=file.name;preview.loading="lazy";
-   }
-   preview.src=url;
-   const label=document.createElement("p");
-   const name=document.createElement("strong");name.textContent=file.name;
-   const meta=document.createElement("small");meta.textContent=(file.type.startsWith("video/")?"Video":"Photo")+" • "+formatSize(file.size);
-   meta.style.cssText="display:block;color:#94a3b8;margin-top:4px";
-   label.append(name,meta);item.append(preview,label);grid.appendChild(item);
-  });
-  if(!files.length)empty.querySelector("strong").textContent="No supported media found";
-  else empty.querySelector("strong").textContent="Your preview library is empty";
- }
- card.style.cursor="pointer";card.setAttribute("role","button");card.setAttribute("tabindex","0");
- card.setAttribute("aria-label","Open local media preview");
+ card.style.cursor="pointer";
+ card.setAttribute("role","button");
+ card.setAttribute("tabindex","0");
+ card.setAttribute("aria-label","Open connected media library");
  card.addEventListener("click",open);
- card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
- close.addEventListener("click",closePage);
- choose.addEventListener("click",()=>input.click());
- clear.addEventListener("click",()=>{cleanup();empty.querySelector("strong").textContent="Your preview library is empty";});
- input.addEventListener("change",()=>renderFiles(input.files));
- empty.addEventListener("dragover",e=>{e.preventDefault();empty.style.borderColor="#60a5fa";empty.style.background="rgba(37,99,235,.10)";});
- empty.addEventListener("dragleave",()=>{empty.style.borderColor="";empty.style.background="";});
- empty.addEventListener("drop",e=>{
-  e.preventDefault();empty.style.borderColor="";empty.style.background="";
-  renderFiles(e.dataTransfer.files);
+ card.addEventListener("keydown",event=>{
+  if(event.key==="Enter"||event.key===" "){event.preventDefault();open();}
  });
- document.addEventListener("keydown",e=>{if(e.key==="Escape"&&page.style.display==="block")closePage();});
- window.addEventListener("beforeunload",()=>urls.forEach(url=>URL.revokeObjectURL(url)));
+ close.addEventListener("click",closePage);
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"&&page.style.display==="block")closePage();
+ });
 })();
 </script>
 
