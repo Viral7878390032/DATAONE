@@ -528,6 +528,7 @@ html[data-theme="light"] .overview-metric strong{color:#0f172a}
 
 
 /* CONNECTED MEDIA LIBRARY */
+#connectedMediaPage[hidden]{display:none!important}
 #connectedMediaPage{position:fixed;inset:0;z-index:1450;overflow-y:auto;background:#080f1d;color:#f8fafc;padding:18px}
 #connectedMediaPage .media-inner{max-width:900px;margin:0 auto}
 .media-back{border:1px solid rgba(96,165,250,.3);background:rgba(37,99,235,.13);color:#bfdbfe;border-radius:12px;padding:11px 15px;font:600 13px inherit;cursor:pointer}
@@ -796,7 +797,7 @@ html[data-theme="light"] .media-source-row{background:#fff;border-color:#dbe3ee}
 
 
 <!-- CONNECTED MEDIA LIBRARY -->
-<section id="connectedMediaPage" style="display:none" aria-label="Connected media library">
+<section id="connectedMediaPage" hidden aria-label="Connected media library">
  <div class="media-inner">
   <button type="button" id="closeConnectedMedia" class="media-back">← Back to dashboard</button>
   <h2 style="margin:24px 0 5px">Your media library</h2>
@@ -1866,8 +1867,9 @@ loadMegaStorage();
  const page=document.getElementById("connectedMediaPage");
  const close=document.getElementById("closeConnectedMedia");
  if(!card||!page||!close)return;
- function open(){page.style.display="block";}
- function closePage(){page.style.display="none";}
+ function open(){page.hidden=false;}
+ function closePage(){page.hidden=true;}
+ page.hidden=true;
  card.style.cursor="pointer";
  card.setAttribute("role","button");
  card.setAttribute("tabindex","0");
@@ -1878,7 +1880,7 @@ loadMegaStorage();
  });
  close.addEventListener("click",closePage);
  document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"&&page.style.display==="block")closePage();
+  if(event.key==="Escape"&&!page.hidden)closePage();
  });
 })();
 </script>
