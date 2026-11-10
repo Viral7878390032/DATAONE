@@ -501,6 +501,31 @@ footer{padding:10px 0 4px}
  html{scroll-behavior:auto}
 }
 
+
+/* DATAONE LIVE OVERVIEW */
+.dashboard-welcome{
+ max-width:1440px;margin:0 auto 20px;padding:26px 28px;
+ display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+ border:1px solid rgba(96,165,250,.24);border-radius:22px;
+ background:radial-gradient(ellipse at 90% 0%,rgba(37,99,235,.24),transparent 48%),linear-gradient(125deg,#142744,#101c30);
+ box-shadow:0 16px 42px rgba(2,6,23,.2)
+}
+.dashboard-welcome h2{margin:0 0 6px;font-size:clamp(21px,3vw,29px);letter-spacing:-.6px}
+.dashboard-welcome p{margin:0;color:#a9bad0;font-size:14px;line-height:1.65}
+.overview-badge{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;color:#93c5fd;font-size:11px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase}
+.overview-badge:before{content:"";width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 4px #34d39920}
+.overview-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:1440px;margin:0 auto 20px}
+.overview-metric{min-width:0;padding:16px 18px;border:1px solid var(--do-line);border-radius:16px;background:rgba(17,29,49,.82)}
+.overview-metric span{display:block;color:var(--do-muted);font-size:12px;margin-bottom:7px}
+.overview-metric strong{display:block;font-size:22px;line-height:1.2;overflow-wrap:anywhere}
+.overview-metric small{display:block;color:#7186a3;font-size:11px;margin-top:5px}
+html[data-theme="light"] .dashboard-welcome{background:linear-gradient(125deg,#e7f0ff,#f8fbff);border-color:#bfdbfe}
+html[data-theme="light"] .dashboard-welcome h2{color:#0f172a}
+html[data-theme="light"] .dashboard-welcome p{color:#475569}
+html[data-theme="light"] .overview-metric{background:#fff;border-color:#dbe3ee}
+html[data-theme="light"] .overview-metric strong{color:#0f172a}
+@media(max-width:600px){.dashboard-welcome{padding:21px 18px;border-radius:18px;margin-bottom:13px}.overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}.overview-metric{padding:13px}.overview-metric strong{font-size:19px}.overview-metric:last-child{grid-column:1/-1}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -638,6 +663,21 @@ footer{padding:10px 0 4px}
  <img src="https://www.google.com/favicon.ico" alt="Google">
  <span>Search with Google</span>
 </a>
+
+<!-- DASHBOARD WELCOME + LIVE ACCOUNT OVERVIEW -->
+<section class="dashboard-welcome" aria-labelledby="dashboardGreeting">
+ <div>
+  <div class="overview-badge">Personal dashboard</div>
+  <h2 id="dashboardGreeting">Welcome to DATAONE</h2>
+  <p>Your connected digital services, brought together in one simple space.</p>
+ </div>
+ <div style="color:#93c5fd;font-size:13px;font-weight:600">One space. Your digital world.</div>
+</section>
+<section class="overview-metrics" aria-label="Account overview">
+ <div class="overview-metric"><span>Gmail accounts</span><strong id="overviewGmailCount">—</strong><small>Connected accounts</small></div>
+ <div class="overview-metric"><span>MEGA accounts</span><strong id="overviewMegaCount">—</strong><small>Connected accounts</small></div>
+ <div class="overview-metric"><span>MEGA storage</span><strong id="overviewMegaStorage">—</strong><small>Used / total storage</small></div>
+</section>
 
 <!-- DASHBOARD -->
 <div class="grid">
@@ -1749,6 +1789,31 @@ setupMegaAccountButtons();
 
 loadMegaStorage();
 
+</script>
+
+
+<script>
+/* Keep overview values tied to the existing live account data. */
+(function(){
+ function mirror(sourceId,targetId){
+  const source=document.getElementById(sourceId);
+  const target=document.getElementById(targetId);
+  if(!source||!target)return;
+  const sync=()=>{target.textContent=source.textContent.trim()||"—";};
+  sync();
+  new MutationObserver(sync).observe(source,{childList:true,subtree:true,characterData:true});
+ }
+ mirror("gmailAccountCount","overviewGmailCount");
+ mirror("megaAccountCount","overviewMegaCount");
+ mirror("megaStorage","overviewMegaStorage");
+ const name=document.getElementById("sidebarUserName");
+ const greeting=document.getElementById("dashboardGreeting");
+ if(name&&greeting){
+  const update=()=>{const value=name.textContent.trim();greeting.textContent=value&&value!=="My Profile"?"Welcome back, "+value:"Welcome to DATAONE";};
+  update();
+  new MutationObserver(update).observe(name,{childList:true,subtree:true,characterData:true});
+ }
+})();
 </script>
 
 </body>
