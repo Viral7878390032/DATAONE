@@ -526,6 +526,22 @@ html[data-theme="light"] .overview-metric{background:#fff;border-color:#dbe3ee}
 html[data-theme="light"] .overview-metric strong{color:#0f172a}
 @media(max-width:600px){.dashboard-welcome{padding:21px 18px;border-radius:18px;margin-bottom:13px}.overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}.overview-metric{padding:13px}.overview-metric strong{font-size:19px}.overview-metric:last-child{grid-column:1/-1}}
 
+
+/* LOCAL MEDIA PREVIEW */
+.media-action{border:1px solid rgba(96,165,250,.3);background:rgba(37,99,235,.13);color:#bfdbfe;border-radius:12px;padding:12px 15px;font:600 13px inherit;cursor:pointer}
+.media-action:hover{background:rgba(37,99,235,.24);border-color:#60a5fa}
+.media-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.media-item{min-width:0;overflow:hidden;border:1px solid var(--do-line);border-radius:14px;background:#111d31}
+.media-item img,.media-item video{display:block;width:100%;height:145px;object-fit:cover;background:#020617}
+.media-item p{margin:0;padding:9px 10px;color:#cbd5e1;font-size:12px;overflow-wrap:anywhere}
+#localMediaPage{position:fixed;inset:0;z-index:1450;overflow-y:auto;background:#080f1d;color:#f8fafc;padding:18px}
+#localMediaPage .media-inner{max-width:1100px;margin:0 auto}
+html[data-theme="light"] #localMediaPage{background:#f1f5f9;color:#0f172a}
+html[data-theme="light"] .media-item{background:#fff}
+html[data-theme="light"] .media-item p{color:#334155}
+@media(max-width:600px){#localMediaPage{padding:12px}.media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.media-item img,.media-item video{height:125px}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -776,6 +792,28 @@ html[data-theme="light"] .overview-metric strong{color:#0f172a}
  </div>
 
 </div>
+
+
+<!-- DEVICE MEDIA PREVIEW (LOCAL ONLY; NO FILE UPLOAD) -->
+<section id="localMediaPage" style="display:none" aria-label="Device media preview">
+ <div class="media-inner">
+  <button type="button" id="closeLocalMedia" class="media-action">← Back to dashboard</button>
+  <h2 style="margin:24px 0 5px">Media library</h2>
+  <p style="margin:0;color:#94a3b8;font-size:14px">Preview photos and videos selected from this device. Files stay on your device and are not uploaded to DATAONE.</p>
+  <div class="media-toolbar">
+   <button type="button" id="chooseMediaFiles" class="media-action">＋ Select photos &amp; videos</button>
+   <button type="button" id="clearMediaFiles" class="media-action">Clear previews</button>
+   <span id="mediaFileCount" style="color:#94a3b8;font-size:12px">0 items selected</span>
+   <input id="mediaFileInput" type="file" accept="image/*,video/*" multiple hidden>
+  </div>
+  <div id="mediaEmptyState" style="padding:44px 18px;text-align:center;border:1px dashed #475569;border-radius:16px;color:#94a3b8">
+   <div style="font-size:34px;margin-bottom:10px">🖼️</div>
+   <strong style="display:block;color:inherit;margin-bottom:5px">Your preview library is empty</strong>
+   Select photos or videos from your device to preview them here.
+  </div>
+  <div id="mediaPreviewGrid" class="media-grid"></div>
+ </div>
+</section>
 
 <!-- CONNECTED MEGA PAGE -->
 <div id="connectedMegaPage" style="display:none;position:fixed;inset:0;z-index:1400;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px">
@@ -1813,6 +1851,57 @@ loadMegaStorage();
   update();
   new MutationObserver(update).observe(name,{childList:true,subtree:true,characterData:true});
  }
+})();
+</script>
+
+
+<script>
+/* Device-only media preview. This deliberately does not upload or retain files. */
+(function(){
+ const card=document.getElementById("mediaCard");
+ const page=document.getElementById("localMediaPage");
+ const close=document.getElementById("closeLocalMedia");
+ const choose=document.getElementById("chooseMediaFiles");
+ const clear=document.getElementById("clearMediaFiles");
+ const input=document.getElementById("mediaFileInput");
+ const grid=document.getElementById("mediaPreviewGrid");
+ const empty=document.getElementById("mediaEmptyState");
+ const count=document.getElementById("mediaFileCount");
+ if(!card||!page||!close||!choose||!clear||!input||!grid||!empty||!count)return;
+ let urls=[];
+ function open(){page.style.display="block";}
+ function cleanup(){urls.forEach(url=>URL.revokeObjectURL(url));urls=[];grid.replaceChildren();input.value="";count.textContent="0 items selected";empty.style.display="block";}
+ function closePage(){page.style.display="none";}
+ card.style.cursor="pointer";
+ card.setAttribute("role","button");
+ card.setAttribute("tabindex","0");
+ card.setAttribute("aria-label","Open local media preview");
+ card.addEventListener("click",open);
+ card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
+ close.addEventListener("click",closePage);
+ choose.addEventListener("click",()=>input.click());
+ clear.addEventListener("click",cleanup);
+ input.addEventListener("change",()=>{
+  cleanup();
+  const files=Array.from(input.files||[]).filter(file=>file.type.startsWith("image/")||file.type.startsWith("video/"));
+  count.textContent=files.length+" item"+(files.length===1?"":"s")+" selected";
+  empty.style.display=files.length?"none":"block";
+  files.forEach(file=>{
+   const url=URL.createObjectURL(file);urls.push(url);
+   const item=document.createElement("article");item.className="media-item";
+   let preview;
+   if(file.type.startsWith("video/")){
+    preview=document.createElement("video");preview.controls=true;preview.preload="metadata";preview.playsInline=true;
+   }else{
+    preview=document.createElement("img");preview.alt=file.name;preview.loading="lazy";
+   }
+   preview.src=url;
+   const label=document.createElement("p");label.textContent=file.name;
+   item.append(preview,label);grid.appendChild(item);
+  });
+ });
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&page.style.display==="block")closePage();});
+ window.addEventListener("beforeunload",()=>urls.forEach(url=>URL.revokeObjectURL(url)));
 })();
 </script>
 
