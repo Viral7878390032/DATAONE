@@ -1856,35 +1856,28 @@ loadMegaStorage();
 
 
 <script>
-/* Device-only media preview. This deliberately does not upload or retain files. */
+/* Device-only media preview. Files are never uploaded or retained. */
 (function(){
- const card=document.getElementById("mediaCard");
- const page=document.getElementById("localMediaPage");
- const close=document.getElementById("closeLocalMedia");
- const choose=document.getElementById("chooseMediaFiles");
- const clear=document.getElementById("clearMediaFiles");
- const input=document.getElementById("mediaFileInput");
- const grid=document.getElementById("mediaPreviewGrid");
- const empty=document.getElementById("mediaEmptyState");
+ const card=document.getElementById("mediaCard"),page=document.getElementById("localMediaPage");
+ const close=document.getElementById("closeLocalMedia"),choose=document.getElementById("chooseMediaFiles");
+ const clear=document.getElementById("clearMediaFiles"),input=document.getElementById("mediaFileInput");
+ const grid=document.getElementById("mediaPreviewGrid"),empty=document.getElementById("mediaEmptyState");
  const count=document.getElementById("mediaFileCount");
  if(!card||!page||!close||!choose||!clear||!input||!grid||!empty||!count)return;
  let urls=[];
+ const formatSize=bytes=>bytes<1024*1024?(bytes/1024).toFixed(0)+" KB":(bytes/1024/1024).toFixed(1)+" MB";
  function open(){page.style.display="block";}
- function cleanup(){urls.forEach(url=>URL.revokeObjectURL(url));urls=[];grid.replaceChildren();input.value="";count.textContent="0 items selected";empty.style.display="block";}
+ function cleanup(resetInput=true){
+  urls.forEach(url=>URL.revokeObjectURL(url));urls=[];
+  grid.replaceChildren();if(resetInput)input.value="";
+  count.textContent="0 items selected";empty.style.display="block";
+ }
  function closePage(){page.style.display="none";}
- card.style.cursor="pointer";
- card.setAttribute("role","button");
- card.setAttribute("tabindex","0");
- card.setAttribute("aria-label","Open local media preview");
- card.addEventListener("click",open);
- card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
- close.addEventListener("click",closePage);
- choose.addEventListener("click",()=>input.click());
- clear.addEventListener("click",cleanup);
- input.addEventListener("change",()=>{
-  cleanup();
-  const files=Array.from(input.files||[]).filter(file=>file.type.startsWith("image/")||file.type.startsWith("video/"));
-  count.textContent=files.length+" item"+(files.length===1?"":"s")+" selected";
+ function renderFiles(fileList){
+  const files=Array.from(fileList||[]).filter(file=>file.type.startsWith("image/")||file.type.startsWith("video/"));
+  cleanup(false);
+  const total=files.reduce((sum,file)=>sum+file.size,0);
+  count.textContent=files.length+" item"+(files.length===1?"":"s")+" • "+formatSize(total);
   empty.style.display=files.length?"none":"block";
   files.forEach(file=>{
    const url=URL.createObjectURL(file);urls.push(url);
@@ -1896,9 +1889,28 @@ loadMegaStorage();
     preview=document.createElement("img");preview.alt=file.name;preview.loading="lazy";
    }
    preview.src=url;
-   const label=document.createElement("p");label.textContent=file.name;
-   item.append(preview,label);grid.appendChild(item);
+   const label=document.createElement("p");
+   const name=document.createElement("strong");name.textContent=file.name;
+   const meta=document.createElement("small");meta.textContent=(file.type.startsWith("video/")?"Video":"Photo")+" • "+formatSize(file.size);
+   meta.style.cssText="display:block;color:#94a3b8;margin-top:4px";
+   label.append(name,meta);item.append(preview,label);grid.appendChild(item);
   });
+  if(!files.length)empty.querySelector("strong").textContent="No supported media found";
+  else empty.querySelector("strong").textContent="Your preview library is empty";
+ }
+ card.style.cursor="pointer";card.setAttribute("role","button");card.setAttribute("tabindex","0");
+ card.setAttribute("aria-label","Open local media preview");
+ card.addEventListener("click",open);
+ card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
+ close.addEventListener("click",closePage);
+ choose.addEventListener("click",()=>input.click());
+ clear.addEventListener("click",()=>{cleanup();empty.querySelector("strong").textContent="Your preview library is empty";});
+ input.addEventListener("change",()=>renderFiles(input.files));
+ empty.addEventListener("dragover",e=>{e.preventDefault();empty.style.borderColor="#60a5fa";empty.style.background="rgba(37,99,235,.10)";});
+ empty.addEventListener("dragleave",()=>{empty.style.borderColor="";empty.style.background="";});
+ empty.addEventListener("drop",e=>{
+  e.preventDefault();empty.style.borderColor="";empty.style.background="";
+  renderFiles(e.dataTransfer.files);
  });
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&page.style.display==="block")closePage();});
  window.addEventListener("beforeunload",()=>urls.forEach(url=>URL.revokeObjectURL(url)));
