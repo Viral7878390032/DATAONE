@@ -399,6 +399,108 @@ html[data-theme="light"] .sb-footer .danger{
  .card,.sb-nav button,.sb-footer button,.sidebar{transition:none}
  .card:hover,.sb-nav button:hover,.sb-footer button:hover{transform:none}
 }
+
+/* DATAONE PREMIUM DASHBOARD REFRESH */
+:root{
+ --do-bg:#080f1d;--do-panel:#111d31;--do-panel-2:#16253d;
+ --do-line:rgba(148,163,184,.16);--do-blue:#60a5fa;
+ --do-text:#f8fafc;--do-muted:#9aabc2;
+}
+html{scroll-behavior:smooth}
+body{
+ background:radial-gradient(ellipse at 80% -10%,rgba(37,99,235,.18),transparent 38%),
+ linear-gradient(145deg,#080f1d 0%,#0b1425 55%,#0a1220 100%);
+ color:var(--do-text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+ letter-spacing:.01em;
+}
+.dataone-header{padding:10px 8px 18px;max-width:1440px;margin:0 auto 22px}
+.header-brand h1{font-size:18px;font-weight:800;letter-spacing:2px}
+.subtitle{font-size:12px;color:var(--do-muted);margin-top:3px}
+.profile-avatar{
+ background:linear-gradient(145deg,#2563eb,#172554);border:1px solid #60a5fa66;
+ box-shadow:0 8px 24px #02061766;transition:transform .2s,box-shadow .2s
+}
+.profile-avatar:hover{transform:translateY(-2px);box-shadow:0 10px 28px #2563eb44}
+.vpn-button{
+ border-color:#3b82f666;background:linear-gradient(135deg,#1d4ed8,#1e3a8a);
+ box-shadow:0 8px 24px #1d4ed833;transition:transform .2s,filter .2s
+}
+.vpn-button:hover{transform:translateY(-2px);filter:brightness(1.12)}
+.search{
+ max-width:1440px;margin:0 auto 26px;height:50px;padding:0 18px;
+ background:rgba(20,33,54,.88);border:1px solid var(--do-line);
+ color:#cbd5e1;border-radius:14px;box-shadow:0 12px 30px #02061726;
+ transition:border-color .2s,background .2s
+}
+.search:hover{border-color:#60a5fa88;background:#172943}
+.grid{max-width:1440px;margin:0 auto;gap:18px}
+.card{
+ position:relative;background:linear-gradient(155deg,rgba(24,40,65,.98),rgba(15,27,46,.98));
+ border:1px solid var(--do-line);border-radius:20px;padding:22px;
+ min-height:160px;box-shadow:0 12px 32px rgba(2,6,23,.18);
+ transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease
+}
+.card:hover{
+ transform:translateY(-4px);border-color:#60a5fa88;
+ box-shadow:0 18px 42px rgba(2,6,23,.32),0 0 0 1px #3b82f61a
+}
+.card strong{letter-spacing:.01em}
+.card small{color:var(--do-muted);line-height:1.5}
+.card img{filter:drop-shadow(0 4px 8px #02061744)}
+.card [style*="border-top"]{border-color:var(--do-line)!important}
+.card [style*="background:#1e293b"]{background:rgba(30,48,75,.72)!important;border:1px solid var(--do-line)}
+.sidebar{
+ background:radial-gradient(ellipse at top left,rgba(37,99,235,.22),transparent 48%),#0b1526;
+ border-right:1px solid var(--do-line);box-shadow:12px 0 36px #02061722
+}
+.sb-brand{padding-bottom:20px}
+.sb-logo{box-shadow:0 8px 22px #1d4ed833}
+.sb-user-profile{background:rgba(255,255,255,.045);border-color:var(--do-line)}
+.sb-nav button,.sb-footer button{min-height:46px;border-radius:12px}
+.sb-nav button.active{background:linear-gradient(100deg,#2563eb35,#3b82f610);border-color:#60a5fa44}
+.sb-nav button:focus-visible,.sb-footer button:focus-visible,
+button:focus-visible,a:focus-visible,input:focus-visible{
+ outline:2px solid #60a5fa;outline-offset:3px
+}
+#authScreen{
+ background:linear-gradient(155deg,#172943,#101c30)!important;
+ border:1px solid rgba(148,163,184,.2)!important;
+ box-shadow:0 24px 70px #02061788
+}
+#authScreen input{
+ min-height:48px;padding:13px 14px!important;
+ border:1px solid #47556988!important;transition:border-color .2s,box-shadow .2s
+}
+#authScreen input:focus{border-color:#60a5fa!important;box-shadow:0 0 0 3px #3b82f622;outline:none}
+#authSubmit{min-height:48px;background:linear-gradient(100deg,#2563eb,#3b82f6)!important;box-shadow:0 8px 22px #2563eb33}
+#authSubmit:disabled{opacity:.65;cursor:wait}
+#authSwitch{min-height:46px}
+footer{padding:10px 0 4px}
+@media(min-width:1025px){
+ body{padding-top:28px;padding-right:clamp(24px,4vw,64px);padding-bottom:36px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:1024px){
+ body{padding:14px 16px 36px}
+ .dataone-header{margin-bottom:18px}
+ .sidebar{box-shadow:20px 0 50px #02061788}
+}
+@media(max-width:600px){
+ body{padding:10px 12px 28px}
+ .dataone-header{padding:6px 2px 14px;gap:10px}
+ .header-brand{gap:9px}
+ .header-brand h1{font-size:16px}
+ .subtitle{font-size:11px}
+ .search{height:48px;margin-bottom:18px}
+ .grid{gap:12px}
+ .card{padding:18px;border-radius:17px;min-height:0}
+ .card:hover{transform:none}
+ .vpn-button{border-radius:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
