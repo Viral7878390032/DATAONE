@@ -1445,10 +1445,10 @@ document.getElementById("sbSignOut")
  });
 
 
-/* DATAONE REPOSITORY BUTTON */
+/* OPEN THE NATIVE DATAONE TELEGRAM SCREEN */
 document.getElementById("dataoneTelegramButton")
  .addEventListener("click",()=>{
-  window.open("https://github.com/Viral7878390032/DATAONE-Android","_blank","noopener,noreferrer");
+  window.location.href="dataone://telegram";
   if(isMobileOrTablet())setSidebarOpen(false);
 });
 
