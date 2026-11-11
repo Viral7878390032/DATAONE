@@ -544,6 +544,75 @@ html[data-theme="light"] .media-status-panel p{color:#475569}
 html[data-theme="light"] .media-source-row{background:#fff;border-color:#dbe3ee}
 @media(max-width:600px){#connectedMediaPage{padding:12px}.media-status-panel{padding:18px}}
 
+
+/* DATAONE SIDEBAR — refined workspace navigation */
+:root{--sb-w:276px;--sb-bg:#0a1425;--sb-border:rgba(148,163,184,.13);--sb-muted:#91a3bc}
+.sidebar{
+ width:var(--sb-w);padding:22px 16px 18px;
+ background:radial-gradient(ellipse at 12% 0%,rgba(59,130,246,.20),transparent 42%),linear-gradient(180deg,#0c192d 0%,#091323 100%);
+ border-right:1px solid rgba(125,164,220,.16);
+ box-shadow:18px 0 50px rgba(2,8,23,.22);
+}
+.sb-brand{gap:13px;padding:5px 8px 22px;border-bottom:1px solid rgba(148,163,184,.13)}
+.sb-logo{
+ width:46px;height:46px;border-radius:15px;
+ background:linear-gradient(145deg,#3b82f6 0%,#1d4ed8 58%,#172554 100%);
+ border:1px solid rgba(147,197,253,.48);
+ box-shadow:0 8px 24px rgba(37,99,235,.25),inset 0 1px 0 rgba(255,255,255,.2);
+ font-size:20px;letter-spacing:-1px
+}
+.sb-brand strong{font-size:15px;letter-spacing:2px;font-weight:850}
+.sb-brand small{font-size:10px;letter-spacing:.75px;text-transform:uppercase;color:#7890b0}
+.sb-user-profile{
+ position:relative;margin:18px 0 22px;padding:13px 12px;
+ border-radius:15px;background:linear-gradient(120deg,rgba(30,64,112,.40),rgba(15,29,49,.65));
+ border:1px solid rgba(96,165,250,.18);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.035)
+}
+.sb-user-avatar{width:42px;height:42px;min-width:42px;border:1px solid rgba(147,197,253,.35);box-shadow:0 5px 14px rgba(2,8,23,.25)}
+.sb-user-info{gap:3px}
+.sb-user-info strong{font-size:13px;font-weight:700}
+.sb-user-info small{font-size:10px;color:#8fa3bf}
+.sb-nav{gap:6px;margin-top:0}
+.sb-label{padding:0 12px 10px;color:#7186a5;font-size:10px;letter-spacing:1.65px}
+.sb-nav button,.sb-footer button{
+ position:relative;min-height:47px;padding:0 13px;gap:13px;
+ border-radius:12px;color:#9aacc5;font-size:13px;font-weight:600;
+}
+.sb-icon{width:21px;height:21px;min-width:21px}
+.sb-icon svg{width:20px;height:20px;stroke-width:1.75}
+.sb-nav button:hover,.sb-footer button:hover{transform:translateX(2px);background:rgba(148,163,184,.075);border-color:rgba(148,163,184,.10);color:#f8fafc}
+.sb-nav button.active{
+ color:#bfdbfe;background:linear-gradient(100deg,rgba(37,99,235,.25),rgba(37,99,235,.07));
+ border-color:rgba(96,165,250,.24);box-shadow:inset 3px 0 0 #60a5fa,0 5px 15px rgba(2,8,23,.12)
+}
+.sb-nav button.active .sb-icon{color:#60a5fa}
+.sb-footer{gap:6px;padding-top:13px;border-top:1px solid rgba(148,163,184,.13)}
+.sb-footer-divider{display:none}
+.sb-footer button{min-height:43px}
+.sb-footer button.danger{
+ justify-content:flex-start;padding-left:13px;margin-top:4px;
+ background:rgba(127,29,29,.18);border:1px solid rgba(248,113,113,.16);
+ color:#fca5a5;font-weight:600
+}
+.sb-footer button.danger:hover{background:rgba(185,28,28,.30);border-color:rgba(248,113,113,.35);color:#fff}
+.sidebar-backdrop{background:rgba(2,8,23,.68);backdrop-filter:blur(5px)}
+@media(min-width:1025px){body{padding-left:calc(var(--sb-w) + 32px)}}
+@media(max-width:1024px){.sidebar{width:min(290px,86vw);padding:20px 16px}.sidebar.mobile-open{box-shadow:24px 0 60px rgba(2,8,23,.55)}}
+@media(prefers-reduced-motion:reduce){.sb-nav button,.sb-footer button{transition:none}}
+html[data-theme="light"] .sidebar{
+ background:radial-gradient(ellipse at 12% 0%,rgba(59,130,246,.10),transparent 42%),linear-gradient(180deg,#fff 0%,#f7faff 100%);
+ border-right-color:#dce6f3;box-shadow:12px 0 36px rgba(15,23,42,.07)
+}
+html[data-theme="light"] .sb-brand small{color:#71839c}
+html[data-theme="light"] .sb-user-profile{background:linear-gradient(120deg,#eff6ff,#f8fbff);border-color:#d7e6fb}
+html[data-theme="light"] .sb-user-info small{color:#64748b}
+html[data-theme="light"] .sb-label{color:#8191a8}
+html[data-theme="light"] .sb-nav button.active{color:#1d4ed8;background:linear-gradient(100deg,#dbeafe,#eff6ff);border-color:#bfdbfe;box-shadow:inset 3px 0 0 #3b82f6}
+html[data-theme="light"] .sb-nav button.active .sb-icon{color:#2563eb}
+html[data-theme="light"] .sb-footer button.danger{background:#fff1f2;border-color:#ffe4e6;color:#be123c}
+html[data-theme="light"] .sb-footer button.danger:hover{background:#e11d48;color:#fff;border-color:#e11d48}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -582,7 +651,7 @@ html[data-theme="light"] .media-source-row{background:#fff;border-color:#dbe3ee}
   <div class="sb-logo">D</div>
   <div>
    <strong>DATAONE</strong>
-   <small>Your digital space</small>
+   <small>Personal cloud workspace</small>
   </div>
  </div>
 
@@ -598,7 +667,7 @@ html[data-theme="light"] .media-source-row{background:#fff;border-color:#dbe3ee}
  <!-- MAIN MENU -->
  <nav class="sb-nav">
 
-  <span class="sb-label">MAIN MENU</span>
+  <span class="sb-label">WORKSPACE</span>
 
   <button type="button" class="active" data-target="top">
    <span class="sb-icon">
@@ -641,8 +710,9 @@ html[data-theme="light"] .media-source-row{background:#fff;border-color:#dbe3ee}
 
  </nav>
 
- <!-- FOOTER -->
+ <!-- ACCOUNT CONTROLS -->
  <div class="sb-footer">
+  <span class="sb-label">PREFERENCES</span>
 
   <button type="button" id="themeToggle">
    <span class="sb-icon" id="themeIcon"></span>
