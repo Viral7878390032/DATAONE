@@ -1329,9 +1329,9 @@ document.addEventListener("keydown",event=>{
 
 });
 
-window.addEventListener("resize",()=>{
- setSidebarOpen(!isMobileOrTablet());
-});
+// Do not reset sidebar state on viewport resize.
+// Mobile keyboards trigger resize when an input receives focus;
+// resetting here was closing the sidebar while editing the profile.
 
 
 /* SIDEBAR NAVIGATION */
