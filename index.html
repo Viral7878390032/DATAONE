@@ -199,8 +199,36 @@ footer{
  min-width:0;
  display:flex;
  flex-direction:column;
- gap:5px
+ gap:5px;
+ flex:1
 }
+.sb-profile-edit{
+ flex-shrink:0;padding:6px 10px;border-radius:9px;
+ border:1px solid rgba(96,165,250,.35);background:#2563eb22;
+ color:#bfdbfe;font-size:11px;font-weight:700;cursor:pointer
+}
+.sb-profile-editor{
+ display:grid;gap:8px;padding:12px;margin:-12px 0 18px;
+ border:1px solid var(--sb-border);border-radius:12px;
+ background:rgba(255,255,255,.045)
+}
+.sb-profile-editor[hidden]{display:none}
+.sb-profile-editor label{font-size:11px;color:var(--sb-muted);font-weight:650}
+.sb-profile-editor input[type="text"]{
+ width:100%;min-width:0;padding:9px 10px;border-radius:8px;
+ border:1px solid var(--sb-border);background:var(--sb-bg,#0b1220);
+ color:inherit;font:inherit;font-size:12px
+}
+.sb-profile-editor input[type="file"]{width:100%;font-size:11px;color:inherit}
+.sb-profile-editor-actions{display:flex;gap:8px}
+.sb-profile-editor-actions button{
+ flex:1;padding:8px;border-radius:8px;border:1px solid var(--sb-border);
+ background:#2563eb;color:white;font-size:11px;font-weight:700;cursor:pointer
+}
+.sb-profile-editor-actions button:last-child{background:transparent;color:inherit}
+html[data-theme="light"] .sb-profile-edit{color:#1d4ed8;background:#dbeafe}
+html[data-theme="light"] .sb-profile-editor{background:#f8fbff}
+html[data-theme="light"] .sb-profile-editor input[type="text"]{background:#fff;color:#0f172a}
 
 .sb-user-info strong{
  font-size:14px;
@@ -656,6 +684,17 @@ html[data-theme="light"] .sb-footer button.danger:hover{background:#e11d48;color
    <strong id="sidebarUserName">My Profile</strong>
    <small id="sidebarUserEmail">Loading email...</small>
   </div>
+  <button type="button" class="sb-profile-edit" id="editSidebarProfileBtn">Edit</button>
+ </div>
+ <div class="sb-profile-editor" id="sidebarProfileEditor" hidden>
+  <label for="sidebarProfileTitle">Profile title</label>
+  <input id="sidebarProfileTitle" type="text" maxlength="40" placeholder="Enter profile title">
+  <label for="sidebarProfilePhoto">Profile picture</label>
+  <input id="sidebarProfilePhoto" type="file" accept="image/*">
+  <div class="sb-profile-editor-actions">
+   <button type="button" id="saveSidebarProfileBtn">Save</button>
+   <button type="button" id="cancelSidebarProfileBtn">Cancel</button>
+  </div>
  </div>
 
  <!-- MAIN MENU -->
@@ -1082,6 +1121,66 @@ async function updateAuthView(){
 
 }
 
+/* SIDEBAR PROFILE EDITING */
+function applySidebarProfileCustomizations(){
+ const title=localStorage.getItem("dataoneProfileTitle");
+ const photo=localStorage.getItem("dataoneProfilePhoto");
+ const name=document.getElementById("sidebarUserName");
+ const avatar=document.getElementById("sidebarUserAvatar");
+ if(title&&name)name.textContent=title;
+ if(avatar){
+  if(photo){
+   avatar.textContent="";
+   avatar.style.backgroundImage="url("+JSON.stringify(photo)+")";
+   avatar.style.backgroundSize="cover";
+   avatar.style.backgroundPosition="center";
+  }else{
+   avatar.style.backgroundImage="";
+  }
+ }
+}
+function openSidebarProfileEditor(){
+ const panel=document.getElementById("sidebarProfileEditor");
+ const title=document.getElementById("sidebarProfileTitle");
+ if(!panel||!title)return;
+ title.value=localStorage.getItem("dataoneProfileTitle")||document.getElementById("sidebarUserName")?.textContent||"";
+ document.getElementById("sidebarProfilePhoto").value="";
+ panel.hidden=false;
+}
+document.getElementById("editSidebarProfileBtn")?.addEventListener("click",openSidebarProfileEditor);
+document.getElementById("cancelSidebarProfileBtn")?.addEventListener("click",()=>{
+ document.getElementById("sidebarProfileEditor").hidden=true;
+});
+document.getElementById("saveSidebarProfileBtn")?.addEventListener("click",async()=>{
+ const titleInput=document.getElementById("sidebarProfileTitle");
+ const photoInput=document.getElementById("sidebarProfilePhoto");
+ const title=titleInput.value.trim();
+ if(!title){alert("Please enter a profile title.");return;}
+ localStorage.setItem("dataoneProfileTitle",title);
+ const file=photoInput.files?.[0];
+ if(file){
+  if(!file.type.startsWith("image/")){alert("Please select an image file.");return;}
+  try{
+   const dataUrl=await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+   });
+   const image=await new Promise((resolve,reject)=>{
+    const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=dataUrl;
+   });
+   const canvas=document.createElement("canvas");
+   const side=256,scale=Math.min(1,side/Math.max(image.width,image.height));
+   canvas.width=Math.round(image.width*scale);canvas.height=Math.round(image.height*scale);
+   canvas.getContext("2d").drawImage(image,0,0,canvas.width,canvas.height);
+   localStorage.setItem("dataoneProfilePhoto",canvas.toDataURL("image/jpeg",0.78));
+  }catch(error){alert("Could not save this picture. Please try another image.");return;}
+ }
+ applySidebarProfileCustomizations();
+ document.getElementById("sidebarProfileEditor").hidden=true;
+});
+
 /* UPDATE SIDEBAR PROFILE */
 async function updateSidebarProfile(){
 
@@ -1116,6 +1215,7 @@ async function updateSidebarProfile(){
    sidebarAvatar.textContent=
     displayName.charAt(0).toUpperCase();
   }
+  applySidebarProfileCustomizations();
 
  }catch(error){
 
