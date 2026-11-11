@@ -702,15 +702,14 @@ html[data-theme="light"] .sb-footer button.danger:hover{background:#e11d48;color
    <span>Media</span>
   </button>
 
-  <button type="button" id="dataoneAndroidButton" aria-label="Open DATAONE Android repository">
+  <button type="button" id="dataoneTelegramButton" aria-label="Open DATAONE Telegram">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
-     <path d="M7 8 5 5m12 3 2-3M4 10h16v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
-     <path d="M8 4 6.5 2M16 4l1.5-2M8 13v3m8-3v3M2 11v5m20-5v5"/>
-     <path d="M8 20v2m8-2v2"/>
+     <path d="m22 2-7 20-4-9-9-4 20-7Z"/>
+     <path d="M22 2 11 13"/>
     </svg>
    </span>
-   <span>DATAONE Android</span>
+   <span>DATAONE Telegram</span>
   </button>
 
  </nav>
@@ -1346,10 +1345,10 @@ document.getElementById("sbSignOut")
  });
 
 
-/* DATAONE ANDROID REPOSITORY BUTTON */
-document.getElementById("dataoneAndroidButton")
+/* DATAONE TELEGRAM BUTTON */
+document.getElementById("dataoneTelegramButton")
  .addEventListener("click",()=>{
-  window.open("https://github.com/Viral7878390032/DATAONE-Android","_blank","noopener");
+  alert("DATAONE Telegram link will be added soon.");
   if(isMobileOrTablet())setSidebarOpen(false);
 });
 
