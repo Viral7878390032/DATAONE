@@ -801,7 +801,134 @@ html[data-theme="light"] #authScreen label{color:#475569}
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
-\n</style>
+\n
+
+/* RESPONSIVE LAYOUT — TABLET & MOBILE */
+@media (min-width:601px) and (max-width:1024px){
+ body{padding:20px 22px 34px!important}
+ .dataone-header{max-width:100%;padding:8px 4px 18px;margin-bottom:18px}
+ .search{max-width:100%;margin-bottom:20px}
+ .dashboard-welcome{padding:24px 25px;margin-bottom:16px}
+ .dashboard-welcome h2{font-size:clamp(23px,3vw,28px)}
+ .dashboard-welcome p{font-size:13px;max-width:560px}
+ .overview-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:17px}
+ .overview-metric{padding:15px 16px}
+ .overview-metric strong{font-size:clamp(19px,2.6vw,23px)}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ .card{min-height:140px;padding:19px;border-radius:17px}
+ .card strong{font-size:14px}
+ .card small{font-size:11px}
+ .sidebar{width:min(300px,78vw);padding:20px 16px}
+ .sb-nav button,.sb-footer button{min-height:46px;font-size:13px}
+ #connectedMediaPage{padding:22px}
+ #connectedMediaPage .media-inner{max-width:100%}
+ .media-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .media-toolbar{grid-template-columns:minmax(0,1.5fr) minmax(130px,1fr) minmax(130px,1fr)}
+ .media-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+ .media-tile-icon{height:clamp(112px,17vw,155px)}
+ #connectedMegaPage.mega-page{padding:24px}
+ .mega-container{max-width:680px}
+}
+@media (max-width:600px){
+ body{padding:12px 13px 28px!important;font-size:13px}
+ .dataone-header{padding:5px 1px 13px;margin-bottom:13px;gap:8px}
+ .header-brand{gap:8px;min-width:0}
+ .header-brand h1{font-size:15px;letter-spacing:1.35px}
+ .subtitle{font-size:10px}
+ .profile-avatar{width:36px;height:36px;font-size:17px}
+ .vpn-button{padding:8px 10px;font-size:11px;white-space:nowrap}
+ .search{height:44px;padding:0 13px;margin-bottom:15px;border-radius:12px;font-size:12px}
+ .dashboard-welcome{padding:18px 17px;margin-bottom:12px;border-radius:16px;gap:12px}
+ .dashboard-welcome h2{font-size:21px;line-height:1.2;margin-bottom:6px}
+ .dashboard-welcome p{font-size:12px;line-height:1.6}
+ .overview-badge{font-size:9px;margin-bottom:9px;letter-spacing:1.1px}
+ .overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:13px}
+ .overview-metric{padding:12px 13px;border-radius:13px}
+ .overview-metric span{font-size:10px;margin-bottom:5px}
+ .overview-metric strong{font-size:19px}
+ .overview-metric small{font-size:9px;margin-top:3px}
+ .overview-metric:last-child{grid-column:1/-1}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .card{min-height:116px;padding:14px 13px;border-radius:14px}
+ .card strong{font-size:13px;line-height:1.35}
+ .card small{font-size:10px;line-height:1.45}
+ .card img{max-width:100%;height:auto}
+ footer{font-size:10px;margin-top:24px}
+ .sidebar{width:min(286px,88vw);padding:16px 13px}
+ .sb-brand{padding:4px 7px 16px;gap:10px}
+ .sb-logo{width:39px;height:39px;font-size:16px}
+ .sb-brand strong{font-size:14px}
+ .sb-brand small{font-size:10px}
+ .sb-user-profile{padding:12px 10px;margin:13px 0}
+ .sb-user-avatar{width:39px;height:39px;min-width:39px;font-size:16px}
+ .sb-nav{gap:5px;margin-top:5px}
+ .sb-nav button,.sb-footer button{min-height:43px;padding:0 11px;gap:11px;font-size:12px;border-radius:10px}
+ .sb-icon,.sb-icon svg{width:19px;height:19px;min-width:19px}
+ .sb-label{padding:0 11px 6px;font-size:9px}
+ .sb-footer{padding-top:10px;gap:5px}
+ #authScreen{width:calc(100% - 8px);max-width:400px!important;margin:22px auto!important;padding:22px 18px!important;border-radius:18px!important}
+ #authScreen h2{font-size:21px}
+ #authScreen input{min-height:45px!important;padding:11px 12px!important}
+ #authSubmit{min-height:45px}
+ #connectedMediaPage{padding:13px}
+ #connectedMediaPage .media-inner{width:100%}
+ .media-heading{align-items:flex-start;gap:10px;margin-top:17px}
+ .media-heading h2{font-size:21px}
+ .media-refresh{padding:9px 11px;font-size:11px}
+ .media-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:15px 0}
+ .media-summary>div{padding:10px 8px;border-radius:11px}
+ .media-summary span{font-size:9px;line-height:1.35}
+ .media-summary strong{font-size:18px;margin-top:4px}
+ .media-toolbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .media-toolbar input{grid-column:1/-1}
+ .media-toolbar input,.media-toolbar select{min-height:42px;padding:10px;font-size:12px}
+ .media-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .media-tile{padding:7px;gap:7px;border-radius:12px}
+ .media-tile-icon{height:clamp(100px,32vw,145px)}
+ .media-tile-details strong{font-size:11px}
+ .media-tile-details small{font-size:9px;margin-top:3px}
+ .media-download{padding:8px 7px;font-size:10px}
+ .media-empty{padding:22px 14px;font-size:11px}
+ .media-preview{padding:9px}
+ .media-preview-box{padding:14px 10px;border-radius:13px;max-height:94vh}
+ .media-preview-content{padding:25px 0 5px;min-height:90px}
+ .media-preview-content img,.media-preview-content video{max-height:75vh}
+ #connectedMegaPage.mega-page{padding:14px}
+ .mega-container{width:100%}
+ .mega-page-heading{margin:19px 0 16px;gap:10px}
+ .mega-page-heading h2{font-size:19px}
+ .mega-page-heading p{font-size:11px}
+ .mega-add-form{padding:13px;border-radius:12px}
+ .mega-add-form input{min-height:43px;padding:10px;font-size:13px}
+ .mega-form-actions{flex-wrap:wrap}
+ .mega-form-actions button,.mega-add-button{min-height:42px;font-size:12px}
+}
+@media(max-width:380px){
+ body{padding-left:10px!important;padding-right:10px!important}
+ .dataone-header{gap:5px}
+ .header-brand h1{font-size:13px}
+ .subtitle{font-size:9px}
+ .vpn-button{padding:7px 8px;font-size:10px}
+ .profile-avatar{width:33px;height:33px}
+ .dashboard-welcome{padding:15px 14px}
+ .dashboard-welcome h2{font-size:19px}
+ .overview-metric{padding:10px}
+ .overview-metric strong{font-size:17px}
+ .card{padding:12px 10px;min-height:106px}
+ .card strong{font-size:12px}
+ .media-grid{gap:7px}
+ .media-tile-icon{height:96px}
+ .media-summary span{font-size:8px}
+ .media-summary strong{font-size:16px}
+}
+@media (max-height:520px) and (orientation:landscape) and (max-width:1024px){
+ .sidebar{padding-top:12px;padding-bottom:12px}
+ .sb-user-profile{margin:9px 0;padding:9px}
+ .sb-nav button,.sb-footer button{min-height:38px}
+ #authScreen{margin:12px auto!important;padding:16px!important}
+}
+
+</style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
