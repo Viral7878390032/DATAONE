@@ -641,6 +641,33 @@ html[data-theme="light"] .sb-nav button.active .sb-icon{color:#2563eb}
 html[data-theme="light"] .sb-footer button.danger{background:#fff1f2;border-color:#ffe4e6;color:#be123c}
 html[data-theme="light"] .sb-footer button.danger:hover{background:#e11d48;color:#fff;border-color:#e11d48}
 
+
+/* UNIFIED MEGA MEDIA UI */
+.media-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px}
+.media-refresh{border:1px solid #3b82f6;background:#1d4ed8;color:#fff;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+.media-refresh:disabled{opacity:.6;cursor:wait}
+.media-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}
+.media-summary>div{padding:15px;border:1px solid var(--do-line);border-radius:14px;background:rgba(17,29,49,.82)}
+.media-summary span{display:block;color:#94a3b8;font-size:12px}.media-summary strong{display:block;font-size:23px;margin-top:5px}
+.media-toolbar{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.media-toolbar input,.media-toolbar select{width:100%;min-width:0;padding:12px;border:1px solid #334155;border-radius:10px;background:#111d31;color:#f8fafc;font:inherit;font-size:13px}
+.media-status-text{font-size:13px;color:#94a3b8;min-height:22px}
+.media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.media-tile{display:flex;align-items:center;gap:12px;text-align:left;min-width:0;padding:14px;border:1px solid var(--do-line);border-radius:13px;background:#14233a;color:#f8fafc;cursor:pointer}
+.media-tile:hover{border-color:#60a5fa;transform:translateY(-1px)}.media-tile.loading{opacity:.6}
+.media-tile-icon{width:42px;height:42px;flex-shrink:0;display:grid;place-items:center;border-radius:11px;background:#2563eb2b;color:#93c5fd;font-size:20px}
+.media-tile-details{display:block;min-width:0}.media-tile-details strong,.media-tile-details small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.media-tile-details strong{font-size:13px}.media-tile-details small{font-size:11px;color:#94a3b8;margin-top:5px}
+.media-empty{grid-column:1/-1;padding:28px;text-align:center;border:1px dashed #475569;border-radius:14px;color:#94a3b8;font-size:13px}
+.media-footnote{margin:20px 2px;color:#94a3b8;font-size:12px;line-height:1.7}
+.media-preview{position:fixed;inset:0;z-index:1600;display:grid;place-items:center;padding:18px;background:rgba(2,6,23,.88)}
+.media-preview[hidden]{display:none!important}.media-preview-box{position:relative;width:min(900px,100%);max-height:90vh;overflow:auto;padding:18px;border:1px solid #334155;border-radius:16px;background:#0f172a;text-align:center}
+.media-preview-close{position:absolute;right:12px;top:12px;width:36px;height:36px;border:0;border-radius:50%;background:#334155;color:white;font-size:18px;cursor:pointer}
+.media-preview-content{min-height:120px;display:grid;place-items:center;padding:28px 0 8px;color:#94a3b8}.media-preview-content img,.media-preview-content video{max-width:100%;max-height:70vh;object-fit:contain;border-radius:8px}.media-preview-box>p{overflow-wrap:anywhere;color:#cbd5e1;font-size:13px}
+html[data-theme="light"] .media-summary>div,html[data-theme="light"] .media-tile{background:#fff;color:#0f172a;border-color:#dbe3ee}
+html[data-theme="light"] .media-toolbar input,html[data-theme="light"] .media-toolbar select{background:#fff;color:#0f172a;border-color:#cbd5e1}
+html[data-theme="light"] .media-preview-box{background:#f8fafc;color:#0f172a}
+@media(max-width:650px){.media-summary{gap:8px}.media-summary>div{padding:12px}.media-summary strong{font-size:20px}.media-toolbar{grid-template-columns:1fr}.media-grid{grid-template-columns:1fr}.media-heading{align-items:flex-start}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -907,23 +934,29 @@ html[data-theme="light"] .sb-footer button.danger:hover{background:#e11d48;color
 <section id="connectedMediaPage" hidden aria-label="Connected media library">
  <div class="media-inner">
   <button type="button" id="closeConnectedMedia" class="media-back">← Back to dashboard</button>
-  <h2 style="margin:24px 0 5px">Your media library</h2>
-  <p style="margin:0;color:#94a3b8;font-size:14px">One place to view photos and videos from your connected services.</p>
-  <div class="media-status-panel">
-   <div style="font-size:30px;margin-bottom:12px">🖼️</div>
-   <h3>Connected media access is not enabled yet</h3>
-   <p>DATAONE will display existing photos and videos from supported accounts when a read-only media connection is available. This page does not ask you to select or upload files from your device.</p>
+  <div class="media-heading">
+   <div><div class="overview-badge">MEGA · Unified library</div><h2 style="margin:4px 0 5px">Your media library</h2>
+   <p style="margin:0;color:#94a3b8;font-size:14px">Photos and videos from all MEGA accounts connected to your DATAONE profile.</p></div>
+   <button type="button" id="refreshMegaMedia" class="media-refresh">↻ Refresh</button>
   </div>
-  <h3 style="margin:26px 0 10px;font-size:15px">Media sources</h3>
-  <div class="media-source-row">
-   <div><strong>Google Photos / Drive</strong><small>Read-only media browsing connection</small></div>
-   <span class="media-source-state">Not connected</span>
+  <div class="media-summary">
+   <div><span>All media</span><strong id="megaMediaTotal">—</strong></div>
+   <div><span>Photos</span><strong id="megaMediaPhotos">—</strong></div>
+   <div><span>Videos</span><strong id="megaMediaVideos">—</strong></div>
   </div>
-  <div class="media-source-row">
-   <div><strong>MEGA</strong><small>Current DATAONE connection provides account and storage information only</small></div>
-   <span class="media-source-state">Media browsing unavailable</span>
+  <div class="media-toolbar">
+   <input id="megaMediaSearch" type="search" placeholder="Search media by filename..." aria-label="Search media">
+   <select id="megaMediaAccount" aria-label="Filter by MEGA account"><option value="all">All MEGA accounts</option></select>
+   <select id="megaMediaType" aria-label="Filter by media type"><option value="all">All media</option><option value="photo">Photos</option><option value="video">Videos</option></select>
   </div>
-  <p style="margin:18px 2px 0;color:#94a3b8;font-size:12px;line-height:1.7">No sample or dummy media is shown. Your existing files remain in their original accounts.</p>
+  <p id="megaMediaStatus" class="media-status-text" role="status">Open this page to load your MEGA media.</p>
+  <div id="megaMediaGrid" class="media-grid"></div>
+  <p class="media-footnote">Only photos and videos stored in your connected MEGA accounts are shown. Files stay in MEGA; DATAONE does not upload or move them.</p>
+ </div>
+ <div id="megaMediaPreview" class="media-preview" hidden role="dialog" aria-modal="true" aria-label="Media preview">
+  <div class="media-preview-box"><button type="button" id="closeMegaMediaPreview" class="media-preview-close" aria-label="Close preview">✕</button>
+   <div id="megaMediaPreviewContent" class="media-preview-content"></div><p id="megaMediaPreviewName"></p>
+  </div>
  </div>
 </section>
 
@@ -2036,26 +2069,149 @@ loadMegaStorage();
 
 
 <script>
-/* Connected media library shell. It never reads or uploads local device files. */
+/* Unified MEGA media library — reads only the signed-in user's connected accounts. */
 (function(){
  const card=document.getElementById("mediaCard");
  const page=document.getElementById("connectedMediaPage");
  const close=document.getElementById("closeConnectedMedia");
- if(!card||!page||!close)return;
- function open(){page.hidden=false;}
- function closePage(){page.hidden=true;}
+ const refresh=document.getElementById("refreshMegaMedia");
+ const grid=document.getElementById("megaMediaGrid");
+ const status=document.getElementById("megaMediaStatus");
+ const search=document.getElementById("megaMediaSearch");
+ const accountFilter=document.getElementById("megaMediaAccount");
+ const typeFilter=document.getElementById("megaMediaType");
+ const preview=document.getElementById("megaMediaPreview");
+ const previewContent=document.getElementById("megaMediaPreviewContent");
+ const previewName=document.getElementById("megaMediaPreviewName");
+ const previewClose=document.getElementById("closeMegaMediaPreview");
+ if(!card||!page||!close||!grid)return;
+ let mediaItems=[];
+ let loading=false;
  page.hidden=true;
  card.style.cursor="pointer";
  card.setAttribute("role","button");
  card.setAttribute("tabindex","0");
  card.setAttribute("aria-label","Open connected media library");
- card.addEventListener("click",open);
- card.addEventListener("keydown",event=>{
-  if(event.key==="Enter"||event.key===" "){event.preventDefault();open();}
- });
+
+ function bytes(value){
+  const n=Number(value||0);
+  if(n<1024)return n+" B";
+  if(n<1024*1024)return (n/1024).toFixed(1)+" KB";
+  if(n<1024*1024*1024)return (n/1024/1024).toFixed(1)+" MB";
+  return (n/1024/1024/1024).toFixed(2)+" GB";
+ }
+ function setStatus(message,isError){
+  status.textContent=message;
+  status.style.color=isError?"#f87171":"#94a3b8";
+ }
+ function updateSummary(){
+  document.getElementById("megaMediaTotal").textContent=mediaItems.length;
+  document.getElementById("megaMediaPhotos").textContent=mediaItems.filter(x=>x.type==="photo").length;
+  document.getElementById("megaMediaVideos").textContent=mediaItems.filter(x=>x.type==="video").length;
+ }
+ function render(){
+  const query=(search.value||"").trim().toLowerCase();
+  const selectedAccount=accountFilter.value;
+  const selectedType=typeFilter.value;
+  const filtered=mediaItems.filter(item=>{
+   return (!query||String(item.name||"").toLowerCase().includes(query)) &&
+    (selectedAccount==="all"||item.accountId===selectedAccount) &&
+    (selectedType==="all"||item.type===selectedType);
+  });
+  grid.replaceChildren();
+  if(!filtered.length){
+   const empty=document.createElement("div");
+   empty.className="media-empty";
+   empty.textContent=mediaItems.length?"No media matches your filters.":"No photos or videos were found in your connected MEGA accounts.";
+   grid.appendChild(empty);
+   return;
+  }
+  filtered.forEach(item=>{
+   const tile=document.createElement("button");
+   tile.type="button";tile.className="media-tile";
+   const thumb=document.createElement("span");
+   thumb.className="media-tile-icon";
+   thumb.textContent=item.type==="video"?"▶":"▧";
+   const details=document.createElement("span");details.className="media-tile-details";
+   const name=document.createElement("strong");name.textContent=item.name||"Untitled media";
+   const meta=document.createElement("small");
+   meta.textContent=(item.email||"MEGA account")+" · "+bytes(item.size);
+   details.append(name,meta);tile.append(thumb,details);
+   tile.addEventListener("click",()=>openPreview(item,tile));
+   grid.appendChild(tile);
+  });
+  setStatus("Showing "+filtered.length+" of "+mediaItems.length+" media files.",false);
+ }
+ function populateAccounts(){
+  const current=accountFilter.value||"all";
+  const seen=new Map();
+  mediaItems.forEach(item=>{if(item.accountId)seen.set(item.accountId,item.email||"MEGA account");});
+  accountFilter.replaceChildren();
+  const all=document.createElement("option");all.value="all";all.textContent="All MEGA accounts";accountFilter.appendChild(all);
+  seen.forEach((email,id)=>{
+   const option=document.createElement("option");option.value=id;option.textContent=email;accountFilter.appendChild(option);
+  });
+  accountFilter.value=seen.has(current)?current:"all";
+ }
+ async function loadMedia(){
+  if(loading)return;
+  loading=true;refresh.disabled=true;refresh.textContent="Loading…";
+  setStatus("Loading media from your connected MEGA accounts…",false);
+  grid.replaceChildren();
+  try{
+   const result=await callMegaFunction({action:"media"});
+   mediaItems=Array.isArray(result.media)?result.media:[];
+   populateAccounts();updateSummary();render();
+   setStatus("Loaded "+mediaItems.length+" media files across your connected MEGA accounts.",false);
+   if(!mediaItems.length)render();
+  }catch(error){
+   mediaItems=[];updateSummary();grid.replaceChildren();
+   setStatus(error.message||"Could not load MEGA media.",true);
+  }finally{
+   loading=false;refresh.disabled=false;refresh.textContent="↻ Refresh";
+  }
+ }
+ async function openPreview(item,tile){
+  tile.disabled=true;tile.classList.add("loading");
+  preview.hidden=false;previewContent.textContent="Loading preview…";previewName.textContent=item.name||"";
+  try{
+   const result=await callMegaFunction({action:"preview",accountId:item.accountId,nodeId:item.id});
+   if(!result.data)throw new Error("The preview could not be loaded.");
+   const source="data:"+(result.mimeType||item.mimeType||"application/octet-stream")+";base64,"+result.data;
+   previewContent.replaceChildren();
+   let element;
+   if(item.type==="video"){
+    element=document.createElement("video");element.controls=true;element.autoplay=true;
+   }else{
+    element=document.createElement("img");element.alt=item.name||"MEGA photo";
+   }
+   element.src=source;previewContent.appendChild(element);
+  }catch(error){
+   previewContent.textContent=error.message||"Preview unavailable. This file may be larger than 15 MB.";
+  }finally{
+   tile.disabled=false;tile.classList.remove("loading");
+  }
+ }
+ function closePreview(){
+  preview.hidden=true;
+  const video=previewContent.querySelector("video");
+  if(video){video.pause();video.removeAttribute("src");video.load();}
+  previewContent.replaceChildren();
+ }
+ function openPage(){page.hidden=false;loadMedia();}
+ function closePage(){closePreview();page.hidden=true;}
+ card.addEventListener("click",event=>{event.preventDefault();openPage();});
+ card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openPage();}});
  close.addEventListener("click",closePage);
+ refresh.addEventListener("click",loadMedia);
+ search.addEventListener("input",render);
+ accountFilter.addEventListener("change",render);
+ typeFilter.addEventListener("change",render);
+ previewClose.addEventListener("click",closePreview);
+ preview.addEventListener("click",event=>{if(event.target===preview)closePreview();});
  document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"&&!page.hidden)closePage();
+  if(event.key==="Escape"&&!preview.hidden)closePreview();
+  else if(event.key==="Escape"&&!page.hidden)closePage();
  });
 })();
 </script>
