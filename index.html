@@ -668,6 +668,36 @@ html[data-theme="light"] .media-toolbar input,html[data-theme="light"] .media-to
 html[data-theme="light"] .media-preview-box{background:#f8fafc;color:#0f172a}
 @media(max-width:650px){.media-summary{gap:8px}.media-summary>div{padding:12px}.media-summary strong{font-size:20px}.media-toolbar{grid-template-columns:1fr}.media-grid{grid-template-columns:1fr}.media-heading{align-items:flex-start}}
 
+
+/* SIMPLE MEGA ACCOUNT PAGE */
+#connectedMegaPage.mega-page{position:fixed;inset:0;z-index:1400;overflow-y:auto;padding:24px;background:#f8fafc;color:#172033;font-family:inherit}
+.mega-container{width:min(100%,680px);margin:0 auto}
+.mega-back{padding:9px 13px;border:1px solid #dbe2ea;border-radius:8px;background:#fff;color:#334155;font:inherit;font-size:13px;cursor:pointer}
+.mega-page-heading{display:flex;align-items:center;gap:12px;margin:26px 0 22px}
+.mega-page-heading img{object-fit:contain}
+.mega-page-heading h2{margin:0;font-size:22px;font-weight:700}
+.mega-page-heading p{margin:4px 0 0;color:#64748b;font-size:13px}
+.mega-account-list{display:grid;gap:10px}
+#connectedMegaList>div{margin:0 0 10px!important;padding:15px!important;border:1px solid #e2e8f0!important;border-radius:10px!important;background:#fff!important;color:#172033!important}
+#connectedMegaList strong{color:#172033}
+#connectedMegaList p{color:#64748b!important;white-space:pre-line}
+#connectedMegaList button{border-radius:7px!important}
+.mega-add-button,.mega-connect-button{padding:11px 15px;border:0;border-radius:8px;background:#2563eb;color:#fff;font:600 13px inherit;cursor:pointer}
+.mega-add-button{width:100%;margin-top:16px}
+.mega-add-form{margin-top:14px;padding:17px;border:1px solid #e2e8f0;border-radius:10px;background:#fff}
+.mega-add-form h3{margin:0 0 12px;font-size:16px}
+.mega-add-form input{display:block;width:100%;margin:9px 0;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#172033;font:inherit;font-size:14px}
+.mega-form-actions{display:flex;gap:9px;margin-top:12px}
+.mega-cancel-button{padding:11px 15px;border:1px solid #dbe2ea;border-radius:8px;background:#fff;color:#334155;font:600 13px inherit;cursor:pointer}
+#megaAccountMessage{margin:10px 0 0;color:#64748b;font-size:12px}
+html:not([data-theme="light"]) #connectedMegaPage.mega-page{background:#0b1220;color:#f8fafc}
+html:not([data-theme="light"]) .mega-back,html:not([data-theme="light"]) .mega-add-form,html:not([data-theme="light"]) #connectedMegaList>div{background:#111d31!important;border-color:#263650!important;color:#f8fafc}
+html:not([data-theme="light"]) .mega-page-heading p,html:not([data-theme="light"]) #connectedMegaList p{color:#9aabc2!important}
+html:not([data-theme="light"]) #connectedMegaList strong{color:#f8fafc}
+html:not([data-theme="light"]) .mega-add-form input{background:#0b1220;border-color:#334155;color:#f8fafc}
+html:not([data-theme="light"]) .mega-cancel-button{background:#17243a;border-color:#334155;color:#e2e8f0}
+@media(max-width:600px){#connectedMegaPage.mega-page{padding:15px}.mega-page-heading{margin:22px 0 18px}.mega-page-heading h2{font-size:20px}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -961,44 +991,27 @@ html[data-theme="light"] .media-preview-box{background:#f8fafc;color:#0f172a}
 </section>
 
 <!-- CONNECTED MEGA PAGE -->
-<div id="connectedMegaPage" style="display:none;position:fixed;inset:0;z-index:1400;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px">
-
- <div style="max-width:600px;margin:0 auto">
-
-  <button type="button" id="closeMegaPage" style="background:#1e293b;color:white;border:1px solid #334155;border-radius:8px;padding:10px 16px">← Back</button>
-
-  <h2 style="margin-top:28px">Connected MEGA Accounts</h2>
-
-  <p style="color:#94a3b8">Manage your connected MEGA accounts and storage.</p>
-
-  <div id="connectedMegaList" style="margin-top:24px">Loading accounts...</div>
-
-  <div style="margin-top:28px;padding-bottom:24px">
-
-   <button type="button" id="addMegaAccountBtn" style="width:100%;padding:14px 18px;border:0;border-radius:10px;background:#2563eb;color:white">+ Add More MEGA</button>
-
-   <div id="megaAddAccountForm" style="display:none;margin-top:18px;padding:16px;background:#17243a;border:1px solid #334155;border-radius:12px">
-
-    <h3>Add MEGA Account</h3>
-
-    <input id="megaAccountEmail" type="email" placeholder="MEGA email address" style="width:100%;margin-top:12px;padding:12px;background:#0f172a;color:white">
-
-    <input id="megaAccountPassword" type="password" placeholder="MEGA password" style="width:100%;margin-top:10px;padding:12px;background:#0f172a;color:white">
-
-    <div style="display:flex;gap:10px;margin-top:12px">
-
-     <button type="button" id="saveMegaAccountBtn" style="background:#2563eb;color:white;border:0;padding:10px 14px;border-radius:7px">Connect Account</button>
-
-     <button type="button" id="cancelMegaAccountBtn" style="background:#334155;color:white;border:0;padding:10px 14px;border-radius:7px">Cancel</button>
-
-    </div>
-
-    <p id="megaAccountMessage" style="font-size:12px;color:#94a3b8;margin-top:10px"></p>
-
+<section id="connectedMegaPage" class="mega-page" style="display:none">
+ <div class="mega-container">
+  <button type="button" id="closeMegaPage" class="mega-back">← Back</button>
+  <header class="mega-page-heading">
+   <img src="https://mega.io/favicon.ico" alt="" width="34" height="34">
+   <div><h2>MEGA accounts</h2><p>Manage your connected cloud storage.</p></div>
+  </header>
+  <div id="connectedMegaList" class="mega-account-list">Loading accounts...</div>
+  <button type="button" id="addMegaAccountBtn" class="mega-add-button">+ Add MEGA account</button>
+  <div id="megaAddAccountForm" class="mega-add-form" style="display:none">
+   <h3>Add an account</h3>
+   <input id="megaAccountEmail" type="email" placeholder="MEGA email address" autocomplete="username">
+   <input id="megaAccountPassword" type="password" placeholder="MEGA password" autocomplete="current-password">
+   <div class="mega-form-actions">
+    <button type="button" id="saveMegaAccountBtn" class="mega-connect-button">Connect</button>
+    <button type="button" id="cancelMegaAccountBtn" class="mega-cancel-button">Cancel</button>
    </div>
+   <p id="megaAccountMessage" role="status"></p>
   </div>
  </div>
-</div>
+</section>
 
 <!-- CONNECTED GMAIL PAGE -->
 <div id="connectedGmailPage" style="display:none;position:fixed;inset:0;z-index:1400;overflow-y:auto;background:#0f172a;color:#f8fafc;padding:14px">
