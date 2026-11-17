@@ -1000,44 +1000,43 @@ html[data-theme="light"] #authScreen label{color:#475569}
 
 
 
-/* Make important figures prominent on desktop and clear on small screens */
+/* Balanced figure sizing: prominent on desktop, readable on smaller screens */
 #gmailAccountCount,#megaAccountCount{
- font-size:clamp(28px,2.2vw,36px)!important;
- line-height:1.1!important;
+ font-size:clamp(26px,1.9vw,32px)!important;
+ line-height:1.15!important;
  font-weight:800!important;
  font-variant-numeric:tabular-nums;
- letter-spacing:-.04em;
+ letter-spacing:-.035em;
 }
 #gmailStorage,#megaStorage{
- font-size:clamp(18px,1.55vw,23px)!important;
+ font-size:clamp(16px,1.25vw,19px)!important;
  line-height:1.2!important;
  font-weight:800!important;
- letter-spacing:-.035em;
+ letter-spacing:-.025em;
  white-space:nowrap;
  font-variant-numeric:tabular-nums;
 }
 .media-summary strong{
- font-size:clamp(24px,2vw,32px)!important;
+ font-size:clamp(23px,1.7vw,28px)!important;
  line-height:1.15!important;
  font-weight:800!important;
  font-variant-numeric:tabular-nums;
 }
 @media(max-width:1024px){
- #gmailAccountCount,#megaAccountCount{font-size:27px!important}
- #gmailStorage,#megaStorage{font-size:17px!important}
- .media-summary strong{font-size:25px!important}
+ #gmailAccountCount,#megaAccountCount{font-size:25px!important}
+ #gmailStorage,#megaStorage{font-size:16px!important}
+ .media-summary strong{font-size:24px!important}
 }
 @media(max-width:600px){
- #gmailAccountCount,#megaAccountCount{font-size:23px!important}
- #gmailStorage,#megaStorage{font-size:15px!important;letter-spacing:-.025em}
- .media-summary strong{font-size:22px!important}
+ #gmailAccountCount,#megaAccountCount{font-size:22px!important}
+ #gmailStorage,#megaStorage{font-size:14px!important;letter-spacing:-.02em}
+ .media-summary strong{font-size:21px!important}
 }
 @media(max-width:380px){
- #gmailAccountCount,#megaAccountCount{font-size:21px!important}
- #gmailStorage,#megaStorage{font-size:14px!important}
- .media-summary strong{font-size:20px!important}
+ #gmailAccountCount,#megaAccountCount{font-size:20px!important}
+ #gmailStorage,#megaStorage{font-size:13px!important}
+ .media-summary strong{font-size:19px!important}
 }
-
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
