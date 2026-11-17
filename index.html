@@ -1394,7 +1394,12 @@ navItems.forEach(btn=>{
 
   const target=btn.dataset.target;
 
-  if(target==="top"){
+  if(target==="mediaCard"){
+
+   // Open the unified media library directly instead of scrolling to its dashboard card.
+   document.getElementById("mediaCard")?.click();
+
+  }else if(target==="top"){
 
    window.scrollTo({
     top:0,
