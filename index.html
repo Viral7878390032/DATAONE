@@ -1264,6 +1264,41 @@ html[data-theme="light"] .card small{color:#64748b!important}
  .card:hover,.vpn-button:hover,.profile-avatar:hover{transform:none!important}
 }
 
+
+/* Compact welcome banner proportions */
+.dashboard-welcome{
+ min-height:132px!important;
+ padding:21px 27px!important;
+ margin-bottom:17px!important;
+ border-radius:20px!important;
+}
+.dashboard-welcome h2{
+ font-size:clamp(22px,2.5vw,29px)!important;
+ margin-bottom:6px!important;
+}
+.dashboard-welcome p{font-size:12px!important;line-height:1.6!important}
+.dashboard-welcome>div:last-child{padding:7px 11px!important;font-size:10px!important}
+.dashboard-welcome:after{font-size:clamp(88px,11vw,142px)!important}
+@media(min-width:1025px){
+ .dashboard-welcome{min-height:140px!important;padding:23px 30px!important}
+}
+@media(max-width:1024px){
+ .dashboard-welcome{min-height:122px!important;padding:19px 22px!important}
+ .dashboard-welcome h2{font-size:24px!important}
+}
+@media(max-width:600px){
+ .dashboard-welcome{min-height:0!important;padding:16px 16px!important;margin-bottom:12px!important;border-radius:16px!important;gap:10px!important}
+ .dashboard-welcome h2{font-size:20px!important;margin-bottom:5px!important}
+ .dashboard-welcome p{font-size:10.5px!important;line-height:1.55!important}
+ .dashboard-welcome>div:last-child{padding:6px 9px!important;font-size:9px!important}
+ .dashboard-welcome:after{font-size:88px!important;right:4%}
+}
+@media(max-width:380px){
+ .dashboard-welcome{padding:14px!important}
+ .dashboard-welcome h2{font-size:18px!important}
+ .dashboard-welcome p{font-size:10px!important}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
