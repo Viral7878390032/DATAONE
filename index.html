@@ -978,6 +978,26 @@ html[data-theme="light"] #authScreen label{color:#475569}
  .grid>.card>p{font-size:9px!important}
 }
 
+
+/* Keep used/total storage figures compact on every screen */
+#gmailStorage,#megaStorage{
+ font-size:clamp(12px,1.15vw,16px)!important;
+ line-height:1.25!important;
+ letter-spacing:-.025em;
+ white-space:nowrap;
+ overflow-wrap:normal;
+ font-variant-numeric:tabular-nums;
+}
+@media(max-width:1024px){
+ #gmailStorage,#megaStorage{font-size:14px!important}
+}
+@media(max-width:600px){
+ #gmailStorage,#megaStorage{font-size:12px!important;letter-spacing:-.04em}
+}
+@media(max-width:380px){
+ #gmailStorage,#megaStorage{font-size:11px!important}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
