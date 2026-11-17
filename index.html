@@ -928,6 +928,11 @@ html[data-theme="light"] #authScreen label{color:#475569}
  #authScreen{margin:12px auto!important;padding:16px!important}
 }
 
+
+/* Keep the header profile control icon-only; prevent stray text above it. */
+.profile-avatar{position:relative;overflow:hidden;font-size:0;line-height:0;white-space:nowrap}
+.profile-avatar::before{content:"👤";display:block;font-size:20px;line-height:1}
+@media(max-width:600px){.profile-avatar::before{font-size:17px}}
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1064,7 +1069,7 @@ html[data-theme="light"] #authScreen label{color:#475569}
 <header class="dataone-header">
 
  <div class="header-brand">
-  <button class="profile-avatar" id="profileAvatar" aria-label="Open your profile and toggle sidebar" aria-expanded="false">👤</button>
+  <button class="profile-avatar" id="profileAvatar" aria-label="Open your profile and toggle sidebar" aria-expanded="false"></button>
 
   <div>
    <h1>DATAONE</h1>
