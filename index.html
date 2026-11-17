@@ -653,8 +653,11 @@ html[data-theme="light"] .sb-footer button.danger:hover{background:#e11d48;color
 .media-toolbar input,.media-toolbar select{width:100%;min-width:0;padding:12px;border:1px solid #334155;border-radius:10px;background:#111d31;color:#f8fafc;font:inherit;font-size:13px}
 .media-status-text{font-size:13px;color:#94a3b8;min-height:22px}
 .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.media-tile{display:flex;flex-direction:column;align-items:stretch;gap:9px;text-align:left;min-width:0;padding:9px;border:1px solid var(--do-line);border-radius:12px;background:#14233a;color:#f8fafc;cursor:pointer;overflow:hidden}
-.media-tile:hover{border-color:#60a5fa;transform:translateY(-1px)}.media-tile.loading{opacity:.65}
+.media-tile{display:flex;flex-direction:column;align-items:stretch;gap:9px;text-align:left;min-width:0;padding:9px;border:1px solid var(--do-line);border-radius:12px;background:#14233a;color:#f8fafc;overflow:hidden}
+.media-tile:hover{border-color:#60a5fa}.media-tile.loading{opacity:.65}
+.media-tile-open{display:flex;flex-direction:column;align-items:stretch;gap:9px;width:100%;min-width:0;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.media-download{width:100%;padding:9px 12px;border:1px solid #3b82f6;border-radius:8px;background:#1d4ed8;color:#fff;font:600 12px inherit;cursor:pointer}
+.media-download:hover{background:#2563eb}.media-download:disabled{opacity:.6;cursor:wait}
 .media-tile-icon{position:relative;width:100%;height:128px;flex-shrink:0;display:grid;place-items:center;overflow:hidden;border-radius:8px;background:#2563eb20;color:#93c5fd;font-size:30px}
 .media-tile-icon img{width:100%;height:100%;object-fit:cover;display:block}
 .media-tile-icon .media-play-mark{position:absolute;right:8px;bottom:8px;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#0f172acc;color:#fff;font-size:13px}
@@ -2155,9 +2158,11 @@ loadMegaStorage();
    return;
   }
   filtered.forEach(item=>{
-   const tile=document.createElement("button");
-   tile.type="button";tile.className="media-tile";
+   const tile=document.createElement("div");
+   tile.className="media-tile";
    tile.dataset.mediaKey=item.accountId+":"+item.id;
+   const openButton=document.createElement("button");
+   openButton.type="button";openButton.className="media-tile-open";
    const thumb=document.createElement("span");
    thumb.className="media-tile-icon";
    thumb.textContent=item.type==="video"?"▶":"▧";
@@ -2165,8 +2170,13 @@ loadMegaStorage();
    const name=document.createElement("strong");name.textContent=item.name||"Untitled media";
    const meta=document.createElement("small");
    meta.textContent=(item.email||"MEGA account")+" · "+bytes(item.size);
-   details.append(name,meta);tile.append(thumb,details);
-   tile.addEventListener("click",()=>openPreview(item,tile));
+   details.append(name,meta);openButton.append(thumb,details);
+   openButton.addEventListener("click",()=>openPreview(item,openButton));
+   const downloadButton=document.createElement("button");
+   downloadButton.type="button";downloadButton.className="media-download";
+   downloadButton.textContent="↓ Download";
+   downloadButton.addEventListener("click",event=>{event.stopPropagation();downloadMedia(item,downloadButton);});
+   tile.append(openButton,downloadButton);
    grid.appendChild(tile);
    if(item.type==="photo"&&Number(item.size||0)<=4*1024*1024){
     const cached=thumbnailCache.get(item.accountId+":"+item.id);
@@ -2208,6 +2218,37 @@ loadMegaStorage();
    // Keep the simple image icon when a thumbnail is unavailable.
   }finally{
    thumbnailPending.delete(key);
+  }
+ }
+ async function downloadMedia(item,button){
+  const original=button.textContent;
+  button.disabled=true;button.textContent="Preparing…";
+  try{
+   const result=await callMegaFunction({action:"preview",accountId:item.accountId,nodeId:item.id});
+   if(!result.data)throw new Error("Download is unavailable. The file may exceed the current 15 MB transfer limit.");
+   const mime=result.mimeType||item.mimeType||"application/octet-stream";
+   const binary=atob(result.data);
+   const chunks=[];
+   for(let offset=0;offset<binary.length;offset+=1024*1024){
+    const part=binary.slice(offset,offset+1024*1024);
+    const bytesArray=new Uint8Array(part.length);
+    for(let i=0;i<part.length;i++)bytesArray[i]=part.charCodeAt(i);
+    chunks.push(bytesArray);
+   }
+   const blob=new Blob(chunks,{type:mime});
+   const url=URL.createObjectURL(blob);
+   const link=document.createElement("a");
+   link.href=url;link.download=item.name||"mega-download";
+   document.body.appendChild(link);link.click();link.remove();
+   setTimeout(()=>URL.revokeObjectURL(url),1500);
+   button.textContent="Downloaded";
+  }catch(error){
+   alert(error.message||"Could not download this file.");
+   button.textContent=original;
+  }finally{
+   button.disabled=false;
+   if(button.textContent==="Preparing…")button.textContent=original;
+   setTimeout(()=>{if(button.isConnected&&button.textContent==="Downloaded")button.textContent=original;},1800);
   }
  }
  async function loadMedia(){
