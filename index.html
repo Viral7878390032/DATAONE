@@ -1265,36 +1265,51 @@ html[data-theme="light"] .card small{color:#64748b!important}
 }
 
 
-/* Compact welcome banner proportions */
+/* Refined welcome banner proportions */
 .dashboard-welcome{
- min-height:132px!important;
- padding:21px 27px!important;
- margin-bottom:17px!important;
- border-radius:20px!important;
+ min-height:0!important;
+ padding:17px 24px!important;
+ margin-bottom:15px!important;
+ border-radius:18px!important;
+ gap:14px!important;
 }
+.dashboard-welcome>div:first-child{flex:1 1 320px}
+.dashboard-welcome .overview-badge{margin-bottom:7px!important;font-size:9px!important;letter-spacing:1.2px!important}
 .dashboard-welcome h2{
- font-size:clamp(22px,2.5vw,29px)!important;
- margin-bottom:6px!important;
+ font-size:clamp(21px,2.15vw,26px)!important;
+ line-height:1.18!important;
+ margin:0 0 5px!important;
+ letter-spacing:-.045em!important;
 }
-.dashboard-welcome p{font-size:12px!important;line-height:1.6!important}
-.dashboard-welcome>div:last-child{padding:7px 11px!important;font-size:10px!important}
-.dashboard-welcome:after{font-size:clamp(88px,11vw,142px)!important}
-@media(min-width:1025px){
- .dashboard-welcome{min-height:140px!important;padding:23px 30px!important}
+.dashboard-welcome p{font-size:12px!important;line-height:1.5!important}
+.dashboard-welcome>div:last-child{
+ flex:0 0 auto;
+ padding:7px 10px!important;
+ font-size:9px!important;
+ white-space:nowrap;
 }
+.dashboard-welcome:after{font-size:clamp(82px,9vw,118px)!important}
 @media(max-width:1024px){
- .dashboard-welcome{min-height:122px!important;padding:19px 22px!important}
- .dashboard-welcome h2{font-size:24px!important}
+ .dashboard-welcome{padding:15px 19px!important;gap:11px!important}
+ .dashboard-welcome h2{font-size:23px!important}
+ .dashboard-welcome>div:last-child{padding:6px 9px!important}
 }
 @media(max-width:600px){
- .dashboard-welcome{min-height:0!important;padding:16px 16px!important;margin-bottom:12px!important;border-radius:16px!important;gap:10px!important}
- .dashboard-welcome h2{font-size:20px!important;margin-bottom:5px!important}
- .dashboard-welcome p{font-size:10.5px!important;line-height:1.55!important}
- .dashboard-welcome>div:last-child{padding:6px 9px!important;font-size:9px!important}
- .dashboard-welcome:after{font-size:88px!important;right:4%}
+ .dashboard-welcome{
+  padding:15px 15px!important;
+  margin-bottom:12px!important;
+  border-radius:15px!important;
+  gap:9px!important;
+ }
+ .dashboard-welcome>div:first-child{flex-basis:100%}
+ .dashboard-welcome .overview-badge{font-size:8px!important;margin-bottom:6px!important}
+ .dashboard-welcome h2{font-size:19px!important;margin-bottom:4px!important}
+ .dashboard-welcome p{font-size:10.5px!important;line-height:1.45!important}
+ .dashboard-welcome>div:last-child{font-size:8px!important;padding:5px 8px!important}
+ .dashboard-welcome:after{font-size:78px!important;right:3%}
 }
 @media(max-width:380px){
- .dashboard-welcome{padding:14px!important}
+ .dashboard-welcome{padding:13px!important}
  .dashboard-welcome h2{font-size:18px!important}
  .dashboard-welcome p{font-size:10px!important}
 }
