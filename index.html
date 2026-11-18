@@ -1801,6 +1801,120 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
  .dataone-header{margin-bottom:11px}
 }
 
+
+
+/* DATAONE HOME — refined visual finish */
+.dataone-header{
+ position:relative;
+ padding-bottom:13px;
+ border-bottom:1px solid rgba(148,163,184,.13);
+}
+.header-brand h1{letter-spacing:.045em}
+.search{
+ border:1px solid rgba(148,163,184,.2)!important;
+ box-shadow:0 5px 18px rgba(2,8,23,.12);
+ transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease;
+}
+.search:hover{transform:translateY(-1px);border-color:rgba(96,165,250,.55)!important;box-shadow:0 9px 24px rgba(2,8,23,.18)}
+.home-shortcuts-grid{gap:16px}
+.home-shortcuts-grid>.accounts-launch-wrap,
+.home-shortcuts-grid>.media-home-grid{align-self:stretch}
+.accounts-launch-card,
+#mediaCard{
+ position:relative;
+ min-height:112px;
+ height:100%;
+ overflow:hidden;
+ border:1px solid rgba(148,163,184,.18)!important;
+ border-radius:17px!important;
+ background:linear-gradient(145deg,rgba(30,41,59,.98),rgba(15,23,42,.98))!important;
+ box-shadow:0 8px 24px rgba(2,8,23,.14),inset 0 1px rgba(255,255,255,.035);
+ transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.accounts-launch-card:hover,
+#mediaCard:hover{
+ transform:translateY(-3px);
+ border-color:rgba(96,165,250,.48)!important;
+ box-shadow:0 14px 30px rgba(2,8,23,.23),0 0 0 1px rgba(96,165,250,.08);
+}
+.accounts-launch-card:focus-visible,
+#mediaCard:focus-visible{outline:3px solid rgba(96,165,250,.65);outline-offset:3px}
+.accounts-launch-card:after,
+#mediaCard:after{
+ content:"";
+ position:absolute;
+ width:130px;height:130px;
+ right:-54px;top:-66px;
+ border-radius:50%;
+ background:radial-gradient(circle,rgba(59,130,246,.16),transparent 70%);
+ pointer-events:none;
+}
+.accounts-launch-icon{
+ width:42px!important;height:42px!important;
+ display:grid;place-items:center;
+ border-radius:13px!important;
+ background:linear-gradient(145deg,rgba(59,130,246,.22),rgba(37,99,235,.08))!important;
+ border:1px solid rgba(96,165,250,.2);
+}
+.accounts-launch-copy strong{letter-spacing:-.02em}
+.accounts-launch-copy small{line-height:1.45}
+.accounts-launch-count{
+ border:1px solid rgba(96,165,250,.2);
+ background:rgba(37,99,235,.11);
+ border-radius:999px;
+ padding:5px 9px;
+}
+#mediaCard{cursor:pointer}
+#mediaCard>div:first-child>div:first-child{
+ width:42px;height:42px;display:grid;place-items:center;
+ border-radius:13px;
+ background:linear-gradient(145deg,rgba(16,185,129,.17),rgba(20,184,166,.07));
+ border:1px solid rgba(52,211,153,.18);
+ font-size:25px!important;
+}
+#mediaCard>div:nth-child(2)>div{
+ border:1px solid rgba(148,163,184,.12);
+ background:rgba(51,65,85,.38)!important;
+ border-radius:12px!important;
+ transition:background .2s ease,border-color .2s ease;
+}
+#mediaCard:hover>div:nth-child(2)>div{border-color:rgba(96,165,250,.2)}
+#accountsPage .accounts-summary-card{
+ border:1px solid rgba(148,163,184,.16)!important;
+ border-radius:15px!important;
+ transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+#accountsPage .accounts-summary-card:hover{
+ transform:translateY(-2px);
+ border-color:rgba(96,165,250,.45)!important;
+ box-shadow:0 10px 24px rgba(2,8,23,.16);
+}
+#accountsPage .accounts-close{transition:transform .2s ease,background .2s ease}
+#accountsPage .accounts-close:hover{transform:rotate(90deg)}
+html[data-theme="light"] .accounts-launch-card,
+html[data-theme="light"] #mediaCard{
+ background:linear-gradient(145deg,#fff,#f4f8ff)!important;
+ border-color:#dce5f0!important;
+ box-shadow:0 8px 22px rgba(30,64,175,.07),inset 0 1px #fff;
+}
+html[data-theme="light"] .accounts-launch-card:hover,
+html[data-theme="light"] #mediaCard:hover{box-shadow:0 13px 28px rgba(30,64,175,.12)}
+html[data-theme="light"] #mediaCard>div:nth-child(2)>div{background:#f1f5f9!important;border-color:#e2e8f0}
+@media(max-width:760px){
+ .home-shortcuts-grid{gap:10px}
+ .accounts-launch-card,#mediaCard{min-height:96px;border-radius:15px!important}
+}
+@media(max-width:420px){
+ .accounts-launch-card{padding:12px!important;gap:9px!important}
+ .accounts-launch-icon{width:36px!important;height:36px!important}
+ .accounts-launch-count{font-size:9px!important;padding:4px 7px}
+ #mediaCard{padding:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .search,.accounts-launch-card,#mediaCard,#accountsPage .accounts-summary-card{transition:none!important}
+ .accounts-launch-card:hover,#mediaCard:hover,#accountsPage .accounts-summary-card:hover{transform:none}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
