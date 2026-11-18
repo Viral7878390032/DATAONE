@@ -1777,6 +1777,30 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
  #mediaCard>div:nth-child(2)>div{padding:8px!important}
 }
 
+
+
+/* HOME SHORTCUTS — balanced two-column dashboard */
+.home-shortcuts-grid{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ align-items:start;
+ gap:14px;
+ max-width:1440px;
+ margin:0 auto;
+}
+.home-shortcuts-grid>.accounts-launch-wrap,
+.home-shortcuts-grid>.media-home-grid{width:100%;min-width:0;margin:0!important}
+.home-shortcuts-grid>.media-home-grid{grid-template-columns:minmax(0,1fr)}
+.home-shortcuts-grid>.accounts-page{grid-column:1/-1}
+.search{margin-bottom:14px}
+.dataone-header{margin-bottom:15px}
+@media(max-width:760px){
+ .home-shortcuts-grid{grid-template-columns:minmax(0,1fr);gap:9px}
+ .home-shortcuts-grid>.accounts-page{grid-column:auto}
+ .search{margin-bottom:11px}
+ .dataone-header{margin-bottom:11px}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1940,6 +1964,8 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
  </div>
  <div style="color:#93c5fd;font-size:13px;font-weight:600">One space. Your digital world.</div>
 </section>
+
+<div class="home-shortcuts-grid">
 
 <!-- ACCOUNTS QUICK-ACCESS CARD -->
 <section class="accounts-launch-wrap" aria-label="Accounts">
@@ -2142,7 +2168,7 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
   <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">Explore your media library.</p>
  </div></div>
 
-
+</div><!-- /.home-shortcuts-grid -->
 
 <!-- CONNECTED MEDIA LIBRARY -->
 <section id="connectedMediaPage" hidden aria-label="Connected media library">
