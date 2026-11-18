@@ -1915,6 +1915,54 @@ html[data-theme="light"] #mediaCard>div:nth-child(2)>div{background:#f1f5f9!impo
  .accounts-launch-card:hover,#mediaCard:hover,#accountsPage .accounts-summary-card:hover{transform:none}
 }
 
+
+
+/* COMPACT SPACING — remove unused dashboard whitespace */
+body{padding-top:12px!important;padding-bottom:20px!important}
+.dataone-header{
+ min-height:0!important;
+ padding:4px 2px 10px!important;
+ margin-bottom:10px!important;
+}
+.search{
+ height:46px!important;
+ margin-bottom:12px!important;
+}
+.dashboard-welcome{
+ min-height:0!important;
+ padding:11px 18px!important;
+ margin-bottom:10px!important;
+}
+.home-shortcuts-grid{gap:10px!important}
+.accounts-launch-wrap{margin-bottom:0!important}
+.media-home-grid{margin-top:0!important}
+.accounts-launch-card,#mediaCard{min-height:88px}
+#mediaCard{padding:13px!important}
+#mediaCard>div:first-child{margin-bottom:10px!important}
+#mediaCard>div:nth-child(2){padding-top:10px!important}
+#mediaCard>div:nth-child(2)>div{padding:9px!important}
+footer{padding-top:12px!important;padding-bottom:4px!important}
+@media(min-width:1025px){
+ body{padding-top:14px!important;padding-bottom:18px!important}
+ .dataone-header{margin-bottom:11px!important}
+ .search{margin-bottom:13px!important}
+ .dashboard-welcome{padding:12px 20px!important;margin-bottom:11px!important}
+}
+@media(max-width:760px){
+ body{padding-top:9px!important;padding-bottom:14px!important}
+ .dataone-header{padding-bottom:8px!important;margin-bottom:8px!important}
+ .search{height:42px!important;margin-bottom:9px!important}
+ .dashboard-welcome{padding:10px 13px!important;margin-bottom:9px!important}
+ .home-shortcuts-grid{gap:8px!important}
+ #mediaCard{padding:11px!important}
+}
+@media(max-width:380px){
+ .dataone-header{margin-bottom:7px!important}
+ .search{margin-bottom:8px!important}
+ .dashboard-welcome{padding:9px 11px!important;margin-bottom:8px!important}
+ .home-shortcuts-grid{gap:7px!important}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
