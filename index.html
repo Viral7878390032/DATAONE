@@ -559,6 +559,25 @@ html[data-theme="light"] .overview-metric strong{color:#0f172a}
 @media(max-width:600px){.dashboard-welcome{padding:21px 18px;border-radius:18px;margin-bottom:13px}.overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}.overview-metric{padding:13px}.overview-metric strong{font-size:19px}.overview-metric:last-child{grid-column:1/-1}}
 
 
+/* DASHBOARD SECTION HEADINGS */
+.dashboard-section-heading{
+ max-width:1440px;
+ margin:0 auto 12px;
+ padding:0 2px;
+}
+.dashboard-section-heading h2{
+ margin:0;
+ color:var(--do-text);
+ font-size:clamp(17px,2vw,20px);
+ font-weight:800;
+ letter-spacing:-.35px;
+}
+html[data-theme="light"] .dashboard-section-heading h2{color:#0f172a}
+@media(max-width:600px){
+ .dashboard-section-heading{margin-bottom:10px;padding:0 2px}
+ .dashboard-section-heading h2{font-size:17px}
+}
+
 /* CONNECTED MEDIA LIBRARY */
 #connectedMediaPage[hidden]{display:none!important}
 #connectedMediaPage{position:fixed;inset:0;z-index:1450;overflow-y:auto;background:#080f1d;color:#f8fafc;padding:18px}
@@ -1497,6 +1516,12 @@ html[data-theme="light"] .card small{color:#64748b!important}
  </div>
  <div style="color:#93c5fd;font-size:13px;font-weight:600">One space. Your digital world.</div>
 </section>
+
+<!-- ACCOUNTS SECTION -->
+<section class="dashboard-section-heading" aria-labelledby="accountsHeading">
+ <h2 id="accountsHeading">Accounts</h2>
+</section>
+
 <!-- DASHBOARD -->
 <div class="grid">
 
