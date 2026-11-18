@@ -1590,6 +1590,88 @@ html[data-theme="light"] .account-service-card>small{color:#64748b}
  .account-service-card>small{font-size:8px}
  .account-service-action{font-size:8px}
 }
+
+/* ACCOUNTS — final premium compact-list layer */
+.accounts-launch-wrap{margin:0 auto 14px;max-width:1440px}
+.accounts-launch-card{
+ min-height:68px;padding:11px 16px;gap:12px;border-radius:15px;
+ border:1px solid rgba(117,166,255,.24);
+ background:linear-gradient(115deg,rgba(31,59,99,.92),rgba(18,29,48,.98));
+ box-shadow:0 5px 18px rgba(2,8,23,.13);
+ transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease
+}
+.accounts-launch-card:hover{transform:translateY(-1px);border-color:rgba(96,165,250,.62);box-shadow:0 9px 24px rgba(2,8,23,.2)}
+.accounts-launch-card:focus-visible,.accounts-close:focus-visible,.account-service-action:focus-visible{outline:3px solid rgba(96,165,250,.7);outline-offset:3px}
+.accounts-launch-icon{width:39px;height:39px;flex-basis:39px;border-radius:11px}
+.accounts-launch-copy{gap:2px}
+.accounts-launch-copy strong{font-size:15px;letter-spacing:-.02em}
+.accounts-launch-copy small{font-size:11px;line-height:1.4}
+.accounts-launch-count{font-size:10px;padding:5px 9px}
+.accounts-launch-arrow{font-size:20px;transition:transform .18s ease}
+.accounts-launch-card[aria-expanded="true"] .accounts-launch-arrow{transform:rotate(90deg)}
+.accounts-page{position:static;inset:auto;z-index:auto;display:block;overflow:visible;padding:0;margin:0 0 18px;background:transparent;color:inherit;backdrop-filter:none}
+.accounts-page[hidden]{display:none!important}
+.accounts-page-inner{width:100%;max-width:1440px;height:auto;max-height:none;overflow:visible;margin:0 auto;padding:0;background:transparent;color:inherit;border:0;box-shadow:none;animation:none}
+.accounts-page-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 1px 9px;padding:0;background:none}
+.accounts-page-header .overview-badge{display:none}
+.accounts-page-header h2{font-size:16px;font-weight:800;letter-spacing:-.35px;margin:0 0 2px}
+.accounts-page-header p{font-size:11px;line-height:1.4;margin:0;color:var(--do-muted)}
+.accounts-close{width:30px;height:30px;flex:0 0 30px;border-radius:9px;font-size:19px;line-height:1}
+.accounts-directory-grid{display:flex;flex-direction:column;gap:0;overflow:hidden;border:1px solid rgba(148,163,184,.18);border-radius:14px;background:rgba(15,28,48,.48)}
+.account-service-card{
+ min-width:0;min-height:0;padding:9px 12px;border:0;border-bottom:1px solid rgba(148,163,184,.13);
+ border-radius:0;background:transparent;box-shadow:none;display:grid;
+ grid-template-columns:36px minmax(0,1fr) auto;grid-template-rows:auto auto;
+ align-items:center;column-gap:10px;row-gap:2px;transition:background .16s ease
+}
+.account-service-card:last-child{border-bottom:0}
+.account-service-card:hover{transform:none;box-shadow:none;background:rgba(96,165,250,.075);border-color:rgba(148,163,184,.13)}
+.account-service-top{display:contents}
+.account-service-icon{grid-column:1;grid-row:1/3;width:34px;height:34px;flex:0 0 34px;border-radius:10px;overflow:hidden}
+.account-service-icon img{width:21px;height:21px;object-fit:contain}
+.account-service-icon b{display:none;font-size:11px;font-weight:850}
+.account-service-card>strong{grid-column:2;grid-row:1;font-size:12px;line-height:1.3;font-weight:760;letter-spacing:-.01em}
+.account-service-card>small{grid-column:2;grid-row:2;font-size:10px;line-height:1.3;color:#9aabc2}
+.account-service-state{grid-column:3;grid-row:1;justify-self:end;font-size:9px;font-weight:700;padding:4px 7px}
+.account-service-stats,.account-service-note{display:none}
+.account-service-action{grid-column:3;grid-row:2;justify-self:end;width:auto;min-height:0;margin:0;padding:5px 8px;border-radius:7px;font:700 10px/1.2 inherit;white-space:nowrap}
+.account-service-action.secondary{background:rgba(59,130,246,.09);color:#a9caff;border-color:rgba(96,165,250,.22)}
+.account-service-card.active{border-color:rgba(96,165,250,.2);box-shadow:none}
+html[data-theme="light"] .accounts-launch-card{background:linear-gradient(115deg,#edf4ff,#fff);border-color:#d4e2f7;box-shadow:0 4px 14px rgba(15,23,42,.055);color:#14213a}
+html[data-theme="light"] .accounts-directory-grid{background:#fff;border-color:#e0e7f0}
+html[data-theme="light"] .account-service-card{background:#fff;border-bottom-color:#edf1f6}
+html[data-theme="light"] .account-service-card:hover{background:#f5f8ff}
+html[data-theme="light"] .account-service-card>small{color:#68778d}
+html[data-theme="light"] .account-service-action.secondary{color:#2455a6;background:#f2f6ff;border-color:#dce8fb}
+@media(max-width:600px){
+ .accounts-launch-wrap{margin-bottom:11px}
+ .accounts-launch-card{min-height:59px;padding:9px 11px;gap:9px;border-radius:12px}
+ .accounts-launch-icon{width:33px;height:33px;flex-basis:33px;border-radius:9px}
+ .accounts-launch-copy strong{font-size:13px}
+ .accounts-launch-copy small{font-size:9px}
+ .accounts-launch-count{font-size:8px;padding:4px 6px}
+ .accounts-launch-arrow{font-size:17px}
+ .accounts-page{margin-bottom:13px}
+ .accounts-page-header h2{font-size:14px}
+ .accounts-page-header p{font-size:9px}
+ .accounts-close{width:27px;height:27px;flex-basis:27px}
+ .account-service-card{grid-template-columns:30px minmax(0,1fr) auto;column-gap:8px;padding:8px 9px}
+ .account-service-icon{width:29px;height:29px;flex-basis:29px;border-radius:8px}
+ .account-service-icon img{width:18px;height:18px}
+ .account-service-card>strong{font-size:11px}
+ .account-service-card>small{font-size:9px}
+ .account-service-state{font-size:8px;padding:3px 5px}
+ .account-service-action{font-size:9px;padding:4px 6px}
+}
+@media(max-width:360px){
+ .account-service-card{grid-template-columns:27px minmax(0,1fr) auto;column-gap:6px;padding:7px}
+ .account-service-card>strong{font-size:10px}
+ .account-service-card>small{font-size:8px}
+ .account-service-state{font-size:7px}
+ .account-service-action{font-size:8px;padding:4px 5px}
+}
+@media(prefers-reduced-motion:reduce){.accounts-launch-card,.accounts-launch-arrow,.account-service-card{transition:none}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1756,7 +1838,7 @@ html[data-theme="light"] .account-service-card>small{color:#64748b}
 
 <!-- ACCOUNTS QUICK-ACCESS CARD -->
 <section class="accounts-launch-wrap" aria-label="Accounts">
- <button class="card accounts-launch-card" id="openAccountsPage" type="button" aria-haspopup="dialog" aria-controls="accountsPage">
+ <button class="card accounts-launch-card" id="openAccountsPage" type="button" aria-expanded="false" aria-controls="accountsPage">
   <span class="accounts-launch-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span>
   <span class="accounts-launch-copy">
    <strong>Accounts</strong>
@@ -1768,7 +1850,7 @@ html[data-theme="light"] .account-service-card>small{color:#64748b}
 </section>
 
 <!-- ACCOUNTS DIRECTORY -->
-<section id="accountsPage" class="accounts-page" role="dialog" aria-modal="true" aria-labelledby="accountsPageTitle" hidden>
+<section id="accountsPage" class="accounts-page" aria-labelledby="accountsPageTitle" hidden>
  <div class="accounts-page-inner">
   <div class="accounts-page-header">
    <div>
@@ -3307,7 +3389,7 @@ loadMegaStorage();
 
 
 <script>
-/* ACCOUNTS DIRECTORY INTERACTION */
+/* ACCOUNTS DIRECTORY — accessible, compact interactions */
 (function(){
  const page=document.getElementById("accountsPage");
  const open=document.getElementById("openAccountsPage");
@@ -3318,20 +3400,36 @@ loadMegaStorage();
  const megaStorage=document.getElementById("accountsMegaStorage");
  if(!page||!open||!close)return;
 
- // Hide failed provider favicons while keeping the letter-mark fallback visible.
- page.querySelectorAll(".account-service-icon img").forEach(img=>{
-  img.addEventListener("error",()=>{img.style.display="none";});
-  if(img.complete&&img.naturalWidth===0)img.style.display="none";
+ function show(){
+  page.hidden=false;
+  open.setAttribute("aria-expanded","true");
+ }
+ function hide(returnFocus){
+  page.hidden=true;
+  open.setAttribute("aria-expanded","false");
+  if(returnFocus)open.focus();
+ }
+ open.addEventListener("click",()=>{
+  if(page.hidden)show();else hide(false);
  });
- function show(){page.hidden=false;close.focus();document.body.style.overflow="hidden";}
- function hide(){page.hidden=true;document.body.style.overflow="";open.focus();}
- open.addEventListener("click",show);
- close.addEventListener("click",hide);
- page.addEventListener("click",event=>{if(event.target===page)hide();});
- document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!page.hidden)hide();});
+ close.addEventListener("click",()=>hide(true));
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"&&!page.hidden)hide(true);
+ });
+
+ page.querySelectorAll(".account-service-icon").forEach(icon=>{
+  const img=icon.querySelector("img");
+  const fallback=icon.querySelector("b");
+  if(!img||!fallback)return;
+  const showFallback=()=>{img.hidden=true;fallback.hidden=false;};
+  fallback.hidden=true;
+  img.addEventListener("error",showFallback,{once:true});
+  if(img.complete&&img.naturalWidth===0)showFallback();
+ });
+
  if(megaButton&&megaPage){
   megaButton.addEventListener("click",()=>{
-   hide();
+   hide(false);
    megaPage.style.display="block";
    const form=document.getElementById("megaAddAccountForm");
    if(form)form.style.display="none";
