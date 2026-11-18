@@ -1694,6 +1694,23 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
  .accounts-connected-heading h3{font-size:15px}
  .accounts-other-option{padding:12px}
 }
+
+/* ACCOUNTS — connected-account summary cards */
+#accountsPage .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 14px}
+#accountsPage .accounts-summary-card{padding:13px 14px;min-height:0;border-radius:14px}
+#accountsPage .accounts-summary-card>div:first-child{gap:9px!important;margin-bottom:10px!important}
+#accountsPage .accounts-summary-card>div:first-child img{width:30px!important;height:30px!important}
+#accountsPage .accounts-summary-card>div:first-child strong{font-size:15px!important;line-height:1.25}
+#accountsPage .accounts-summary-card>div:first-child small{font-size:10px}
+#accountsPage .accounts-summary-card>div:nth-child(2){padding-top:10px!important;gap:8px!important}
+#accountsPage .accounts-summary-card>div:nth-child(2)>div>div{font-size:18px!important;margin-top:3px!important;line-height:1.25}
+#accountsPage .accounts-summary-card>div:nth-child(2)>div>small{font-size:10px}
+#accountsPage .accounts-summary-card>p{font-size:10px!important;margin:9px 0 0!important}
+.media-home-grid{margin-top:18px}
+@media(max-width:600px){
+ #accountsPage .grid{grid-template-columns:minmax(0,1fr)}
+ #accountsPage .accounts-summary-card{padding:12px}
+}
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1887,7 +1904,7 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
 <div class="grid">
 
  <!-- GMAIL CARD -->
- <a class="card" href="#gmail" id="gmailCard">
+ <a class="card accounts-summary-card" href="#gmail" id="gmailCard">
 
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
    <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail" style="width:42px;height:42px;object-fit:contain">
@@ -1918,7 +1935,7 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
  </a>
 
  <!-- MEGA CARD -->
- <a class="card" href="#mega" id="megaCard">
+ <a class="card accounts-summary-card" href="#mega" id="megaCard">
 
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
    <img src="https://mega.io/favicon.ico" alt="MEGA" style="width:42px;height:42px;object-fit:contain">
@@ -1948,36 +1965,6 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
   <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">View your connected MEGA accounts.</p>
  </a>
 
- <!-- MEDIA CARD -->
- <div class="card" id="mediaCard">
-
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-   <div style="font-size:38px">🖼️</div>
-
-   <div>
-    <strong style="font-size:18px">Media</strong>
-    <small>Your photos and videos in one place</small>
-   </div>
-  </div>
-
-  <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-
-   <div style="background:#1e293b;padding:14px;border-radius:10px">
-    <div style="font-size:25px">📷</div>
-    <strong>Photos</strong>
-    <small style="display:block;margin-top:5px">View your photo collection</small>
-   </div>
-
-   <div style="background:#1e293b;padding:14px;border-radius:10px">
-    <div style="font-size:25px">🎬</div>
-    <strong>Videos</strong>
-    <small style="display:block;margin-top:5px">View your video collection</small>
-   </div>
-
-  </div>
-
-  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">Explore your media library.</p>
- </div>
 
 </div>
   <button type="button" class="accounts-other-option" id="toggleOtherAccounts" aria-expanded="false" aria-controls="otherAccountsDirectory">
@@ -2057,6 +2044,38 @@ html[data-theme="light"] .accounts-other-option strong,html[data-theme="light"] 
   </div>
  </div>
 </section>
+
+<!-- MEDIA HOME CARD — kept outside Accounts -->
+<div class="grid media-home-grid"><div class="card" id="mediaCard">
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+   <div style="font-size:38px">🖼️</div>
+
+   <div>
+    <strong style="font-size:18px">Media</strong>
+    <small>Your photos and videos in one place</small>
+   </div>
+  </div>
+
+  <div style="border-top:1px solid #334155;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+   <div style="background:#1e293b;padding:14px;border-radius:10px">
+    <div style="font-size:25px">📷</div>
+    <strong>Photos</strong>
+    <small style="display:block;margin-top:5px">View your photo collection</small>
+   </div>
+
+   <div style="background:#1e293b;padding:14px;border-radius:10px">
+    <div style="font-size:25px">🎬</div>
+    <strong>Videos</strong>
+    <small style="display:block;margin-top:5px">View your video collection</small>
+   </div>
+
+  </div>
+
+  <p style="color:#94a3b8;font-size:12px;margin:18px 0 0">Explore your media library.</p>
+ </div></div>
+
 
 
 <!-- CONNECTED MEDIA LIBRARY -->
