@@ -1404,6 +1404,30 @@ html[data-theme="light"] .account-service-link small{color:#64748b}
 }
 @media(prefers-reduced-motion:reduce){.account-service-link,.accounts-launch-card{transition:none}}
 
+
+/* UNIFIED ACCOUNTS MANAGER CARDS */
+.accounts-directory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.account-service-card{min-width:0;padding:17px;border:1px solid rgba(148,163,184,.17);border-radius:16px;background:linear-gradient(150deg,#172943,#101c30);display:flex;flex-direction:column;gap:8px}
+.account-service-card.active{border-color:#60a5fa66;box-shadow:inset 0 1px 0 #60a5fa18}
+.account-service-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}
+.account-service-card>strong{font-size:15px;font-weight:800}
+.account-service-card>small{color:#9aabc2;font-size:11px}
+.account-service-state{font-size:10px;font-weight:750;padding:5px 8px;border-radius:30px;white-space:nowrap}
+.account-service-state.pending{color:#fbbf24;background:#78350f33;border:1px solid #f59e0b33}
+.account-service-state.connected{color:#6ee7b7;background:#065f4633;border:1px solid #34d39944}
+.account-service-stats{display:grid;grid-template-columns:1fr auto;gap:5px 10px;margin:7px 0;padding:11px 0;border-top:1px solid rgba(148,163,184,.15);border-bottom:1px solid rgba(148,163,184,.15)}
+.account-service-stats span{font-size:11px;color:#9aabc2}
+.account-service-stats b{font-size:11px;color:#f8fafc;text-align:right;overflow-wrap:anywhere}
+.account-service-action{display:block;width:100%;margin-top:auto;padding:10px 12px;border:1px solid #3b82f6;border-radius:9px;background:linear-gradient(100deg,#2563eb,#1d4ed8);color:#fff;text-align:center;text-decoration:none;font:700 12px inherit;cursor:pointer}
+.account-service-action.secondary{background:rgba(37,99,235,.10);color:#bfdbfe;border-color:rgba(96,165,250,.28)}
+.account-service-note{margin:0;color:#7f91aa;font-size:10px;line-height:1.5}
+html[data-theme="light"] .account-service-card{background:#fff;border-color:#dbe3ee}
+html[data-theme="light"] .account-service-card>small,html[data-theme="light"] .account-service-stats span{color:#64748b}
+html[data-theme="light"] .account-service-stats b{color:#0f172a}
+html[data-theme="light"] .account-service-note{color:#64748b}
+html[data-theme="light"] .account-service-action.secondary{color:#1d4ed8;background:#eff6ff}
+@media(max-width:600px){.accounts-directory-grid{grid-template-columns:minmax(0,1fr);gap:11px}.account-service-card{padding:15px}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1593,16 +1617,76 @@ html[data-theme="light"] .account-service-link small{color:#64748b}
    <button class="accounts-close" id="closeAccountsPage" type="button" aria-label="Close accounts">×</button>
   </div>
   <div class="accounts-directory-grid">
-   <a class="account-service-link" href="https://drive.google.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">G</span><span><strong>Google Drive</strong><small>Google cloud storage</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://onedrive.live.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">☁</span><span><strong>Microsoft OneDrive</strong><small>Microsoft cloud storage</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://www.dropbox.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">D</span><span><strong>Dropbox</strong><small>File storage and sharing</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://mega.io" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">M</span><span><strong>MEGA</strong><small>Secure cloud storage</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://www.pcloud.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">p</span><span><strong>pCloud</strong><small>Personal cloud storage</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://www.mediafire.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">MF</span><span><strong>MediaFire</strong><small>Online file hosting</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://www.box.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">B</span><span><strong>Box</strong><small>Cloud content management</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://icedrive.net" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">I</span><span><strong>Icedrive</strong><small>Cloud storage</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://internxt.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">In</span><span><strong>Internxt</strong><small>Private cloud storage</small></span><span class="account-service-arrow">↗</span></a>
-   <a class="account-service-link" href="https://www.terabox.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">T</span><span><strong>TeraBox</strong><small>Cloud file storage</small></span><span class="account-service-arrow">↗</span></a>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">G</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>Google Drive</strong><small>Cloud files and documents</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://drive.google.com" target="_blank" rel="noopener noreferrer">Open Google Drive ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">☁</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>Microsoft OneDrive</strong><small>Microsoft cloud storage</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://onedrive.live.com" target="_blank" rel="noopener noreferrer">Open OneDrive ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">D</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>Dropbox</strong><small>File storage and sharing</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://www.dropbox.com" target="_blank" rel="noopener noreferrer">Open Dropbox ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card active">
+    <div class="account-service-top"><span class="account-service-icon">M</span><span class="account-service-state connected">Integrated</span></div>
+    <strong>MEGA</strong><small>Secure cloud storage</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b id="accountsMegaCount">Loading…</b><span>Storage used / total</span><b id="accountsMegaStorage">Loading…</b></div>
+    <button class="account-service-action" id="manageMegaFromAccounts" type="button">Manage MEGA accounts →</button>
+    <p class="account-service-note">View, add and remove connected MEGA accounts.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">p</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>pCloud</strong><small>Personal cloud storage</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://www.pcloud.com" target="_blank" rel="noopener noreferrer">Open pCloud ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">MF</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>MediaFire</strong><small>Online file hosting</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://www.mediafire.com" target="_blank" rel="noopener noreferrer">Open MediaFire ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">B</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>Box</strong><small>Cloud content management</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://www.box.com" target="_blank" rel="noopener noreferrer">Open Box ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">I</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>Icedrive</strong><small>Cloud storage</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://icedrive.net" target="_blank" rel="noopener noreferrer">Open Icedrive ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">In</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>Internxt</strong><small>Private cloud storage</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://internxt.com" target="_blank" rel="noopener noreferrer">Open Internxt ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
+   <article class="account-service-card">
+    <div class="account-service-top"><span class="account-service-icon">T</span><span class="account-service-state pending">Not connected</span></div>
+    <strong>TeraBox</strong><small>Cloud file storage</small>
+    <div class="account-service-stats"><span>Connected accounts</span><b>—</b><span>Storage</span><b>—</b></div>
+    <a class="account-service-action secondary" href="https://www.terabox.com" target="_blank" rel="noopener noreferrer">Open TeraBox ↗</a>
+    <p class="account-service-note">DATAONE integration not configured yet.</p>
+   </article>
   </div>
  </div>
 </section>
@@ -3066,6 +3150,10 @@ loadMegaStorage();
  const page=document.getElementById("accountsPage");
  const open=document.getElementById("openAccountsPage");
  const close=document.getElementById("closeAccountsPage");
+ const megaButton=document.getElementById("manageMegaFromAccounts");
+ const megaPage=document.getElementById("connectedMegaPage");
+ const megaCount=document.getElementById("accountsMegaCount");
+ const megaStorage=document.getElementById("accountsMegaStorage");
  if(!page||!open||!close)return;
  function show(){page.hidden=false;close.focus();document.body.style.overflow="hidden";}
  function hide(){page.hidden=true;document.body.style.overflow="";open.focus();}
@@ -3073,6 +3161,24 @@ loadMegaStorage();
  close.addEventListener("click",hide);
  page.addEventListener("click",event=>{if(event.target===page)hide();});
  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!page.hidden)hide();});
+ if(megaButton&&megaPage){
+  megaButton.addEventListener("click",()=>{
+   hide();
+   megaPage.style.display="block";
+   const form=document.getElementById("megaAddAccountForm");
+   if(form)form.style.display="none";
+   if(typeof loadMegaStorage==="function")loadMegaStorage();
+  });
+ }
+ function mirror(sourceId,target){
+  const source=document.getElementById(sourceId);
+  if(!source||!target)return;
+  const sync=()=>{target.textContent=source.textContent.trim()||"—";};
+  sync();
+  new MutationObserver(sync).observe(source,{childList:true,subtree:true,characterData:true});
+ }
+ mirror("megaAccountCount",megaCount);
+ mirror("megaStorage",megaStorage);
 })();
 </script>
 
