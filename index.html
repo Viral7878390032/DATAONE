@@ -1353,6 +1353,57 @@ html[data-theme="light"] .card small{color:#64748b!important}
  .dashboard-welcome p{font-size:10.5px!important}
 }
 
+
+/* ACCOUNTS QUICK ACCESS + DIRECTORY */
+.accounts-launch-wrap{max-width:1440px;margin:0 auto 18px}
+.accounts-launch-card{
+ width:100%;min-height:88px;padding:17px 20px;display:flex;align-items:center;gap:15px;
+ text-align:left;color:inherit;font:inherit;cursor:pointer;
+ background:linear-gradient(110deg,rgba(30,64,112,.88),rgba(17,29,49,.98));
+ border:1px solid rgba(96,165,250,.32);border-radius:18px;
+ box-shadow:0 10px 28px rgba(2,6,23,.16)
+}
+.accounts-launch-card:hover{border-color:#60a5fa;box-shadow:0 14px 34px rgba(2,6,23,.25)}
+.accounts-launch-icon{width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px;border-radius:14px;background:linear-gradient(145deg,#2563eb,#1e3a8a);color:#fff;font-size:25px}
+.accounts-launch-copy{display:grid;gap:4px;min-width:0;flex:1}
+.accounts-launch-copy strong{font-size:17px;font-weight:800}
+.accounts-launch-copy small{font-size:12px;color:var(--do-muted);line-height:1.5}
+.accounts-launch-count{font-size:11px;font-weight:750;color:#bfdbfe;background:#2563eb24;border:1px solid #60a5fa35;border-radius:30px;padding:6px 10px;white-space:nowrap}
+.accounts-launch-arrow{font-size:23px;color:#93c5fd}
+.accounts-page[hidden]{display:none!important}
+.accounts-page{position:fixed;inset:0;z-index:1460;overflow-y:auto;padding:clamp(14px,3vw,30px);background:#080f1d;color:#f8fafc}
+.accounts-page-inner{max-width:1050px;margin:0 auto}
+.accounts-page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin:8px 0 26px}
+.accounts-page-header h2{font-size:clamp(25px,4vw,34px);margin:0 0 6px;letter-spacing:-.7px}
+.accounts-page-header p{margin:0;color:#9aabc2;font-size:14px}
+.accounts-close{width:42px;height:42px;flex:0 0 42px;border:1px solid #475569;border-radius:12px;background:#17243a;color:#fff;font-size:26px;cursor:pointer}
+.accounts-directory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.account-service-link{display:flex;align-items:center;gap:13px;min-width:0;padding:16px;border:1px solid rgba(148,163,184,.17);border-radius:15px;background:linear-gradient(145deg,#172943,#101c30);color:#f8fafc;text-decoration:none;transition:transform .18s,border-color .18s,background .18s}
+.account-service-link:hover{transform:translateY(-2px);border-color:#60a5fa88;background:#1a304f}
+.account-service-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:12px;background:#2563eb25;border:1px solid #60a5fa35;color:#bfdbfe;font-size:17px;font-weight:850}
+.account-service-link>span:nth-child(2){display:grid;gap:3px;min-width:0;flex:1}
+.account-service-link strong{font-size:14px;overflow-wrap:anywhere}
+.account-service-link small{font-size:11px;color:#9aabc2}
+.account-service-arrow{color:#93c5fd;font-size:19px}
+html[data-theme="light"] .accounts-launch-card{background:linear-gradient(110deg,#e7f0ff,#fff);color:#0f172a;border-color:#bfdbfe}
+html[data-theme="light"] .accounts-launch-copy small{color:#64748b}
+html[data-theme="light"] .accounts-launch-count{color:#1d4ed8;background:#dbeafe;border-color:#bfdbfe}
+html[data-theme="light"] .accounts-page{background:#f1f5f9;color:#0f172a}
+html[data-theme="light"] .accounts-page-header p{color:#64748b}
+html[data-theme="light"] .accounts-close{background:#fff;color:#0f172a;border-color:#dbe3ee}
+html[data-theme="light"] .account-service-link{background:#fff;color:#0f172a;border-color:#dbe3ee}
+html[data-theme="light"] .account-service-link small{color:#64748b}
+@media(max-width:600px){
+ .accounts-launch-card{min-height:78px;padding:13px;gap:11px;border-radius:15px}
+ .accounts-launch-icon{width:42px;height:42px;flex-basis:42px}
+ .accounts-launch-copy strong{font-size:15px}
+ .accounts-launch-copy small{font-size:11px}
+ .accounts-launch-count{font-size:10px;padding:5px 7px}
+ .accounts-directory-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+ .account-service-link{padding:13px}
+}
+@media(prefers-reduced-motion:reduce){.account-service-link,.accounts-launch-card{transition:none}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1517,9 +1568,43 @@ html[data-theme="light"] .card small{color:#64748b!important}
  <div style="color:#93c5fd;font-size:13px;font-weight:600">One space. Your digital world.</div>
 </section>
 
-<!-- ACCOUNTS SECTION -->
-<section class="dashboard-section-heading" aria-labelledby="accountsHeading">
- <h2 id="accountsHeading">Accounts</h2>
+<!-- ACCOUNTS QUICK-ACCESS CARD -->
+<section class="accounts-launch-wrap" aria-label="Accounts">
+ <button class="card accounts-launch-card" id="openAccountsPage" type="button" aria-haspopup="dialog" aria-controls="accountsPage">
+  <span class="accounts-launch-icon" aria-hidden="true">▦</span>
+  <span class="accounts-launch-copy">
+   <strong>Accounts</strong>
+   <small>Access all your cloud storage accounts in one place</small>
+  </span>
+  <span class="accounts-launch-count">10 services</span>
+  <span class="accounts-launch-arrow" aria-hidden="true">→</span>
+ </button>
+</section>
+
+<!-- ACCOUNTS DIRECTORY -->
+<section id="accountsPage" class="accounts-page" role="dialog" aria-modal="true" aria-labelledby="accountsPageTitle" hidden>
+ <div class="accounts-page-inner">
+  <div class="accounts-page-header">
+   <div>
+    <div class="overview-badge">Your digital workspace</div>
+    <h2 id="accountsPageTitle">Accounts</h2>
+    <p>Choose a service to open your cloud storage account.</p>
+   </div>
+   <button class="accounts-close" id="closeAccountsPage" type="button" aria-label="Close accounts">×</button>
+  </div>
+  <div class="accounts-directory-grid">
+   <a class="account-service-link" href="https://drive.google.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">G</span><span><strong>Google Drive</strong><small>Google cloud storage</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://onedrive.live.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">☁</span><span><strong>Microsoft OneDrive</strong><small>Microsoft cloud storage</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://www.dropbox.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">D</span><span><strong>Dropbox</strong><small>File storage and sharing</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://mega.io" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">M</span><span><strong>MEGA</strong><small>Secure cloud storage</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://www.pcloud.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">p</span><span><strong>pCloud</strong><small>Personal cloud storage</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://www.mediafire.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">MF</span><span><strong>MediaFire</strong><small>Online file hosting</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://www.box.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">B</span><span><strong>Box</strong><small>Cloud content management</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://icedrive.net" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">I</span><span><strong>Icedrive</strong><small>Cloud storage</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://internxt.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">In</span><span><strong>Internxt</strong><small>Private cloud storage</small></span><span class="account-service-arrow">↗</span></a>
+   <a class="account-service-link" href="https://www.terabox.com" target="_blank" rel="noopener noreferrer"><span class="account-service-icon">T</span><span><strong>TeraBox</strong><small>Cloud file storage</small></span><span class="account-service-arrow">↗</span></a>
+  </div>
+ </div>
 </section>
 
 <!-- DASHBOARD -->
@@ -2971,6 +3056,23 @@ loadMegaStorage();
   if(event.key==="Escape"&&!preview.hidden)closePreview();
   else if(event.key==="Escape"&&!page.hidden)closePage();
  });
+})();
+</script>
+
+
+<script>
+/* ACCOUNTS DIRECTORY INTERACTION */
+(function(){
+ const page=document.getElementById("accountsPage");
+ const open=document.getElementById("openAccountsPage");
+ const close=document.getElementById("closeAccountsPage");
+ if(!page||!open||!close)return;
+ function show(){page.hidden=false;close.focus();document.body.style.overflow="hidden";}
+ function hide(){page.hidden=true;document.body.style.overflow="";open.focus();}
+ open.addEventListener("click",show);
+ close.addEventListener("click",hide);
+ page.addEventListener("click",event=>{if(event.target===page)hide();});
+ document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!page.hidden)hide();});
 })();
 </script>
 
