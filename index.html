@@ -2443,8 +2443,8 @@ html[data-theme="light"] .card{
  <div class="media-inner">
   <button type="button" id="closeConnectedMedia" class="media-back">← Back to dashboard</button>
   <div class="media-heading">
-   <div><div class="overview-badge">MEGA · Unified library</div><h2 style="margin:4px 0 5px">Your media library</h2>
-   <p style="margin:0;color:#94a3b8;font-size:14px">Photos and videos from all MEGA accounts connected to your DATAONE profile.</p></div>
+   <div><div class="overview-badge">MEGA + GMAIL · Unified library</div><h2 style="margin:4px 0 5px">Your media library</h2>
+   <p style="margin:0;color:#94a3b8;font-size:14px">Photos, videos and document attachments from your connected MEGA and Gmail accounts.</p></div>
    <button type="button" id="refreshMegaMedia" class="media-refresh">↻ Refresh</button>
   </div>
   <div class="media-summary">
@@ -2459,7 +2459,20 @@ html[data-theme="light"] .card{
   </div>
   <p id="megaMediaStatus" class="media-status-text" role="status">Open this page to load your MEGA media.</p>
   <div id="megaMediaGrid" class="media-grid"></div>
-  <p class="media-footnote">Only photos and videos stored in your connected MEGA accounts are shown. Files stay in MEGA; DATAONE does not upload or move them.</p>
+  <p class="media-footnote">MEGA files remain in MEGA. Gmail attachments are read directly from your connected Gmail accounts. DATAONE does not upload, move, send, edit or delete your files.</p>
+  <section id="gmailMediaSection" style="margin-top:34px;padding-top:24px;border-top:1px solid rgba(148,163,184,.2)">
+   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div><div class="overview-badge">GMAIL · READ ONLY</div><h3 style="margin:5px 0;font-size:19px">Email attachments</h3><p style="margin:0;color:#94a3b8;font-size:13px">Photos, videos and documents attached to messages in your connected Gmail accounts.</p></div>
+    <button type="button" id="refreshGmailMedia" class="media-refresh">↻ Load Gmail media</button>
+   </div>
+   <div class="media-toolbar" style="margin-top:16px">
+    <input id="gmailMediaSearch" type="search" placeholder="Search attachment or email subject..." aria-label="Search Gmail attachments">
+    <select id="gmailMediaAccount" aria-label="Filter by Gmail account"><option value="all">All Gmail accounts</option></select>
+    <select id="gmailMediaType" aria-label="Filter Gmail attachments by type"><option value="all">All attachments</option><option value="photo">Photos</option><option value="video">Videos</option><option value="document">Documents</option></select>
+   </div>
+   <p id="gmailMediaStatus" class="media-status-text" role="status">Gmail attachments have not been loaded yet. Select “Load Gmail media”.</p>
+   <div id="gmailMediaGrid" class="media-grid"></div>
+  </section>
  </div>
  <div id="megaMediaPreview" class="media-preview" hidden role="dialog" aria-modal="true" aria-label="Media preview">
   <div class="media-preview-box"><button type="button" id="closeMegaMediaPreview" class="media-preview-close" aria-label="Close preview">✕</button>
@@ -3831,6 +3844,198 @@ loadMegaStorage();
   new MutationObserver(sync).observe(source,{childList:true,subtree:true,characterData:true});
  }
  mirror("megaAccountCount",megaCount);mirror("megaStorage",megaStorage);
+})();
+</script>
+
+
+<script>
+/* Gmail attachment library — read-only; keeps all file data in Gmail until preview/download. */
+(function(){
+ const section=document.getElementById("gmailMediaSection");
+ const refresh=document.getElementById("refreshGmailMedia");
+ const grid=document.getElementById("gmailMediaGrid");
+ const status=document.getElementById("gmailMediaStatus");
+ const search=document.getElementById("gmailMediaSearch");
+ const accountFilter=document.getElementById("gmailMediaAccount");
+ const typeFilter=document.getElementById("gmailMediaType");
+ if(!section||!refresh||!grid||!window.supabaseClient)return;
+
+ const FUNCTION_URL="https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/google-media";
+ const API_KEY="sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
+ let items=[];
+ let busy=false;
+ let activeObjectUrl=null;
+
+ function setStatus(message,error){
+  status.textContent=message;
+  status.style.color=error?"#f87171":"#94a3b8";
+ }
+ function classify(item){
+  const mime=String(item.mimeType||"").toLowerCase();
+  const name=String(item.filename||"").toLowerCase();
+  if(mime.startsWith("image/")||/\.(jpg|jpeg|png|gif|webp|bmp|heic|svg)$/.test(name))return "photo";
+  if(mime.startsWith("video/")||/\.(mp4|mov|webm|mkv|avi|m4v)$/.test(name))return "video";
+  return "document";
+ }
+ function formatBytes(value){
+  const n=Number(value||0);
+  if(n<1024)return n+" B";
+  if(n<1024*1024)return (n/1024).toFixed(1)+" KB";
+  if(n<1024*1024*1024)return (n/1024/1024).toFixed(1)+" MB";
+  return (n/1024/1024/1024).toFixed(2)+" GB";
+ }
+ function safeDate(value){
+  if(!value)return "";
+  const date=new Date(Number(value));
+  return Number.isNaN(date.getTime())?"":date.toLocaleDateString();
+ }
+ async function request(action,payload){
+  const {data,error}=await window.supabaseClient.auth.getSession();
+  if(error)throw error;
+  if(!data.session)throw new Error("Please sign in to DATAONE again.");
+  const response=await fetch(FUNCTION_URL,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer "+data.session.access_token,
+    "apikey":API_KEY
+   },
+   body:JSON.stringify({action,...payload})
+  });
+  if(!response.ok){
+   let message="Gmail media request failed ("+response.status+").";
+   try{const result=await response.json();if(result.error)message=result.error;}catch(_){}
+   throw new Error(message);
+  }
+  return action==="attachment"?response.blob():response.json();
+ }
+ function populateAccounts(){
+  const current=accountFilter.value||"all";
+  const accounts=new Map();
+  items.forEach(item=>accounts.set(item.accountId,item.accountEmail||"Gmail account"));
+  accountFilter.replaceChildren();
+  const all=document.createElement("option");all.value="all";all.textContent="All Gmail accounts";accountFilter.appendChild(all);
+  accounts.forEach((email,id)=>{
+   const option=document.createElement("option");option.value=id;option.textContent=email;accountFilter.appendChild(option);
+  });
+  accountFilter.value=accounts.has(current)?current:"all";
+ }
+ function render(){
+  const query=(search.value||"").trim().toLowerCase();
+  const selectedAccount=accountFilter.value;
+  const selectedType=typeFilter.value;
+  const filtered=items.filter(item=>{
+   const haystack=[item.filename,item.subject,item.sender,item.accountEmail].join(" ").toLowerCase();
+   return (!query||haystack.includes(query))&&
+    (selectedAccount==="all"||item.accountId===selectedAccount)&&
+    (selectedType==="all"||classify(item)===selectedType);
+  });
+  grid.replaceChildren();
+  if(!filtered.length){
+   const empty=document.createElement("div");
+   empty.className="media-empty";
+   empty.textContent=items.length?"No Gmail attachments match your filters.":"No Gmail attachments found in the loaded messages.";
+   grid.appendChild(empty);
+   return;
+  }
+  filtered.forEach(item=>{
+   const type=classify(item);
+   const tile=document.createElement("div");
+   tile.className="media-tile";
+   const open=document.createElement("button");
+   open.type="button";open.className="media-tile-open";
+   const icon=document.createElement("span");icon.className="media-tile-icon";
+   icon.textContent=type==="photo"?"▧":type==="video"?"▶":"📄";
+   const details=document.createElement("span");details.className="media-tile-details";
+   const name=document.createElement("strong");name.textContent=item.filename||"Unnamed attachment";
+   const meta=document.createElement("small");
+   meta.textContent=(item.accountEmail||"Gmail")+" · "+formatBytes(item.size)+" · "+(safeDate(item.date)||"Email attachment");
+   details.append(name,meta);open.append(icon,details);
+   open.addEventListener("click",()=>openAttachment(item,open));
+   const download=document.createElement("button");
+   download.type="button";download.className="media-download";download.textContent="↓ Download";
+   download.addEventListener("click",()=>openAttachment(item,download,true));
+   tile.append(open,download);
+   const subject=document.createElement("p");
+   subject.style.cssText="margin:8px 2px 0;color:#94a3b8;font-size:11px;overflow-wrap:anywhere";
+   subject.textContent=item.subject||"(No subject)";
+   tile.appendChild(subject);
+   grid.appendChild(tile);
+  });
+  setStatus("Showing "+filtered.length+" of "+items.length+" Gmail attachments.",false);
+ }
+ async function openAttachment(item,button,downloadOnly){
+  const original=button.textContent;
+  button.disabled=true;button.textContent="Loading…";
+  try{
+   const blob=await request("attachment",{
+    accountId:item.accountId,
+    messageId:item.messageId,
+    attachmentId:item.attachmentId,
+    mimeType:item.mimeType,
+    filename:item.filename
+   });
+   if(activeObjectUrl){URL.revokeObjectURL(activeObjectUrl);activeObjectUrl=null;}
+   activeObjectUrl=URL.createObjectURL(blob);
+   if(downloadOnly){
+    const link=document.createElement("a");link.href=activeObjectUrl;link.download=item.filename||"gmail-attachment";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>{if(activeObjectUrl){URL.revokeObjectURL(activeObjectUrl);activeObjectUrl=null;}},3000);
+    button.textContent="Downloaded";
+   }else{
+    const overlay=document.createElement("div");
+    overlay.style.cssText="position:fixed;inset:0;z-index:2200;background:rgba(2,6,23,.94);display:flex;align-items:center;justify-content:center;padding:18px";
+    const panel=document.createElement("div");
+    panel.style.cssText="position:relative;width:min(100%,900px);height:min(88vh,760px);background:#0f172a;border:1px solid #334155;border-radius:16px;padding:48px 14px 14px;display:flex;flex-direction:column;gap:10px";
+    const close=document.createElement("button");close.type="button";close.textContent="✕";
+    close.style.cssText="position:absolute;right:12px;top:10px;border:0;border-radius:8px;background:#334155;color:white;padding:9px 13px;cursor:pointer";
+    const heading=document.createElement("strong");heading.textContent=item.filename||"Gmail attachment";heading.style.cssText="color:#f8fafc;overflow-wrap:anywhere";
+    const content=document.createElement("div");content.style.cssText="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto";
+    if(classify(item)==="photo"){
+     const img=document.createElement("img");img.src=activeObjectUrl;img.alt=item.filename||"Attachment";img.style.cssText="max-width:100%;max-height:100%;object-fit:contain";content.appendChild(img);
+    }else if(classify(item)==="video"){
+     const video=document.createElement("video");video.src=activeObjectUrl;video.controls=true;video.autoplay=true;video.style.cssText="max-width:100%;max-height:100%";content.appendChild(video);
+    }else if(String(item.mimeType||"").toLowerCase()==="application/pdf"||/\.pdf$/i.test(item.filename||"")){
+     const frame=document.createElement("iframe");frame.src=activeObjectUrl;frame.title=item.filename||"PDF preview";frame.style.cssText="width:100%;height:100%;border:0;background:white";content.appendChild(frame);
+    }else{
+     const note=document.createElement("p");note.textContent="Preview is not available for this document type. Use Download to open it in a compatible app.";note.style.cssText="color:#cbd5e1;text-align:center";content.appendChild(note);
+    }
+    const downloadLink=document.createElement("a");downloadLink.href=activeObjectUrl;downloadLink.download=item.filename||"gmail-attachment";downloadLink.textContent="↓ Download attachment";
+    downloadLink.style.cssText="align-self:flex-start;color:#bfdbfe;padding:8px 0";
+    function closePreview(){const video=content.querySelector("video");if(video){video.pause();video.removeAttribute("src");video.load();}overlay.remove();if(activeObjectUrl){URL.revokeObjectURL(activeObjectUrl);activeObjectUrl=null;}document.removeEventListener("keydown",onEscape);}
+    function onEscape(event){if(event.key==="Escape")closePreview();}
+    close.addEventListener("click",closePreview);
+    overlay.addEventListener("click",event=>{if(event.target===overlay)closePreview();});
+    document.addEventListener("keydown",onEscape);
+    panel.append(close,heading,content,downloadLink);overlay.appendChild(panel);document.body.appendChild(overlay);
+   }
+  }catch(error){
+   alert(error.message||"Could not open this Gmail attachment.");
+  }finally{
+   button.disabled=false;
+   button.textContent=original;
+  }
+ }
+ async function load(){
+  if(busy)return;
+  busy=true;refresh.disabled=true;refresh.textContent="Loading Gmail…";
+  setStatus("Reading attachments from your connected Gmail accounts…",false);
+  grid.replaceChildren();
+  try{
+   const result=await request("list",{});
+   items=Array.isArray(result.items)?result.items:[];
+   populateAccounts();render();
+   setStatus("Loaded "+items.length+" attachments from your connected Gmail accounts.",false);
+  }catch(error){
+   items=[];populateAccounts();render();setStatus(error.message||"Could not load Gmail attachments.",true);
+  }finally{
+   busy=false;refresh.disabled=false;refresh.textContent="↻ Refresh Gmail media";
+  }
+ }
+ refresh.addEventListener("click",load);
+ search.addEventListener("input",render);
+ accountFilter.addEventListener("change",render);
+ typeFilter.addEventListener("change",render);
 })();
 </script>
 
