@@ -2460,6 +2460,25 @@ html[data-theme="light"] .card{
   <p id="megaMediaStatus" class="media-status-text" role="status">Open this page to load your MEGA media.</p>
   <div id="megaMediaGrid" class="media-grid"></div>
   <p class="media-footnote">MEGA files remain in MEGA. Gmail attachments are read directly from your connected Gmail accounts. DATAONE does not upload, move, send, edit or delete your files.</p>
+
+  <section id="googleDriveMediaSection" style="margin-top:34px;padding-top:24px;border-top:1px solid rgba(148,163,184,.2)">
+   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div><div class="overview-badge">GOOGLE DRIVE · READ ONLY</div><h3 style="margin:5px 0;font-size:19px">Google Drive files</h3><p style="margin:0;color:#94a3b8;font-size:13px">Photos, videos and documents from all connected Google Drive accounts.</p></div>
+    <button type="button" id="refreshGoogleDriveMedia" class="media-refresh">↻ Load Drive files</button>
+   </div>
+   <p id="googleDriveMediaStatus" class="media-status-text" role="status">Drive files have not been loaded yet.</p>
+   <div id="googleDriveMediaGrid" class="media-grid"></div>
+  </section>
+  <section id="googlePhotosMediaSection" style="margin-top:34px;padding-top:24px;border-top:1px solid rgba(148,163,184,.2)">
+   <div><div class="overview-badge">GOOGLE PHOTOS · READ ONLY</div><h3 style="margin:5px 0;font-size:19px">Google Photos</h3><p style="margin:0;color:#94a3b8;font-size:13px">Choose photos and videos using Google's secure Photos Picker. Google requires you to select the items you want DATAONE to display.</p></div>
+   <div class="media-toolbar" style="margin-top:16px">
+    <select id="googlePhotosAccount" aria-label="Choose Google account for Photos"><option value="">Loading Google accounts…</option></select>
+    <button type="button" id="chooseGooglePhotos" class="media-refresh">＋ Select Photos</button>
+   </div>
+   <p id="googlePhotosMediaStatus" class="media-status-text" role="status">No Google Photos selection loaded yet.</p>
+   <div id="googlePhotosMediaGrid" class="media-grid"></div>
+  </section>
+
   <section id="gmailMediaSection" style="margin-top:34px;padding-top:24px;border-top:1px solid rgba(148,163,184,.2)">
    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
     <div><div class="overview-badge">GMAIL · READ ONLY</div><h3 style="margin:5px 0;font-size:19px">Email attachments</h3><p style="margin:0;color:#94a3b8;font-size:13px">Photos, videos and documents attached to messages in your connected Gmail accounts.</p></div>
@@ -3907,7 +3926,7 @@ loadMegaStorage();
    try{const result=await response.json();if(result.error)message=result.error;}catch(_){}
    throw new Error(message);
   }
-  return action==="attachment"?response.blob():response.json();
+  return response.json();
  }
  function populateAccounts(){
   const current=accountFilter.value||"all";
@@ -3968,13 +3987,15 @@ loadMegaStorage();
   const original=button.textContent;
   button.disabled=true;button.textContent="Loading…";
   try{
-   const blob=await request("attachment",{
+   const attachment=await request("attachment",{
     accountId:item.accountId,
     messageId:item.messageId,
-    attachmentId:item.attachmentId,
-    mimeType:item.mimeType,
-    filename:item.filename
+    attachmentId:item.attachmentId
    });
+   const binary=atob(attachment.base64||"");
+   const bytes=new Uint8Array(binary.length);
+   for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+   const blob=new Blob([bytes],{type:item.mimeType||"application/octet-stream"});
    if(activeObjectUrl){URL.revokeObjectURL(activeObjectUrl);activeObjectUrl=null;}
    activeObjectUrl=URL.createObjectURL(blob);
    if(downloadOnly){
@@ -4022,10 +4043,15 @@ loadMegaStorage();
   setStatus("Reading attachments from your connected Gmail accounts…",false);
   grid.replaceChildren();
   try{
-   const result=await request("list",{});
-   items=Array.isArray(result.items)?result.items:[];
+   const accountResult=await request("accounts",{});
+   const googleAccounts=Array.isArray(accountResult.accounts)?accountResult.accounts:[];
+   const loaded=await Promise.all(googleAccounts.map(async account=>{
+    const result=await request("list",{accountId:account.id,maxResults:100});
+    return Array.isArray(result.items)?result.items:[];
+   }));
+   items=loaded.flat();
    populateAccounts();render();
-   setStatus("Loaded "+items.length+" attachments from your connected Gmail accounts.",false);
+   setStatus("Loaded "+items.length+" attachments from "+googleAccounts.length+" connected Google account(s). The first 100 matching messages per account are checked.",false);
   }catch(error){
    items=[];populateAccounts();render();setStatus(error.message||"Could not load Gmail attachments.",true);
   }finally{
@@ -4036,6 +4062,234 @@ loadMegaStorage();
  search.addEventListener("input",render);
  accountFilter.addEventListener("change",render);
  typeFilter.addEventListener("change",render);
+})();
+</script>
+
+
+<script>
+/* GOOGLE DRIVE + GOOGLE PHOTOS — read-only unified media sources */
+(function(){
+ const FUNCTION_URL="https://pmzvekfshhgipjxwlwiq.supabase.co/functions/v1/google-media";
+ const API_KEY="sb_publishable_yQtpC4r50SlDfg7UBtXawA_fQaUzwmi";
+ const driveButton=document.getElementById("refreshGoogleDriveMedia");
+ const driveStatus=document.getElementById("googleDriveMediaStatus");
+ const driveGrid=document.getElementById("googleDriveMediaGrid");
+ const photosButton=document.getElementById("chooseGooglePhotos");
+ const photosStatus=document.getElementById("googlePhotosMediaStatus");
+ const photosGrid=document.getElementById("googlePhotosMediaGrid");
+ const photosAccount=document.getElementById("googlePhotosAccount");
+ if(!driveButton||!photosButton||!window.supabaseClient)return;
+
+ let googleAccounts=[];
+ let driveItems=[];
+ let photosItems=[];
+ let driveBusy=false;
+ let photosBusy=false;
+
+ async function request(action,payload={}){
+  const {data,error}=await window.supabaseClient.auth.getSession();
+  if(error)throw error;
+  if(!data.session)throw new Error("Please sign in to DATAONE again.");
+  const response=await fetch(FUNCTION_URL,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer "+data.session.access_token,
+    "apikey":API_KEY
+   },
+   body:JSON.stringify({action,...payload})
+  });
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(result.error||"Google media request failed ("+response.status+").");
+  if(result.error)throw new Error(result.error);
+  return result;
+ }
+ function classify(item){
+  const mime=String(item.mimeType||"").toLowerCase();
+  const name=String(item.name||item.filename||"").toLowerCase();
+  if(mime.startsWith("image/")||/\.(jpg|jpeg|png|gif|webp|bmp|heic|svg|avif)$/.test(name))return "photo";
+  if(mime.startsWith("video/")||/\.(mp4|mov|webm|mkv|avi|m4v)$/.test(name))return "video";
+  return "document";
+ }
+ function bytes(value){
+  const n=Number(value||0);
+  if(!n)return "Size unavailable";
+  if(n<1024)return n+" B";
+  if(n<1024*1024)return (n/1024).toFixed(1)+" KB";
+  if(n<1024*1024*1024)return (n/1024/1024).toFixed(1)+" MB";
+  return (n/1024/1024/1024).toFixed(2)+" GB";
+ }
+ function makeBlob(base64,mime){
+  const binary=atob(base64||"");
+  const chunks=[];
+  for(let offset=0;offset<binary.length;offset+=1024*1024){
+   const part=binary.slice(offset,offset+1024*1024);
+   const data=new Uint8Array(part.length);
+   for(let i=0;i<part.length;i++)data[i]=part.charCodeAt(i);
+   chunks.push(data);
+  }
+  return new Blob(chunks,{type:mime||"application/octet-stream"});
+ }
+ function showPreview(blob,item){
+  const url=URL.createObjectURL(blob);
+  const overlay=document.createElement("div");
+  overlay.style.cssText="position:fixed;inset:0;z-index:2300;background:rgba(2,6,23,.96);display:flex;align-items:center;justify-content:center;padding:16px";
+  const panel=document.createElement("div");
+  panel.style.cssText="position:relative;width:min(100%,960px);height:min(90vh,800px);background:#0f172a;border:1px solid #334155;border-radius:16px;padding:48px 14px 14px;display:flex;flex-direction:column;gap:10px";
+  const close=document.createElement("button");
+  close.type="button";close.textContent="✕";
+  close.style.cssText="position:absolute;right:12px;top:10px;border:0;border-radius:8px;background:#334155;color:white;padding:9px 13px;cursor:pointer";
+  const title=document.createElement("strong");
+  title.textContent=item.name||item.filename||"Google media";
+  title.style.cssText="color:#f8fafc;overflow-wrap:anywhere";
+  const content=document.createElement("div");
+  content.style.cssText="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto";
+  const type=classify(item);
+  if(type==="photo"){
+   const img=document.createElement("img");img.src=url;img.alt=title.textContent;img.style.cssText="max-width:100%;max-height:100%;object-fit:contain";content.appendChild(img);
+  }else if(type==="video"){
+   const video=document.createElement("video");video.src=url;video.controls=true;video.autoplay=true;video.style.cssText="max-width:100%;max-height:100%";content.appendChild(video);
+  }else if(blob.type==="application/pdf"||/\.pdf$/i.test(title.textContent)){
+   const frame=document.createElement("iframe");frame.src=url;frame.title=title.textContent;frame.style.cssText="width:100%;height:100%;border:0;background:white";content.appendChild(frame);
+  }else{
+   const note=document.createElement("p");note.textContent="Preview is not available for this file type. Use Download to open it in a compatible app.";note.style.cssText="color:#cbd5e1;text-align:center";content.appendChild(note);
+  }
+  const download=document.createElement("a");
+  download.href=url;download.download=title.textContent;download.textContent="↓ Download file";
+  download.style.cssText="align-self:flex-start;color:#bfdbfe;padding:8px 0";
+  function closePreview(){
+   const video=content.querySelector("video");if(video){video.pause();video.removeAttribute("src");video.load();}
+   overlay.remove();URL.revokeObjectURL(url);document.removeEventListener("keydown",escape);
+  }
+  function escape(event){if(event.key==="Escape")closePreview();}
+  close.addEventListener("click",closePreview);
+  overlay.addEventListener("click",event=>{if(event.target===overlay)closePreview();});
+  document.addEventListener("keydown",escape);
+  panel.append(close,title,content,download);overlay.appendChild(panel);document.body.appendChild(overlay);
+ }
+ function renderGrid(grid,items,source){
+  grid.replaceChildren();
+  if(!items.length){
+   const empty=document.createElement("div");empty.className="media-empty";
+   empty.textContent="No "+source+" items are available yet.";
+   grid.appendChild(empty);return;
+  }
+  items.forEach(item=>{
+   const type=classify(item);
+   const tile=document.createElement("div");tile.className="media-tile";
+   const open=document.createElement("button");open.type="button";open.className="media-tile-open";
+   const icon=document.createElement("span");icon.className="media-tile-icon";icon.textContent=type==="photo"?"▧":type==="video"?"▶":"📄";
+   const details=document.createElement("span");details.className="media-tile-details";
+   const name=document.createElement("strong");name.textContent=item.name||item.filename||"Unnamed file";
+   const meta=document.createElement("small");
+   meta.textContent=(item.accountEmail||"Google account")+" · "+(item.mimeType||type)+" · "+(item.size?bytes(item.size):source);
+   details.append(name,meta);open.append(icon,details);
+   open.addEventListener("click",async()=>{
+    open.disabled=true;
+    try{
+     let result;
+     if(source==="Google Drive"){
+      result=await request("drive_file",{accountId:item.accountId,fileId:item.id});
+     }else{
+      result=await request("photos_content",{accountId:item.accountId,baseUrl:item.baseUrl,mimeType:item.mimeType});
+     }
+     showPreview(makeBlob(result.base64,result.mimeType||item.mimeType),item);
+    }catch(error){alert(error.message||"Could not preview this file.");}
+    finally{open.disabled=false;}
+   });
+   const download=document.createElement("button");download.type="button";download.className="media-download";download.textContent="↓ Download";
+   download.addEventListener("click",async()=>{
+    download.disabled=true;download.textContent="Preparing…";
+    try{
+     let result;
+     if(source==="Google Drive"){
+      result=await request("drive_file",{accountId:item.accountId,fileId:item.id});
+     }else{
+      result=await request("photos_content",{accountId:item.accountId,baseUrl:item.baseUrl,mimeType:item.mimeType});
+     }
+     const url=URL.createObjectURL(makeBlob(result.base64,result.mimeType||item.mimeType));
+     const link=document.createElement("a");link.href=url;link.download=item.name||item.filename||"google-media";
+     document.body.appendChild(link);link.click();link.remove();
+     setTimeout(()=>URL.revokeObjectURL(url),3000);
+     download.textContent="Downloaded";
+    }catch(error){alert(error.message||"Could not download this file.");download.textContent="↓ Download";}
+    finally{download.disabled=false;if(download.textContent==="Preparing…")download.textContent="↓ Download";}
+   });
+   tile.append(open,download);grid.appendChild(tile);
+  });
+ }
+ async function loadGoogleAccounts(){
+  try{
+   const result=await request("accounts",{});
+   googleAccounts=Array.isArray(result.accounts)?result.accounts:[];
+   photosAccount.replaceChildren();
+   if(!googleAccounts.length){
+    const option=document.createElement("option");option.value="";option.textContent="No Google accounts connected";photosAccount.appendChild(option);
+   }else{
+    googleAccounts.forEach(account=>{
+     const option=document.createElement("option");option.value=account.id;option.textContent=account.email||"Google account";photosAccount.appendChild(option);
+    });
+   }
+  }catch(error){
+   photosAccount.replaceChildren();
+   const option=document.createElement("option");option.value="";option.textContent="Could not load Google accounts";photosAccount.appendChild(option);
+   photosStatus.textContent=error.message||"Could not load Google accounts.";
+  }
+ }
+ async function loadDrive(){
+  if(driveBusy)return;
+  driveBusy=true;driveButton.disabled=true;driveButton.textContent="Loading Drive…";
+  driveStatus.textContent="Reading files from all connected Google Drive accounts…";
+  try{
+   const result=await request("drive_list",{});
+   driveItems=Array.isArray(result.items)?result.items:[];
+   renderGrid(driveGrid,driveItems,"Google Drive");
+   driveStatus.textContent="Loaded "+driveItems.length+" Drive files across "+(result.accountCount||0)+" account(s). Each account is limited to the first 500 files per refresh."+(result.errors?.length?" Some accounts returned errors: "+result.errors.map(x=>x.accountEmail+": "+x.error).join(" | "):"");
+  }catch(error){
+   driveItems=[];renderGrid(driveGrid,driveItems,"Google Drive");
+   driveStatus.textContent=error.message||"Could not load Google Drive files.";
+  }finally{
+   driveBusy=false;driveButton.disabled=false;driveButton.textContent="↻ Refresh Drive files";
+  }
+ }
+ async function choosePhotos(){
+  if(photosBusy)return;
+  const accountId=photosAccount.value;
+  if(!accountId){photosStatus.textContent="Connect a Google account first.";return;}
+  photosBusy=true;photosButton.disabled=true;photosButton.textContent="Opening Picker…";
+  const pickerWindow=window.open("about:blank","_blank");
+  try{
+   const created=await request("photos_create",{accountId});
+   if(!created.pickerUri)throw new Error("Google did not return a Photos Picker link.");
+   if(pickerWindow)pickerWindow.location.href=created.pickerUri;
+   else window.location.href=created.pickerUri;
+   photosStatus.textContent="Select the photos and videos in the Google Photos tab. DATAONE will load them after you finish.";
+   let ready=false;
+   for(let attempt=0;attempt<120;attempt++){
+    await new Promise(resolve=>setTimeout(resolve,3000));
+    const state=await request("photos_status",{accountId,sessionId:created.sessionId});
+    if(state.mediaItemsSet){ready=true;break;}
+   }
+   if(!ready)throw new Error("No selection was detected yet. Finish selecting items in Google Photos, then press Select Photos again.");
+   photosStatus.textContent="Selection received. Loading your selected media…";
+   let pageToken=null;const selected=[];
+   do{
+    const result=await request("photos_list",{accountId,sessionId:created.sessionId,pageSize:100,pageToken});
+    selected.push(...(result.items||[]));pageToken=result.nextPageToken||null;
+   }while(pageToken);
+   photosItems=selected;
+   renderGrid(photosGrid,photosItems,"Google Photos");
+   photosStatus.textContent="Loaded "+photosItems.length+" item(s) selected from Google Photos. This is the selection you made in Google Picker.";
+  }catch(error){
+   if(pickerWindow&&pickerWindow.location.href==="about:blank")pickerWindow.close();
+   photosStatus.textContent=error.message||"Could not load Google Photos selection.";
+  }finally{
+   photosBusy=false;photosButton.disabled=false;photosButton.textContent="＋ Select more Photos";
+  }
+ }
+ driveButton.addEventListener("click",loadDrive);
+ photosButton.addEventListener("click",choosePhotos);
+ loadGoogleAccounts();
 })();
 </script>
 
