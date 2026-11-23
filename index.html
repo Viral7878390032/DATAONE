@@ -2452,6 +2452,10 @@ html[data-theme="light"] .card{
    <div><span>Photos</span><strong id="megaMediaPhotos">—</strong></div>
    <div><span>Videos</span><strong id="megaMediaVideos">—</strong></div>
   </div>
+  <div class="media-toolbar" style="margin-top:16px">
+   <input id="allSourcesMediaSearch" type="search" placeholder="Search across MEGA, Gmail, Drive and Photos…" aria-label="Search all connected media">
+  </div>
+  <p id="allSourcesMediaSearchStatus" class="media-status-text" role="status" aria-live="polite">Search across all currently loaded connected media.</p>
   <div class="media-toolbar">
    <input id="megaMediaSearch" type="search" placeholder="Search media by filename..." aria-label="Search media">
    <select id="megaMediaAccount" aria-label="Filter by MEGA account"><option value="all">All MEGA accounts</option></select>
@@ -4325,6 +4329,35 @@ loadMegaStorage();
  driveButton.addEventListener("click",loadDrive);
  photosButton.addEventListener("click",choosePhotos);
  loadGoogleAccounts();
+})();
+</script>
+
+
+<script>
+/* DATAONE — cross-source media search (read-only) */
+(function(){
+ const input=document.getElementById("allSourcesMediaSearch");
+ const status=document.getElementById("allSourcesMediaSearchStatus");
+ const page=document.getElementById("connectedMediaPage");
+ if(!input||!status||!page)return;
+ function applySearch(){
+  const query=input.value.trim().toLocaleLowerCase();
+  const tiles=page.querySelectorAll(".media-grid .media-tile");
+  let visible=0;
+  tiles.forEach(tile=>{
+   const match=!query||tile.textContent.toLocaleLowerCase().includes(query);
+   tile.hidden=!match;
+   if(match)visible++;
+  });
+  status.textContent=query
+   ? visible+" matching item(s) across all currently loaded sources."
+   : "Showing all currently loaded connected media. Load each source to include its latest items.";
+ }
+ input.addEventListener("input",applySearch);
+ const observer=new MutationObserver(applySearch);
+ page.querySelectorAll(".media-grid").forEach(grid=>{
+  observer.observe(grid,{childList:true,subtree:true,characterData:true});
+ });
 })();
 </script>
 
