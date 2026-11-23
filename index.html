@@ -2801,7 +2801,7 @@ async function updateAuthView(){
 
  const signedIn=Boolean(data.session);
 
- authScreen.style.display=signedIn?"none":"block";
+ authScreen.style.display=signedIn?"none":"grid";
 
  document.querySelectorAll("[data-auth-hidden='true']").forEach(el=>{
 
