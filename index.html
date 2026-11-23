@@ -2070,6 +2070,124 @@ html[data-theme="light"] .card{
 }
 /* END DATAONE DASHBOARD POLISH BATCH 1 */
 
+
+/* PART 1 — DATAONE SIGN-IN EXPERIENCE */
+body:has(#authScreen:not([style*="display: none"])) {
+ min-height:100vh;
+}
+#authScreen.auth-shell{
+ --auth-blue:#60a5fa;
+ width:min(1080px,calc(100% - 40px))!important;
+ max-width:1080px!important;
+ min-height:620px;
+ margin:clamp(24px,6vh,64px) auto!important;
+ padding:0!important;
+ display:grid;
+ grid-template-columns:1.02fr .98fr;
+ overflow:hidden;
+ color:#f8fafc!important;
+ font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important;
+ background:#101d31!important;
+ border:1px solid rgba(148,163,184,.18)!important;
+ border-radius:28px!important;
+ box-shadow:0 32px 90px rgba(2,8,23,.48)!important;
+}
+.auth-intro{
+ position:relative;isolation:isolate;display:flex;flex-direction:column;
+ justify-content:space-between;min-width:0;padding:42px 44px;
+ overflow:hidden;
+ background:radial-gradient(circle at 78% 75%,rgba(37,99,235,.28),transparent 34%),
+ linear-gradient(145deg,#10294a 0%,#10213b 54%,#0c192d 100%);
+}
+.auth-intro:before,.auth-intro:after{
+ content:"";position:absolute;z-index:-1;border:1px solid rgba(147,197,253,.13);
+ border-radius:50%;pointer-events:none
+}
+.auth-intro:before{width:430px;height:430px;right:-190px;bottom:5px}
+.auth-intro:after{width:310px;height:310px;right:-130px;bottom:65px}
+.auth-brand{display:flex;align-items:center;gap:13px;font-size:15px;font-weight:850;letter-spacing:2.6px}
+.auth-logo{
+ width:43px;height:43px;display:inline-grid;place-items:center;flex:0 0 auto;
+ border:1px solid rgba(191,219,254,.45);border-radius:14px;
+ color:white;font-size:21px;font-weight:900;letter-spacing:-1px;
+ background:linear-gradient(145deg,#3b82f6,#1d4ed8 58%,#172554);
+ box-shadow:0 9px 24px rgba(37,99,235,.3),inset 0 1px rgba(255,255,255,.22)
+}
+.auth-intro-copy{max-width:420px;margin:54px 0}
+.auth-eyebrow,.auth-kicker{
+ display:inline-flex;align-items:center;gap:9px;color:#93c5fd;
+ font-size:10px;font-weight:850;letter-spacing:1.7px
+}
+.auth-eyebrow i{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 4px #34d39920}
+.auth-intro-copy h1{margin:22px 0 17px;font-size:clamp(35px,4.2vw,51px);line-height:1.12;letter-spacing:-2.1px;font-weight:850}
+.auth-intro-copy h1 span{color:#7db7ff}
+.auth-intro-copy p{max-width:360px;margin:0;color:#a9bad0;font-size:14px;line-height:1.85}
+.auth-intro-bottom{display:flex;align-items:center;gap:13px;color:#9aacc5;font-size:11px;font-weight:600}
+.auth-orbit{width:32px;height:32px;display:grid;place-items:center;border:1px solid #60a5fa55;border-radius:11px;color:#bfdbfe;background:#2563eb20;font-weight:900}
+.auth-panel{display:flex;flex-direction:column;justify-content:space-between;min-width:0;padding:34px clamp(28px,5vw,62px) 25px;background:linear-gradient(155deg,#14233a,#101b2e)}
+.auth-panel-top{display:flex;align-items:center;justify-content:flex-end;min-height:43px}
+.auth-mobile-brand{display:none}
+.auth-secure{display:inline-flex;align-items:center;gap:8px;color:#9aabc1;font-size:11px;font-weight:650}
+.auth-secure span{color:#60a5fa;font-size:17px}
+.auth-form-wrap{width:100%;max-width:390px;margin:32px auto}
+.auth-heading{margin-bottom:31px}
+.auth-heading h2{margin:10px 0 8px;color:#f8fafc;font-size:31px;font-weight:850;letter-spacing:-1.1px}
+.auth-heading p{margin:0;color:#9aabc1;font-size:13px;line-height:1.6}
+#authScreen .auth-field{margin:0 0 20px}
+#authScreen .auth-field label{display:block;margin:0 0 9px;color:#d7e1ef;font-size:12px;font-weight:700;letter-spacing:.1px}
+#authScreen .auth-field input{
+ display:block;width:100%;height:52px;margin:0;padding:0 15px!important;
+ border:1px solid #344862!important;border-radius:12px!important;
+ outline:none;background:#0b1729!important;color:#f8fafc!important;
+ font:500 13px Inter,ui-sans-serif,system-ui,sans-serif!important;
+ transition:border-color .2s,box-shadow .2s,background .2s
+}
+#authScreen .auth-field input::placeholder{color:#71839d}
+#authScreen .auth-field input:focus{border-color:#60a5fa!important;background:#0e1d33!important;box-shadow:0 0 0 4px rgba(59,130,246,.14)}
+#authSubmit{
+ display:flex;align-items:center;justify-content:space-between;width:100%;height:52px;
+ margin-top:7px;padding:0 17px!important;border:1px solid #60a5fa55!important;
+ border-radius:12px!important;color:white!important;
+ background:linear-gradient(100deg,#2563eb,#3b82f6)!important;
+ box-shadow:0 10px 25px rgba(37,99,235,.24);font-size:13px;font-weight:800!important;
+ cursor:pointer;transition:transform .2s,filter .2s,box-shadow .2s
+}
+#authSubmit:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 13px 28px rgba(37,99,235,.32)}
+#authSubmit:disabled{opacity:.65;cursor:wait;transform:none}
+#authSubmit span:last-child{font-size:19px;font-weight:500}
+.auth-switch-row{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;margin-top:24px;color:#91a3bc;font-size:12px}
+#authSwitch{padding:5px 3px;border:0;background:transparent;color:#8fc2ff;font:750 12px Inter,ui-sans-serif,system-ui,sans-serif;cursor:pointer}
+#authSwitch:hover{text-decoration:underline}
+#authMessage{min-height:20px;margin:17px 0 0;color:#bfdbfe;font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere}
+.auth-privacy{margin:20px 0 0;color:#71839d;font-size:10px;line-height:1.6;text-align:center}
+html[data-theme="light"] #authScreen.auth-shell{color:#0f172a!important;background:#fff!important;border-color:#dbe3ee!important}
+html[data-theme="light"] .auth-panel{background:linear-gradient(155deg,#fff,#f5f8fd)}
+html[data-theme="light"] .auth-heading h2{color:#0f172a}
+html[data-theme="light"] .auth-heading p,html[data-theme="light"] .auth-secure,html[data-theme="light"] .auth-switch-row{color:#64748b}
+html[data-theme="light"] #authScreen .auth-field label{color:#334155}
+html[data-theme="light"] #authScreen .auth-field input{background:#f8fafc!important;color:#0f172a!important;border-color:#cbd5e1!important}
+html[data-theme="light"] #authScreen .auth-field input::placeholder{color:#94a3b8}
+html[data-theme="light"] #authMessage{color:#1d4ed8}
+html[data-theme="light"] .auth-privacy{color:#64748b}
+@media(max-width:760px){
+ #authScreen.auth-shell{width:min(480px,calc(100% - 24px))!important;min-height:0;margin:20px auto!important;grid-template-columns:1fr;border-radius:22px!important}
+ .auth-intro{display:none}
+ .auth-panel{min-height:620px;padding:22px 25px 20px}
+ .auth-panel-top{justify-content:space-between}
+ .auth-mobile-brand{display:inline-flex;align-items:center;gap:9px;color:#f8fafc;font-size:12px;font-weight:850;letter-spacing:1.5px}
+ .auth-mobile-brand .auth-logo{width:34px;height:34px;border-radius:11px;font-size:17px}
+ .auth-form-wrap{margin:auto}
+ .auth-heading h2{font-size:28px}
+}
+@media(max-width:380px){
+ #authScreen.auth-shell{width:calc(100% - 16px)!important}
+ .auth-panel{padding:18px 18px 17px;min-height:590px}
+ .auth-secure{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ #authScreen *{transition:none!important}
+}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -2078,27 +2196,53 @@ html[data-theme="light"] .card{
 <body>
 
 <!-- SIGN IN SCREEN -->
-<div id="authScreen" style="max-width:400px;margin:40px auto;padding:28px;background:#17243a;border:1px solid #334155;border-radius:20px;color:white;font-family:Arial,sans-serif;">
+<div id="authScreen" class="auth-shell">
+ <section class="auth-intro" aria-label="About DATAONE">
+  <div class="auth-brand">
+   <span class="auth-logo">D</span>
+   <span>DATAONE</span>
+  </div>
+  <div class="auth-intro-copy">
+   <span class="auth-eyebrow"><i></i> YOUR DIGITAL SPACE, UNITED</span>
+   <h1>Everything connected.<br><span>One place.</span></h1>
+   <p>Bring your connected accounts and digital content together in one simple, secure workspace.</p>
+  </div>
+  <div class="auth-intro-bottom">
+   <span class="auth-orbit" aria-hidden="true">D</span>
+   <span>One workspace for your digital life</span>
+  </div>
+ </section>
 
- <div style="text-align:center;margin-bottom:24px">
-  <div style="display:inline-block;background:#2563eb;padding:14px 18px;border-radius:14px;font-size:24px;font-weight:bold">D</div>
-  <h2>DATAONE</h2>
-  <p style="color:#94a3b8">Sign in to your digital space</p>
- </div>
-
- <form id="authForm">
-  <label for="authEmail">Email address</label>
-  <input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white">
-
-  <label for="authPassword">Password</label>
-  <input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Enter password" style="display:block;width:100%;padding:13px;margin:8px 0 18px;border-radius:10px;border:1px solid #475569;background:#0b1220;color:white">
-
-  <button id="authSubmit" type="submit" style="width:100%;padding:13px;background:#2563eb;color:white;border:0;border-radius:10px;font-weight:bold;cursor:pointer">Sign In</button>
- </form>
-
- <button id="authSwitch" type="button" style="width:100%;margin-top:14px;padding:12px;background:transparent;color:#93c5fd;border:1px solid #334155;border-radius:10px;cursor:pointer">Create Account</button>
-
- <p id="authMessage" role="status" style="color:#cbd5e1;font-size:14px;text-align:center"></p>
+ <section class="auth-panel">
+  <div class="auth-panel-top">
+   <span class="auth-mobile-brand"><span class="auth-logo">D</span> DATAONE</span>
+   <span class="auth-secure"><span aria-hidden="true">⌑</span> Secure account access</span>
+  </div>
+  <div class="auth-form-wrap">
+   <div class="auth-heading">
+    <span class="auth-kicker">WELCOME TO DATAONE</span>
+    <h2>Welcome back</h2>
+    <p>Sign in to continue to your workspace.</p>
+   </div>
+   <form id="authForm">
+    <div class="auth-field">
+     <label for="authEmail">Email address</label>
+     <input id="authEmail" type="email" required autocomplete="email" placeholder="name@example.com">
+    </div>
+    <div class="auth-field">
+     <label for="authPassword">Password</label>
+     <input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Enter your password">
+    </div>
+    <button id="authSubmit" type="submit"><span>Sign In</span><span aria-hidden="true">→</span></button>
+   </form>
+   <div class="auth-switch-row">
+    <span>New to DATAONE?</span>
+    <button id="authSwitch" type="button">Create an account</button>
+   </div>
+   <p id="authMessage" role="status" aria-live="polite"></p>
+  </div>
+  <p class="auth-privacy">Your account is protected. DATAONE only accesses services you choose to connect.</p>
+ </section>
 </div>
 
 <!-- SIDEBAR -->
