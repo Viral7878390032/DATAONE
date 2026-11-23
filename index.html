@@ -4047,7 +4047,16 @@ loadMegaStorage();
    const googleAccounts=Array.isArray(accountResult.accounts)?accountResult.accounts:[];
    const loaded=await Promise.all(googleAccounts.map(async account=>{
     const result=await request("list",{accountId:account.id,maxResults:100});
-    return Array.isArray(result.items)?result.items:[];
+    const messages=Array.isArray(result.items)?result.items:[];
+    return messages.flatMap(message=>(message.attachments||[]).map(attachment=>({
+     ...attachment,
+     messageId:message.id,
+     subject:message.subject||"",
+     sender:message.from||"",
+     date:message.date||"",
+     accountId:account.id,
+     accountEmail:account.email||"Google account"
+    })));
    }));
    items=loaded.flat();
    populateAccounts();render();
