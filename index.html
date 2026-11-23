@@ -678,6 +678,7 @@ html[data-theme="light"] .sb-footer button.danger:hover{background:#e11d48;color
 .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
 .media-tile{display:flex;flex-direction:column;align-items:stretch;gap:9px;text-align:left;min-width:0;padding:9px;border:1px solid var(--do-line);border-radius:12px;background:#14233a;color:#f8fafc;overflow:hidden}
 .media-tile:hover{border-color:#60a5fa}.media-tile.loading{opacity:.65}
+.media-tile[data-global-search-hidden="true"]{display:none!important}
 .media-tile-open{display:flex;flex-direction:column;align-items:stretch;gap:9px;width:100%;min-width:0;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
 .media-download{width:100%;padding:9px 12px;border:1px solid #3b82f6;border-radius:8px;background:#1d4ed8;color:#fff;font:600 12px inherit;cursor:pointer}
 .media-download:hover{background:#2563eb}.media-download:disabled{opacity:.6;cursor:wait}
@@ -4343,21 +4344,31 @@ loadMegaStorage();
  function applySearch(){
   const query=input.value.trim().toLocaleLowerCase();
   const tiles=page.querySelectorAll(".media-grid .media-tile");
-  let visible=0;
+  let matches=0;
   tiles.forEach(tile=>{
    const match=!query||tile.textContent.toLocaleLowerCase().includes(query);
-   tile.hidden=!match;
-   if(match)visible++;
+   if(match)matches++;
+   if(match)delete tile.dataset.globalSearchHidden;
+   else tile.dataset.globalSearchHidden="true";
   });
   status.textContent=query
-   ? visible+" matching item(s) across all currently loaded sources."
+   ? matches+" matching item(s) across all currently loaded sources. Other source filters remain active."
    : "Showing all currently loaded connected media. Load each source to include its latest items.";
  }
  input.addEventListener("input",applySearch);
- const observer=new MutationObserver(applySearch);
+ page.addEventListener("input",event=>{
+  if(event.target!==input)applySearch();
+ },true);
+ page.addEventListener("change",event=>{
+  if(event.target!==input)applySearch();
+ },true);
+ const observer=new MutationObserver(records=>{
+  if(records.some(record=>record.type==="childList"||record.type==="characterData"))applySearch();
+ });
  page.querySelectorAll(".media-grid").forEach(grid=>{
   observer.observe(grid,{childList:true,subtree:true,characterData:true});
  });
+ applySearch();
 })();
 </script>
 
