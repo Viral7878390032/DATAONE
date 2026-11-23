@@ -1963,6 +1963,112 @@ footer{padding-top:12px!important;padding-bottom:4px!important}
  .home-shortcuts-grid{gap:7px!important}
 }
 
+
+/* DATAONE DASHBOARD POLISH BATCH 1 — visual-only, integration-safe */
+:root{
+ --do-radius-sm:12px;
+ --do-radius-md:16px;
+ --do-radius-lg:22px;
+ --do-shadow-soft:0 12px 30px rgba(2,8,23,.20);
+ --do-focus:0 0 0 3px rgba(96,165,250,.28);
+}
+body{
+ font-family:"Manrope",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+ font-size:14px;
+ line-height:1.6;
+ -webkit-font-smoothing:antialiased;
+ text-rendering:optimizeLegibility;
+}
+button,input,select,textarea{font:inherit}
+button,a,input,select,textarea{ -webkit-tap-highlight-color:transparent }
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{
+ outline:2px solid #60a5fa;
+ outline-offset:3px;
+ box-shadow:var(--do-focus);
+}
+.dataone-header,.search,.grid,.dashboard-welcome,.overview-metrics{
+ width:100%;
+}
+.dashboard-welcome{
+ border-radius:var(--do-radius-lg);
+ padding:clamp(20px,3vw,30px);
+}
+.dashboard-welcome h2{
+ font-weight:800;
+ line-height:1.2;
+}
+.dashboard-welcome p{
+ max-width:650px;
+}
+.overview-metrics{
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:14px;
+}
+.overview-metric{
+ border-radius:var(--do-radius-md);
+ padding:18px;
+ box-shadow:0 8px 22px rgba(2,8,23,.10);
+ transition:border-color .18s ease,transform .18s ease,background .18s ease;
+}
+.overview-metric:hover{
+ border-color:rgba(96,165,250,.42);
+ transform:translateY(-2px);
+}
+.overview-metric strong{
+ font-size:clamp(20px,2vw,25px);
+ font-weight:800;
+ letter-spacing:-.5px;
+}
+.card{
+ border-radius:var(--do-radius-lg);
+}
+.card strong{
+ font-weight:800;
+ letter-spacing:-.2px;
+ line-height:1.35;
+}
+.card small{
+ line-height:1.5;
+}
+.sidebar{
+ scrollbar-width:thin;
+ scrollbar-color:rgba(148,163,184,.3) transparent;
+}
+.sidebar button,.sidebar a{
+ transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
+}
+input,select,textarea{
+ max-width:100%;
+}
+html[data-theme="light"] body{
+ color:#172033;
+}
+html[data-theme="light"] .overview-metric{
+ box-shadow:0 8px 22px rgba(15,23,42,.045);
+}
+html[data-theme="light"] .card{
+ box-shadow:0 10px 26px rgba(15,23,42,.055);
+}
+@media(max-width:760px){
+ .overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .overview-metric{padding:15px}
+ .dashboard-welcome{gap:14px}
+}
+@media(max-width:420px){
+ .overview-metrics{grid-template-columns:1fr 1fr;gap:8px}
+ .overview-metric{padding:13px;border-radius:13px}
+ .overview-metric strong{font-size:19px}
+ .dashboard-welcome{border-radius:17px}
+}
+@media(hover:none){
+ .overview-metric:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .overview-metric,.sidebar button,.sidebar a{transition:none}
+ .overview-metric:hover{transform:none}
+}
+/* END DATAONE DASHBOARD POLISH BATCH 1 */
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
