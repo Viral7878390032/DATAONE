@@ -5110,5 +5110,90 @@ html[data-theme="light"] .workspace-tools:not([hidden]) .workspace-tool-card{bac
  }
 })();
 </script>
+
+
+<style>
+/* DATAONE MOBILE + TABLET APP LAYOUT */
+:root{--do-safe-bottom:env(safe-area-inset-bottom,0px)}
+html,body{min-height:100%;overscroll-behavior-x:none}
+body{padding-top:max(12px,env(safe-area-inset-top));}
+button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
+button,.sb-nav button,.sb-footer button,.card{touch-action:manipulation}
+.dataone-header{position:relative;z-index:5}
+.dataone-header .vpn-button{min-height:44px;min-width:82px}
+.search{min-height:46px}
+.card{min-height:132px}
+.accounts-page:not([hidden]),#connectedMediaPage:not([hidden]),.workspace-tools:not([hidden]){
+ overscroll-behavior:contain;
+ -webkit-overflow-scrolling:touch;
+}
+@media (min-width:601px) and (max-width:1024px){
+ body{padding:18px 22px calc(96px + var(--do-safe-bottom));}
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+ .card{min-height:145px;padding:18px;border-radius:17px}
+ .dashboard-welcome{padding:22px 24px}
+ .overview-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .dataone-bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(620px,calc(100% - 36px));bottom:max(12px,var(--do-safe-bottom))}
+ .dataone-bottom-nav button{min-height:58px}
+ .sidebar{width:min(310px,82vw)}
+}
+@media (max-width:600px){
+ body{padding:10px 12px calc(92px + var(--do-safe-bottom));}
+ .dataone-header{position:sticky;top:0;z-index:20;margin:0 -12px 12px;padding:9px 14px;background:rgba(8,15,29,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(148,163,184,.12)}
+ html[data-theme="light"] .dataone-header{background:rgba(241,245,249,.94)}
+ .header-brand h1{font-size:15px;letter-spacing:1.5px}
+ .subtitle{font-size:10px}
+ .profile-avatar{width:40px;height:40px}
+ .vpn-button{min-height:40px;padding:8px 11px}
+ .search{height:44px;margin-bottom:14px;padding:0 12px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .card{min-height:118px;padding:14px 12px;border-radius:15px}
+ .card strong{font-size:13px;line-height:1.35}
+ .card small{font-size:11px}
+ .dashboard-welcome{padding:17px 15px;border-radius:16px}
+ .dashboard-welcome h2{font-size:20px}
+ .dashboard-welcome p{font-size:12px}
+ .overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .overview-metric{padding:11px;border-radius:13px}
+ .overview-metric strong{font-size:17px}
+ .dataone-bottom-nav{left:8px;right:8px;bottom:max(8px,var(--do-safe-bottom));padding:6px;border-radius:16px}
+ .dataone-bottom-nav button{min-height:52px}
+ .dataone-bottom-nav button>span{font-size:18px}
+ .dataone-bottom-nav button small{font-size:9px}
+ .sidebar{width:min(300px,86vw);padding-top:max(18px,env(safe-area-inset-top))}
+ .sb-nav button,.sb-footer button{min-height:48px}
+}
+@media(max-width:360px){
+ body{padding-left:9px;padding-right:9px}
+ .grid{gap:8px}
+ .card{padding:12px 10px}
+ .dataone-bottom-nav{left:6px;right:6px;gap:2px}
+ .dataone-bottom-nav button small{font-size:8px}
+}
+@media(orientation:landscape) and (max-height:520px) and (max-width:1024px){
+ body{padding-bottom:82px}
+ .dataone-bottom-nav button{min-height:46px}
+ .dataone-bottom-nav button>span{font-size:16px}
+ .dataone-bottom-nav button small{font-size:9px}
+ .sidebar{max-height:100dvh;overflow-y:auto}
+}
+</style>
+
+<script>
+/* Keep mobile and tablet navigation state synchronized. */
+(function(){
+ const nav=document.querySelector(".dataone-bottom-nav");
+ if(!nav)return;
+ const buttons=[...document.querySelectorAll("[data-app-target]")];
+ const observer=new MutationObserver(()=>{
+  const active=buttons.find(button=>button.classList.contains("active"));
+  nav.querySelectorAll("[data-app-target]").forEach(button=>{
+   button.classList.toggle("active",!!active&&button.dataset.appTarget===active.dataset.appTarget);
+  });
+ });
+ buttons.forEach(button=>observer.observe(button,{attributes:true,attributeFilter:["class"]}));
+})();
+</script>
+
 </body>
 </html>
