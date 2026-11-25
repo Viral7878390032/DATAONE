@@ -2433,6 +2433,19 @@ html[data-theme="light"] .workspace-task-item span{color:#263b52}
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<style>
+/* DATAONE APP STATUS + INSTALL EXPERIENCE */
+.do-system-strip{max-width:1440px;margin:-13px auto 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:34px}
+.do-network-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid var(--do-line);border-radius:999px;background:rgba(17,29,49,.72);color:var(--do-muted);font-size:11px;font-weight:700}
+.do-network-pill i{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 3px #34d39922}
+.do-network-pill.is-offline i{background:#f59e0b;box-shadow:0 0 0 3px #f59e0b22}
+.do-network-pill.is-offline{color:#fbbf24;border-color:#f59e0b44}
+#doInstallButton,#dataoneInstallButton{padding:7px 11px;border:1px solid #60a5fa66;border-radius:999px;background:#1d4ed8;color:#fff;font-size:11px;font-weight:800;cursor:pointer}
+.do-system-hint{color:var(--do-muted);font-size:11px}
+html[data-theme="light"] .do-network-pill{background:#fff}
+@media(max-width:600px){.do-system-strip{margin:-7px 0 14px;gap:7px}.do-system-hint{flex-basis:100%}}
+</style>
 </head>
 
 <body>
@@ -2613,6 +2626,7 @@ html[data-theme="light"] .workspace-task-item span{color:#263b52}
  <img src="https://www.google.com/favicon.ico" alt="Google">
  <span>Search with Google</span>
 </a>
+<section class="do-system-strip" aria-label="App status"><span class="do-network-pill" id="dataoneNetworkStatus" role="status" aria-live="polite"><i></i> Checking connection…</span><button type="button" id="dataoneInstallButton" hidden>＋ Install DATAONE</button><span class="do-system-hint" id="dataoneAppHint">Your workspace at a glance</span></section>
 <button type="button" class="launcher-trigger" id="openDataoneLauncher" aria-haspopup="dialog">
  <span aria-hidden="true">⌕</span><span><strong>Search DATAONE</strong> <span>— jump to a page or tool</span></span><kbd>Ctrl K</kbd>
 </button>
@@ -5060,5 +5074,30 @@ html[data-theme="light"] .workspace-task-search{background:#fff;color:#0f172a;bo
 })();
 </script>
 
+
+<script>
+/* DATAONE PWA + CONNECTION STATUS. No private/API responses are cached. */
+(function(){
+ const status=document.getElementById("dataoneNetworkStatus"),install=document.getElementById("dataoneInstallButton"),hint=document.getElementById("dataoneAppHint");
+ function updateNetwork(){
+  const online=navigator.onLine;
+  if(status){status.classList.toggle("is-offline",!online);status.innerHTML="<i></i> "+(online?"Online":"Offline — cloud services unavailable");}
+  if(hint)hint.textContent=online?"Connected services need an internet connection":"You can view the cached app shell; sign-in and cloud services need internet";
+ }
+ window.addEventListener("online",updateNetwork);window.addEventListener("offline",updateNetwork);updateNetwork();
+ let installPrompt=null;
+ window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();installPrompt=event;if(install)install.hidden=false;});
+ if(install)install.addEventListener("click",async()=>{
+  if(!installPrompt){if(hint)hint.textContent="Use your browser menu and choose Add to Home screen or Install app.";return;}
+  install.disabled=true;
+  try{await installPrompt.prompt();await installPrompt.userChoice;}catch(_){if(hint)hint.textContent="Installation was not completed. You can try again from the browser menu.";}
+  installPrompt=null;install.hidden=true;install.disabled=false;
+ });
+ window.addEventListener("appinstalled",()=>{if(install)install.hidden=true;if(hint)hint.textContent="DATAONE is installed on this device.";});
+ if("serviceWorker" in navigator && (location.protocol==="https:"||location.hostname==="localhost")){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{if(hint&&navigator.onLine)hint.textContent="Offline app support could not be enabled in this browser.";}));
+ }
+})();
+</script>
 </body>
 </html>
