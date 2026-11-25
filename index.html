@@ -3254,11 +3254,67 @@ document.getElementById("dataoneTelegramButton")
   if(isMobileOrTablet())setSidebarOpen(false);
 });
 
-/* VPN BUTTON */
+/* VPN DOWNLOAD OPTIONS — official Google Play listings */
 
 document.getElementById("vpnButton")
  .addEventListener("click",()=>{
-  alert("DATAONE VPN is coming soon!");
+  if(document.getElementById("dataoneVpnPicker"))return;
+
+  const overlay=document.createElement("div");
+  overlay.id="dataoneVpnPicker";
+  overlay.setAttribute("role","dialog");
+  overlay.setAttribute("aria-modal","true");
+  overlay.setAttribute("aria-labelledby","dataoneVpnTitle");
+  overlay.style.cssText="position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(2,6,23,.78);backdrop-filter:blur(7px)";
+
+  const panel=document.createElement("div");
+  panel.style.cssText="width:min(100%,390px);padding:22px;border:1px solid rgba(96,165,250,.28);border-radius:20px;background:linear-gradient(150deg,#172943,#0c1729);color:#f8fafc;box-shadow:0 24px 70px #020617aa;font-family:inherit";
+
+  const heading=document.createElement("h2");
+  heading.id="dataoneVpnTitle";
+  heading.textContent="Choose a VPN app";
+  heading.style.cssText="margin:0 0 6px;font-size:20px;font-weight:800";
+
+  const description=document.createElement("p");
+  description.textContent="Download the official Android app from Google Play.";
+  description.style.cssText="margin:0 0 18px;color:#a9bad0;font-size:13px;line-height:1.6";
+
+  const options=document.createElement("div");
+  options.style.cssText="display:grid;gap:10px";
+
+  function addOption(name,subtitle,url){
+   const link=document.createElement("a");
+   link.href=url;
+   link.target="_blank";
+   link.rel="noopener noreferrer";
+   link.textContent=name+"  ↗";
+   link.setAttribute("aria-label","Download "+name+" from Google Play");
+   link.style.cssText="display:flex;flex-direction:column;gap:4px;padding:14px 15px;border:1px solid rgba(96,165,250,.25);border-radius:13px;background:rgba(37,99,235,.13);color:#eff6ff;text-decoration:none;font-size:14px;font-weight:800";
+   const note=document.createElement("small");
+   note.textContent=subtitle;
+   note.style.cssText="color:#a9bad0;font-size:11px;font-weight:500";
+   link.appendChild(note);
+   options.appendChild(link);
+  }
+
+  addOption("SuperVPN","Google Play · SuperSoftTech","https://play.google.com/store/apps/details?id=com.jrzheng.supervpnfree");
+  addOption("Proton VPN","Google Play · Proton AG","https://play.google.com/store/apps/details?id=ch.protonvpn.android");
+
+  const close=document.createElement("button");
+  close.type="button";
+  close.textContent="Close";
+  close.style.cssText="width:100%;margin-top:15px;padding:11px;border:1px solid rgba(148,163,184,.22);border-radius:11px;background:rgba(148,163,184,.08);color:#e2e8f0;font:700 13px inherit;cursor:pointer";
+
+  function dismiss(){overlay.remove();document.removeEventListener("keydown",onKey);}
+  function onKey(event){if(event.key==="Escape")dismiss();}
+  close.addEventListener("click",dismiss);
+  overlay.addEventListener("click",event=>{if(event.target===overlay)dismiss();});
+  document.addEventListener("keydown",onKey);
+
+  panel.append(heading,description,options,close);
+  overlay.appendChild(panel);
+  document.body.appendChild(overlay);
+  close.focus();
  });
 
 </script>
