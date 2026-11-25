@@ -2573,6 +2573,13 @@ html[data-theme="light"] .do-network-pill{background:#fff}
    <span>Media</span>
   </button>
 
+  <button type="button" data-target="accountsPage" data-app-target="accountsPage">
+   <span class="sb-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span><span>Accounts</span>
+  </button>
+  <button type="button" data-target="workspaceTools" data-app-target="workspaceTools">
+   <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span><span>Notes &amp; Tasks</span>
+  </button>
+
   <button type="button" id="dataoneTelegramButton" aria-label="Open DATAONE Telegram">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
@@ -2604,6 +2611,13 @@ html[data-theme="light"] .do-network-pill{background:#fff}
 </aside>
 
 <div id="sidebarBackdrop" class="sidebar-backdrop" hidden></div>
+<nav class="dataone-bottom-nav" aria-label="App navigation">
+ <button type="button" data-app-target="top" class="active"><span>⌂</span><small>Home</small></button>
+ <button type="button" data-app-target="gmailCard"><span>✉</span><small>Gmail</small></button>
+ <button type="button" data-app-target="megaCard"><span>☁</span><small>Storage</small></button>
+ <button type="button" data-app-target="mediaCard"><span>▧</span><small>Media</small></button>
+ <button type="button" data-app-target="accountsPage"><span>▦</span><small>More</small></button>
+</nav>
 
 <!-- HEADER -->
 <header class="dataone-header">
@@ -3363,56 +3377,36 @@ document.addEventListener("keydown",event=>{
 // resetting here was closing the sidebar while editing the profile.
 
 
-/* SIDEBAR NAVIGATION */
-
+/* DATAONE APP NAVIGATION — open focused screens, never scroll to feature cards. */
 const navItems=document.querySelectorAll(".sb-nav [data-target]");
-
-navItems.forEach(btn=>{
-
- btn.addEventListener("click",()=>{
-
-  navItems.forEach(item=>{
-   item.classList.toggle("active",item===btn);
-  });
-
-  const target=btn.dataset.target;
-
-  if(target==="mediaCard"){
-
-   // Open the unified media library directly instead of scrolling to its dashboard card.
-   document.getElementById("mediaCard")?.click();
-
-  }else if(target==="gmailCard"||target==="megaCard"){
-
-   // Gmail and MEGA live inside the Accounts overlay, so open it before navigating.
-   document.getElementById("openAccountsPage")?.click();
-   requestAnimationFrame(()=>{
-    document.getElementById(target)?.scrollIntoView({behavior:"smooth",block:"center"});
-   });
-
-  }else if(target==="top"){
-
-   window.scrollTo({
-    top:0,
-    behavior:"smooth"
-   });
-
-  }else{
-
-   document.getElementById(target)?.scrollIntoView({
-    behavior:"smooth",
-    block:"center"
-   });
-
-  }
-
-  if(isMobileOrTablet()){
-   setSidebarOpen(false);
-  }
-
- });
-
-});
+const allAppNavButtons=document.querySelectorAll("[data-app-target]");
+function navigateDataone(target,sourceButton){
+ allAppNavButtons.forEach(item=>item.classList.toggle("active",item.dataset.appTarget===target));
+ navItems.forEach(item=>item.classList.toggle("active",item.dataset.target===target));
+ if(target==="top"){
+  document.getElementById("accountsPage").hidden=true;
+  document.getElementById("workspaceTools").hidden=true;
+  document.getElementById("connectedMediaPage").hidden=true;
+  document.getElementById("connectedGmailPage").style.display="none";
+  document.getElementById("connectedMegaPage").style.display="none";
+  window.scrollTo({top:0,behavior:"smooth"});
+ }else if(target==="gmailCard"){
+  document.getElementById("gmailCard")?.click();
+ }else if(target==="megaCard"){
+  document.getElementById("megaCard")?.click();
+ }else if(target==="mediaCard"){
+  document.getElementById("mediaCard")?.click();
+ }else if(target==="accountsPage"){
+  const page=document.getElementById("accountsPage");
+  if(page.hidden)document.getElementById("openAccountsPage")?.click();
+ }else if(target==="workspaceTools"){
+  const panel=document.getElementById("workspaceTools");
+  if(panel.hidden)document.getElementById("quickOpenWorkspace")?.click();
+ }
+ if(isMobileOrTablet())setSidebarOpen(false);
+}
+allAppNavButtons.forEach(btn=>btn.addEventListener("click",()=>navigateDataone(btn.dataset.appTarget,btn)));
+navItems.forEach(btn=>btn.addEventListener("click",()=>navigateDataone(btn.dataset.target,btn)));
 
 
 /* THEME TOGGLE */
@@ -5034,6 +5028,23 @@ loadMegaStorage();
 .workspace-backup-actions button:hover{border-color:#60a5fa;background:rgba(37,99,235,.28)}
 @media(max-width:600px){.workspace-export-row{align-items:flex-start;flex-direction:column;gap:12px}.workspace-backup-actions{justify-content:flex-start;width:100%}.workspace-backup-actions button{flex:1 1 auto}}
 html[data-theme="light"] .workspace-task-search{background:#fff;color:#0f172a;border-color:#cbd5e1}
+/* DATAONE APP-STYLE SCREEN NAVIGATION */
+.dataone-bottom-nav{display:none}
+.workspace-tools:not([hidden]){position:fixed;inset:0;z-index:1480;overflow-y:auto;margin:0;padding:clamp(16px,3vw,30px);border:0;border-radius:0;background:#080f1d}
+.workspace-tools:not([hidden]) .workspace-tools-head,.workspace-tools:not([hidden]) .workspace-tools-grid,.workspace-tools:not([hidden]) .workspace-export-row{max-width:1050px;margin-left:auto;margin-right:auto}
+.workspace-tools:not([hidden]) .workspace-tools-head{margin-top:8px}
+html[data-theme="light"] .workspace-tools:not([hidden]){background:#f1f5f9;color:#0f172a}
+html[data-theme="light"] .workspace-tools:not([hidden]) .workspace-tool-card{background:#fff}
+.accounts-page[hidden],#connectedMediaPage[hidden]{display:none!important}
+@media(max-width:1024px){
+ body{padding-bottom:88px}
+ .dataone-bottom-nav{position:fixed;z-index:1300;inset:auto 10px max(10px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:7px;border:1px solid rgba(148,163,184,.2);border-radius:18px;background:rgba(9,19,35,.96);box-shadow:0 12px 35px #02061788;backdrop-filter:blur(16px)}
+ .dataone-bottom-nav button{min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:12px;background:transparent;color:#91a3bc;font:inherit;cursor:pointer}
+ .dataone-bottom-nav button>span{font-size:19px;line-height:1.2}
+ .dataone-bottom-nav button small{font-size:10px;font-weight:700}
+ .dataone-bottom-nav button.active{background:#2563eb2b;color:#93c5fd}
+}
+@media(min-width:1025px){.dataone-bottom-nav{display:none}}
 </style>
 
 <script>
