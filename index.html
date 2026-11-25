@@ -2649,12 +2649,12 @@ html[data-theme="light"] .workspace-task-item span{color:#263b52}
   </div>
   <div class="workspace-tool-card">
    <div class="workspace-tool-title"><span>✓</span><div><strong>My Tasks</strong><small id="dataoneTaskCount">0 tasks</small></div></div>
-   <form id="dataoneTaskForm" class="workspace-task-form"><input id="dataoneTaskInput" type="text" maxlength="180" placeholder="Add a task..." autocomplete="off" required><button type="submit">Add</button></form>
+   <input id="dataoneTaskSearch" class="workspace-task-search" type="search" placeholder="Search your tasks…" aria-label="Search tasks"><form id="dataoneTaskForm" class="workspace-task-form"><input id="dataoneTaskInput" type="text" maxlength="180" placeholder="Add a task..." autocomplete="off" required><button type="submit">Add</button></form>
    <ul id="dataoneTaskList" class="workspace-task-list" aria-label="Your tasks"></ul>
    <div class="workspace-note-footer"><span>Tasks are saved in this browser</span><button type="button" id="clearCompletedTasks">Clear completed</button></div>
   </div>
  </div>
- <div class="workspace-export-row"><span>Your notes and tasks stay in this browser and are not synced to your DATAONE account.</span><button type="button" id="exportWorkspaceData">Export my data ↓</button></div>
+ <div class="workspace-export-row"><span>Your notes and tasks stay in this browser and are not synced to your DATAONE account.</span><div class="workspace-backup-actions"><button type="button" id="exportWorkspaceData">Export TXT ↓</button><button type="button" id="exportWorkspaceJson">Backup JSON ↓</button><button type="button" id="importWorkspaceJson">Restore backup ↑</button><input type="file" id="workspaceBackupFile" accept=".json,application/json" hidden></div></div>
 </section>
 
 <div class="home-shortcuts-grid">
@@ -4924,7 +4924,10 @@ loadMegaStorage();
   list.replaceChildren();
   $("dataoneTaskCount").textContent=tasks.length+" task"+(tasks.length===1?"":"s")+" · "+tasks.filter(t=>t.done).length+" completed";
   if(!tasks.length){const empty=document.createElement("li");empty.className="workspace-empty";empty.textContent="No tasks yet. Add your first task above.";list.appendChild(empty);return;}
-  tasks.forEach(task=>{
+  const query=($("dataoneTaskSearch")?.value||"").trim().toLocaleLowerCase();
+  const visibleTasks=tasks.filter(task=>!query||task.text.toLocaleLowerCase().includes(query));
+  if(!visibleTasks.length){const empty=document.createElement("li");empty.className="workspace-empty";empty.textContent=query?"No tasks match your search.":"No tasks yet. Add your first task above.";list.appendChild(empty);return;}
+  visibleTasks.forEach(task=>{
    const li=document.createElement("li");li.className="workspace-task-item"+(task.done?" done":"");
    const check=document.createElement("input");check.type="checkbox";check.checked=!!task.done;check.setAttribute("aria-label","Mark "+task.text+" complete");
    check.addEventListener("change",()=>{task.done=check.checked;saveTasks();renderTasks();});
@@ -4948,6 +4951,7 @@ loadMegaStorage();
   tasks.unshift({id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()),text:value,done:false,createdAt:new Date().toISOString()});
   tasks=tasks.slice(0,300);saveTasks();renderTasks();field.value="";field.focus();
  });
+ $("dataoneTaskSearch")?.addEventListener("input",renderTasks);
  $("clearCompletedTasks")?.addEventListener("click",()=>{tasks=tasks.filter(t=>!t.done);saveTasks();renderTasks();});
  $("exportWorkspaceData")?.addEventListener("click",()=>{
   const content=["DATAONE — My Workspace","Exported: "+new Date().toLocaleString(),"","QUICK NOTES",note.value,"","TASKS",...tasks.map(t=>(t.done?"[x] ":"[ ] ")+t.text)].join("\n");
@@ -5004,6 +5008,55 @@ loadMegaStorage();
  }
  trigger.addEventListener("click",open);
  document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();open();}if(e.key==="Escape"&&overlay)close();});
+})();
+</script>
+
+
+<style>
+/* DATAONE WORKSPACE BACKUP + TASK SEARCH */
+.workspace-task-search{width:100%;margin:0 0 9px;padding:11px 13px;border:1px solid rgba(148,163,184,.22);border-radius:10px;background:rgba(8,15,29,.62);color:inherit;font:inherit;font-size:13px;outline-offset:2px}
+.workspace-backup-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.workspace-backup-actions button{padding:9px 12px;border:1px solid rgba(96,165,250,.35);border-radius:9px;background:rgba(37,99,235,.15);color:inherit;font:600 12px inherit;cursor:pointer}
+.workspace-backup-actions button:hover{border-color:#60a5fa;background:rgba(37,99,235,.28)}
+@media(max-width:600px){.workspace-export-row{align-items:flex-start;flex-direction:column;gap:12px}.workspace-backup-actions{justify-content:flex-start;width:100%}.workspace-backup-actions button{flex:1 1 auto}}
+html[data-theme="light"] .workspace-task-search{background:#fff;color:#0f172a;border-color:#cbd5e1}
+</style>
+
+<script>
+/* DATAONE WORKSPACE BACKUP — portable JSON export and validated restore */
+(function(){
+ const $=id=>document.getElementById(id);
+ const noteKey="dataone.workspace.note.v1",tasksKey="dataone.workspace.tasks.v1";
+ const exportButton=$("exportWorkspaceJson"),importButton=$("importWorkspaceJson"),fileInput=$("workspaceBackupFile");
+ if(!exportButton||!importButton||!fileInput)return;
+ function readData(){
+  let note="",tasks=[];
+  try{note=localStorage.getItem(noteKey)||"";tasks=JSON.parse(localStorage.getItem(tasksKey)||"[]");}catch(_){throw new Error("Could not read workspace data from this browser.");}
+  if(!Array.isArray(tasks))tasks=[];
+  return {app:"DATAONE",formatVersion:1,exportedAt:new Date().toISOString(),notes:note,tasks:tasks.map(t=>({id:String(t.id||""),text:String(t.text||""),done:!!t.done,createdAt:String(t.createdAt||"")}))};
+ }
+ exportButton.addEventListener("click",()=>{
+  try{const data=readData(),blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="DATAONE-backup-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+  catch(error){alert(error.message||"Could not create backup.");}
+ });
+ importButton.addEventListener("click",()=>fileInput.click());
+ fileInput.addEventListener("change",async()=>{
+  const file=fileInput.files&&fileInput.files[0];if(!file)return;
+  try{
+   if(file.size>2*1024*1024)throw new Error("Backup file is too large (maximum 2 MB).");
+   const data=JSON.parse(await file.text());
+   if(!data||data.app!=="DATAONE"||data.formatVersion!==1||typeof data.notes!=="string"||!Array.isArray(data.tasks))throw new Error("This is not a supported DATAONE backup file.");
+   if(data.notes.length>12000||data.tasks.length>300)throw new Error("Backup exceeds the allowed notes or task limits.");
+   const tasks=data.tasks.map((task,index)=>{
+    if(!task||typeof task.text!=="string"||task.text.length>180)throw new Error("Backup contains an invalid task at item "+(index+1)+".");
+    return {id:typeof task.id==="string"&&task.id?task.id:"restored-"+index+"-"+Date.now(),text:task.text,done:!!task.done,createdAt:typeof task.createdAt==="string"?task.createdAt:""};
+   });
+   if(!confirm("Restore this DATAONE backup? Your current local notes and tasks will be replaced."))return;
+   localStorage.setItem(noteKey,data.notes);localStorage.setItem(tasksKey,JSON.stringify(tasks));
+   alert("Backup restored. DATAONE will reload your workspace.");location.reload();
+  }catch(error){alert(error.message||"Could not restore this backup.");}
+  finally{fileInput.value="";}
+ });
 })();
 </script>
 
