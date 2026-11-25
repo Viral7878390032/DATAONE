@@ -2580,7 +2580,7 @@ html[data-theme="light"] .do-network-pill{background:#fff}
    <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span><span>Notes &amp; Tasks</span>
   </button>
 
-  <button type="button" data-target="telegram" data-app-target="telegram" id="dataoneTelegramButton" aria-label="Open DATAONE Telegram">
+  <button type="button" id="dataoneTelegramButton" aria-label="Open DATAONE Telegram">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
      <path d="m22 2-7 20-4-9-9-4 20-7Z"/>
@@ -3410,8 +3410,6 @@ function navigateDataone(target,sourceButton){
  }else if(target==="workspaceTools"){
   closeScreens();
   if(workspace?.hidden)document.getElementById("quickOpenWorkspace")?.click();
- }else if(target==="telegram"){
-  document.getElementById("dataoneTelegramButton")?.click();
  }
  if(isMobileOrTablet())setSidebarOpen(false);
 }
