@@ -2534,7 +2534,7 @@ html[data-theme="light"] .do-network-pill{background:#fff}
 
   <span class="sb-label">WORKSPACE</span>
 
-  <button type="button" class="active" data-target="top">
+  <button type="button" class="active" data-target="top" data-app-target="top">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
      <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/>
@@ -2543,7 +2543,7 @@ html[data-theme="light"] .do-network-pill{background:#fff}
    <span>Home</span>
   </button>
 
-  <button type="button" data-target="gmailCard">
+  <button type="button" data-target="gmailCard" data-app-target="gmailCard">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
      <rect x="3" y="5" width="18" height="14" rx="2"/>
@@ -2553,7 +2553,7 @@ html[data-theme="light"] .do-network-pill{background:#fff}
    <span>Gmail</span>
   </button>
 
-  <button type="button" data-target="megaCard">
+  <button type="button" data-target="megaCard" data-app-target="megaCard">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
      <path d="M7 18h11a4 4 0 0 0 0-8 6 6 0 0 0-11-1 4.5 4.5 0 0 0 0 9z"/>
@@ -2562,7 +2562,7 @@ html[data-theme="light"] .do-network-pill{background:#fff}
    <span>Storage</span>
   </button>
 
-  <button type="button" data-target="mediaCard">
+  <button type="button" data-target="mediaCard" data-app-target="mediaCard">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
      <rect x="3" y="3" width="18" height="18" rx="3"/>
@@ -2580,7 +2580,7 @@ html[data-theme="light"] .do-network-pill{background:#fff}
    <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span><span>Notes &amp; Tasks</span>
   </button>
 
-  <button type="button" id="dataoneTelegramButton" aria-label="Open DATAONE Telegram">
+  <button type="button" data-target="telegram" data-app-target="telegram" id="dataoneTelegramButton" aria-label="Open DATAONE Telegram">
    <span class="sb-icon">
     <svg viewBox="0 0 24 24">
      <path d="m22 2-7 20-4-9-9-4 20-7Z"/>
@@ -3381,27 +3381,37 @@ document.addEventListener("keydown",event=>{
 const navItems=document.querySelectorAll(".sb-nav [data-target]");
 const allAppNavButtons=document.querySelectorAll("[data-app-target]");
 function navigateDataone(target,sourceButton){
+ const accounts=document.getElementById("accountsPage");
+ const workspace=document.getElementById("workspaceTools");
+ const media=document.getElementById("connectedMediaPage");
+ const gmail=document.getElementById("connectedGmailPage");
+ const mega=document.getElementById("connectedMegaPage");
+ const closeScreens=()=>{
+  if(accounts)accounts.hidden=true;
+  if(workspace)workspace.hidden=true;
+  if(media)media.hidden=true;
+  if(gmail)gmail.style.display="none";
+  if(mega)mega.style.display="none";
+ };
  allAppNavButtons.forEach(item=>item.classList.toggle("active",item.dataset.appTarget===target));
  navItems.forEach(item=>item.classList.toggle("active",item.dataset.target===target));
  if(target==="top"){
-  document.getElementById("accountsPage").hidden=true;
-  document.getElementById("workspaceTools").hidden=true;
-  document.getElementById("connectedMediaPage").hidden=true;
-  document.getElementById("connectedGmailPage").style.display="none";
-  document.getElementById("connectedMegaPage").style.display="none";
+  closeScreens();
   window.scrollTo({top:0,behavior:"smooth"});
- }else if(target==="gmailCard"){
-  document.getElementById("gmailCard")?.click();
- }else if(target==="megaCard"){
-  document.getElementById("megaCard")?.click();
+ }else if(target==="gmailCard"||target==="megaCard"){
+  closeScreens();
+  if(accounts&&accounts.hidden)document.getElementById("openAccountsPage")?.click();
+  document.getElementById(target)?.click();
  }else if(target==="mediaCard"){
+  closeScreens();
   document.getElementById("mediaCard")?.click();
  }else if(target==="accountsPage"){
-  const page=document.getElementById("accountsPage");
-  if(page.hidden)document.getElementById("openAccountsPage")?.click();
+  if(accounts?.hidden){closeScreens();document.getElementById("openAccountsPage")?.click();}
  }else if(target==="workspaceTools"){
-  const panel=document.getElementById("workspaceTools");
-  if(panel.hidden)document.getElementById("quickOpenWorkspace")?.click();
+  closeScreens();
+  if(workspace?.hidden)document.getElementById("quickOpenWorkspace")?.click();
+ }else if(target==="telegram"){
+  document.getElementById("dataoneTelegramButton")?.click();
  }
  if(isMobileOrTablet())setSidebarOpen(false);
 }
@@ -5192,6 +5202,99 @@ button,.sb-nav button,.sb-footer button,.card{touch-action:manipulation}
   });
  });
  buttons.forEach(button=>observer.observe(button,{attributes:true,attributeFilter:["class"]}));
+})();
+</script>
+
+
+<style>
+/* DATAONE PRODUCT EXPERIENCE REFRESH — responsive app hierarchy */
+:root{--do-rail-width:82px;--do-accent:#58b5ff}
+html{scroll-behavior:smooth}
+body{min-height:100dvh}
+.quick-actions{display:none!important}
+.home-shortcuts-grid{max-width:1440px;margin-inline:auto}
+.accounts-launch-wrap{margin-bottom:14px}
+.accounts-launch-card{width:100%;text-align:left}
+.dataone-header{max-width:1440px}
+.dashboard-welcome,.overview-metrics,.home-shortcuts-grid{max-width:1440px}
+.card,.quick-action,.accounts-launch-card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+@media(hover:hover){
+ .card:hover,.accounts-launch-card:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(2,8,23,.22)}
+}
+@media(max-width:599px){
+ .dataone-bottom-nav{display:grid}
+ .sidebar{width:min(300px,88vw);transform:translateX(-105%)}
+ .sidebar.mobile-open{transform:translateX(0)}
+ .dataone-header{gap:10px}
+ .header-brand{min-width:0}
+ .header-brand>div{min-width:0}
+ .header-brand h1,.subtitle{white-space:nowrap}
+ .dashboard-welcome{align-items:flex-start}
+ .dashboard-welcome>div:last-child{display:none}
+ .overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .home-shortcuts-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+ .media-home-grid .card{width:100%}
+ .accounts-page:not([hidden]),#connectedMediaPage:not([hidden]),.workspace-tools:not([hidden]),.mega-page:not([hidden]){
+  position:fixed;inset:0;z-index:1450;overflow-y:auto;padding:16px 14px calc(94px + env(safe-area-inset-bottom));border-radius:0
+ }
+ .accounts-page-inner,.media-inner,.mega-container{width:100%;max-width:100%;margin:0 auto}
+ .accounts-page-header,.media-heading{align-items:flex-start}
+ .accounts-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .accounts-summary-card{min-width:0}
+ .accounts-summary-card>div:first-child img{width:34px!important;height:34px!important}
+}
+@media(min-width:600px) and (max-width:1024px){
+ body{padding:18px 20px 28px calc(var(--do-rail-width) + 28px)!important}
+ .sidebar{
+  position:fixed;inset:0 auto 0 0;width:var(--do-rail-width)!important;
+  transform:none!important;z-index:1200;padding:18px 8px 14px;
+  overflow:visible;border-right:1px solid rgba(148,163,184,.18);
+  box-shadow:8px 0 30px rgba(2,8,23,.12)
+ }
+ .sidebar-backdrop{display:none!important}
+ .sb-user-profile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 14px}
+ .sb-user-avatar{width:44px;height:44px}
+ .sb-user-info{display:none}
+ .sb-profile-edit{font-size:9px;padding:3px 5px}
+ .sb-profile-editor:not([hidden]){position:fixed;left:94px;top:18px;z-index:1600;width:min(290px,calc(100vw - 120px));padding:16px;border-radius:16px;background:var(--sb-bg);box-shadow:0 16px 50px #0008}
+ .sb-label{display:none}
+ .sb-nav{gap:8px;margin-top:8px}
+ .sb-nav button,.sb-footer button{min-height:62px;padding:7px 3px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;border-radius:13px;font-size:10px;text-align:center}
+ .sb-nav button>span:last-child,.sb-footer button>span:last-child{display:block;font-size:9px;line-height:1.1;max-width:68px;white-space:normal}
+ .sb-icon{width:24px;height:24px;justify-content:center}
+ .sb-icon svg{width:22px;height:22px}
+ .sb-footer{gap:5px}
+ .sb-footer-divider{margin:6px 2px}
+ .dataone-bottom-nav{display:none!important}
+ .dataone-header{max-width:1200px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ .overview-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .home-shortcuts-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+ .accounts-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .accounts-page:not([hidden]),#connectedMediaPage:not([hidden]),.workspace-tools:not([hidden]),.mega-page:not([hidden]){position:fixed;inset:0 0 0 var(--do-rail-width);z-index:1450;overflow-y:auto;padding:24px;max-width:none}
+}
+@media(min-width:1025px){
+ .dataone-bottom-nav{display:none!important}
+ .home-shortcuts-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+ .accounts-page:not([hidden]),#connectedMediaPage:not([hidden]),.workspace-tools:not([hidden]),.mega-page:not([hidden]){max-height:100dvh;overflow-y:auto}
+}
+@media(max-width:380px){
+ .accounts-directory-grid{grid-template-columns:minmax(0,1fr)}
+ .overview-metric{padding:10px}
+ .overview-metric strong{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+</style>
+<script>
+/* Tablet rail is persistent; keep profile editing available without opening a drawer. */
+(function(){
+ const rail=window.matchMedia("(min-width:600px) and (max-width:1024px)");
+ const avatar=document.getElementById("profileAvatar");
+ if(!avatar)return;
+ function sync(){avatar.style.display=rail.matches?"none":"";}
+ sync();rail.addEventListener?.("change",sync);
 })();
 </script>
 
