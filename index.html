@@ -2378,6 +2378,43 @@ html[data-theme="light"] .sb-user-profile{background:#f4f8fd;border-color:#dbe5e
  .media-grid{grid-template-columns:1fr}
 }
 
+
+/* PERSONAL WORKSPACE TOOLS */
+.workspace-tools{margin:0 0 20px;padding:22px;border:1px solid rgba(88,181,255,.25);border-radius:21px;background:linear-gradient(145deg,rgba(17,36,58,.98),rgba(12,25,42,.98));box-shadow:0 15px 40px #0002}
+.workspace-tools[hidden]{display:none!important}
+.workspace-tools-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding-bottom:17px;border-bottom:1px solid var(--do-line)}
+.workspace-tools-head h2{margin:10px 0 4px;font-size:25px;letter-spacing:-.5px}
+.workspace-tools-head p{margin:0;color:var(--do-muted);font-size:13px}
+.workspace-close{width:36px;height:36px;border:1px solid var(--do-line);border-radius:11px;background:#ffffff0a;color:inherit;font-size:23px;cursor:pointer}
+.workspace-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:17px}
+.workspace-tool-card{min-width:0;padding:17px;border:1px solid var(--do-line);border-radius:16px;background:#0b192a}
+.workspace-tool-title{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.workspace-tool-title>span{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:rgba(88,181,255,.13);color:#8bd0ff;font-size:19px}
+.workspace-tool-title>div{display:grid;gap:2px}
+.workspace-tool-title strong{font-size:14px}
+.workspace-tool-title small{color:var(--do-muted);font-size:11px}
+#dataoneQuickNote{display:block;width:100%;min-height:170px;resize:vertical;padding:13px;border:1px solid var(--do-line);border-radius:12px;background:#101f32;color:#edf5ff;font:inherit;font-size:13px;line-height:1.6}
+#dataoneQuickNote:focus,.workspace-task-form input:focus{outline:2px solid rgba(88,181,255,.35);border-color:#58b5ff}
+.workspace-note-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;color:var(--do-muted);font-size:10px}
+.workspace-note-footer button{padding:6px 9px;border:1px solid var(--do-line);border-radius:8px;background:#ffffff08;color:#a9d8ff;font-size:10px;cursor:pointer}
+.workspace-task-form{display:flex;gap:8px}
+.workspace-task-form input{flex:1;min-width:0;padding:11px 12px;border:1px solid var(--do-line);border-radius:10px;background:#101f32;color:#edf5ff;font:inherit;font-size:12px}
+.workspace-task-form button,.workspace-export-row button{padding:10px 14px;border:0;border-radius:10px;background:linear-gradient(135deg,#2589dc,#1766b3);color:white;font-weight:750;font-size:12px;cursor:pointer}
+.workspace-task-list{display:grid;gap:7px;max-height:210px;overflow:auto;margin:12px 0 0;padding:0;list-style:none}
+.workspace-task-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--do-line);border-radius:10px;background:#ffffff05}
+.workspace-task-item input{width:16px;height:16px;accent-color:#58b5ff;flex:0 0 auto}
+.workspace-task-item span{flex:1;min-width:0;overflow-wrap:anywhere;color:#dceaff;font-size:12px}
+.workspace-task-item.done span{text-decoration:line-through;color:#8296ae}
+.workspace-task-item button{border:0;background:transparent;color:#9db3cc;font-size:17px;cursor:pointer}
+.workspace-empty{padding:20px 8px;text-align:center;color:var(--do-muted);font-size:12px}
+.workspace-export-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;color:var(--do-muted);font-size:11px}
+html[data-theme="light"] .workspace-tools{background:#fff;border-color:#d5e4f2}
+html[data-theme="light"] .workspace-tool-card{background:#f6f9fd;border-color:#dbe5ef}
+html[data-theme="light"] #dataoneQuickNote,html[data-theme="light"] .workspace-task-form input{background:#fff;color:#14243a;border-color:#d5e1ed}
+html[data-theme="light"] .workspace-task-item{background:#fff;border-color:#dbe5ef}
+html[data-theme="light"] .workspace-task-item span{color:#263b52}
+@media(max-width:700px){.workspace-tools{padding:15px}.workspace-tools-grid{grid-template-columns:1fr}.workspace-export-row{align-items:flex-start;flex-direction:column}.workspace-tools-head h2{font-size:22px}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -2577,6 +2614,29 @@ html[data-theme="light"] .sb-user-profile{background:#f4f8fd;border-color:#dbe5e
  <button type="button" class="quick-action" id="quickOpenAccounts"><span class="quick-action-icon">▦</span><span><strong>Accounts</strong><small>Manage connections</small></span><b>→</b></button>
  <button type="button" class="quick-action" id="quickOpenGmail"><span class="quick-action-icon">✉</span><span><strong>Gmail</strong><small>View your accounts</small></span><b>→</b></button>
  <button type="button" class="quick-action" id="quickOpenMedia"><span class="quick-action-icon">▧</span><span><strong>Media</strong><small>Photos and files</small></span><b>→</b></button>
+
+ <button type="button" class="quick-action" id="quickOpenWorkspace"><span class="quick-action-icon">✎</span><span><strong>Notes & Tasks</strong><small>Personal workspace tools</small></span><b>→</b></button>
+</section>
+
+<section id="workspaceTools" class="workspace-tools" hidden aria-labelledby="workspaceToolsTitle">
+ <div class="workspace-tools-head">
+  <div><div class="overview-badge">Personal productivity</div><h2 id="workspaceToolsTitle">Notes & Tasks</h2><p>Keep quick notes and a simple to-do list inside DATAONE.</p></div>
+  <button type="button" id="closeWorkspaceTools" class="workspace-close" aria-label="Close notes and tasks">×</button>
+ </div>
+ <div class="workspace-tools-grid">
+  <div class="workspace-tool-card">
+   <div class="workspace-tool-title"><span>✎</span><div><strong>Quick Notes</strong><small>Autosaves on this browser</small></div></div>
+   <textarea id="dataoneQuickNote" rows="9" maxlength="12000" placeholder="Write a reminder, idea, link or anything you want to keep..."></textarea>
+   <div class="workspace-note-footer"><span id="dataoneNoteStatus" role="status" aria-live="polite">Saved locally on this device</span><button type="button" id="clearDataoneNote">Clear note</button></div>
+  </div>
+  <div class="workspace-tool-card">
+   <div class="workspace-tool-title"><span>✓</span><div><strong>My Tasks</strong><small id="dataoneTaskCount">0 tasks</small></div></div>
+   <form id="dataoneTaskForm" class="workspace-task-form"><input id="dataoneTaskInput" type="text" maxlength="180" placeholder="Add a task..." autocomplete="off" required><button type="submit">Add</button></form>
+   <ul id="dataoneTaskList" class="workspace-task-list" aria-label="Your tasks"></ul>
+   <div class="workspace-note-footer"><span>Tasks are saved in this browser</span><button type="button" id="clearCompletedTasks">Clear completed</button></div>
+  </div>
+ </div>
+ <div class="workspace-export-row"><span>Your notes and tasks stay in this browser and are not synced to your DATAONE account.</span><button type="button" id="exportWorkspaceData">Export my data ↓</button></div>
 </section>
 
 <div class="home-shortcuts-grid">
@@ -4827,6 +4887,56 @@ loadMegaStorage();
  }
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initDataoneVpnPicker);
  else initDataoneVpnPicker();
+})();
+</script>
+
+
+<script>
+/* DATAONE PERSONAL WORKSPACE — local notes, tasks and export */
+(function(){
+ const $=id=>document.getElementById(id);
+ const keys={note:"dataone.workspace.note.v1",tasks:"dataone.workspace.tasks.v1"};
+ let tasks=[];
+ try{const saved=JSON.parse(localStorage.getItem(keys.tasks)||"[]");tasks=Array.isArray(saved)?saved.filter(t=>t&&typeof t.id==="string"&&typeof t.text==="string").slice(0,300):[];}catch(_){tasks=[];}
+ const panel=$("workspaceTools"),note=$("dataoneQuickNote"),list=$("dataoneTaskList");
+ if(!panel||!note||!list)return;
+ try{note.value=localStorage.getItem(keys.note)||"";}catch(_){}
+ function saveTasks(){try{localStorage.setItem(keys.tasks,JSON.stringify(tasks));}catch(_){alert("Could not save tasks in this browser. Check available storage.");}}
+ function renderTasks(){
+  list.replaceChildren();
+  $("dataoneTaskCount").textContent=tasks.length+" task"+(tasks.length===1?"":"s")+" · "+tasks.filter(t=>t.done).length+" completed";
+  if(!tasks.length){const empty=document.createElement("li");empty.className="workspace-empty";empty.textContent="No tasks yet. Add your first task above.";list.appendChild(empty);return;}
+  tasks.forEach(task=>{
+   const li=document.createElement("li");li.className="workspace-task-item"+(task.done?" done":"");
+   const check=document.createElement("input");check.type="checkbox";check.checked=!!task.done;check.setAttribute("aria-label","Mark "+task.text+" complete");
+   check.addEventListener("change",()=>{task.done=check.checked;saveTasks();renderTasks();});
+   const label=document.createElement("span");label.textContent=task.text;
+   const remove=document.createElement("button");remove.type="button";remove.textContent="×";remove.setAttribute("aria-label","Delete task");
+   remove.addEventListener("click",()=>{tasks=tasks.filter(t=>t.id!==task.id);saveTasks();renderTasks();});
+   li.append(check,label,remove);list.appendChild(li);
+  });
+ }
+ $("quickOpenWorkspace")?.addEventListener("click",()=>{panel.hidden=!panel.hidden;if(!panel.hidden){panel.scrollIntoView({behavior:"smooth",block:"start"});note.focus({preventScroll:true});}});
+ $("closeWorkspaceTools")?.addEventListener("click",()=>{panel.hidden=true;});
+ let noteSave;
+ note.addEventListener("input",()=>{
+  $("dataoneNoteStatus").textContent="Saving…";
+  clearTimeout(noteSave);
+  noteSave=setTimeout(()=>{try{localStorage.setItem(keys.note,note.value);$("dataoneNoteStatus").textContent="Saved locally · "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});}catch(_){$("dataoneNoteStatus").textContent="Could not save — browser storage may be full."; }},250);
+ });
+ $("clearDataoneNote")?.addEventListener("click",()=>{if(!note.value||confirm("Clear your saved note?")){note.value="";try{localStorage.removeItem(keys.note);}catch(_){}$("dataoneNoteStatus").textContent="Note cleared";}});
+ $("dataoneTaskForm")?.addEventListener("submit",e=>{
+  e.preventDefault();const field=$("dataoneTaskInput"),value=field.value.trim();if(!value)return;
+  tasks.unshift({id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()),text:value,done:false,createdAt:new Date().toISOString()});
+  tasks=tasks.slice(0,300);saveTasks();renderTasks();field.value="";field.focus();
+ });
+ $("clearCompletedTasks")?.addEventListener("click",()=>{tasks=tasks.filter(t=>!t.done);saveTasks();renderTasks();});
+ $("exportWorkspaceData")?.addEventListener("click",()=>{
+  const content=["DATAONE — My Workspace","Exported: "+new Date().toLocaleString(),"","QUICK NOTES",note.value,"","TASKS",...tasks.map(t=>(t.done?"[x] ":"[ ] ")+t.text)].join("\n");
+  const blob=new Blob([content],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="DATAONE-workspace-"+new Date().toISOString().slice(0,10)+".txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ });
+ renderTasks();
 })();
 </script>
 
