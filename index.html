@@ -2415,6 +2415,21 @@ html[data-theme="light"] .workspace-task-item{background:#fff;border-color:#dbe5
 html[data-theme="light"] .workspace-task-item span{color:#263b52}
 @media(max-width:700px){.workspace-tools{padding:15px}.workspace-tools-grid{grid-template-columns:1fr}.workspace-export-row{align-items:flex-start;flex-direction:column}.workspace-tools-head h2{font-size:22px}}
 
+
+/* DATAONE QUICK LAUNCHER */
+.launcher-trigger{display:flex;align-items:center;gap:12px;width:100%;margin:-14px 0 24px;padding:13px 16px;border:1px solid #334b6b;border-radius:14px;background:#13233a;color:#cbd5e1;text-align:left;cursor:pointer}
+.launcher-trigger strong{color:#f8fafc}.launcher-trigger kbd{margin-left:auto;padding:3px 7px;border:1px solid #52647c;border-radius:6px;color:#94a3b8;font-size:11px}
+.launcher-overlay{position:fixed;inset:0;z-index:100000;display:flex;align-items:flex-start;justify-content:center;padding:12vh 16px 20px;background:rgba(2,6,23,.78);backdrop-filter:blur(8px)}
+.launcher-dialog{width:min(100%,560px);max-height:76vh;overflow:auto;border:1px solid #3b82f6;border-radius:18px;background:#101c30;color:#f8fafc;box-shadow:0 24px 80px #0009}
+.launcher-input{width:100%;padding:18px;border:0;border-bottom:1px solid #334155;outline:none;background:transparent;color:#fff;font:inherit;font-size:16px}
+.launcher-results{display:grid;gap:5px;padding:10px}
+.launcher-result{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:0;border-radius:10px;background:transparent;color:#e2e8f0;text-align:left;font:inherit;cursor:pointer}
+.launcher-result:hover,.launcher-result:focus{outline:none;background:#203653}
+.launcher-result small{display:block;color:#94a3b8;font-size:12px}
+.launcher-empty{padding:18px;color:#94a3b8;text-align:center;font-size:13px}
+.launcher-help{padding:10px 16px;border-top:1px solid #334155;color:#94a3b8;font-size:11px}
+@media(prefers-reduced-motion:no-preference){.launcher-dialog{animation:launcherIn .15s ease-out}@keyframes launcherIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}}
+
 </style>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -2598,6 +2613,9 @@ html[data-theme="light"] .workspace-task-item span{color:#263b52}
  <img src="https://www.google.com/favicon.ico" alt="Google">
  <span>Search with Google</span>
 </a>
+<button type="button" class="launcher-trigger" id="openDataoneLauncher" aria-haspopup="dialog">
+ <span aria-hidden="true">⌕</span><span><strong>Search DATAONE</strong> <span>— jump to a page or tool</span></span><kbd>Ctrl K</kbd>
+</button>
 
 <!-- DASHBOARD WELCOME + LIVE ACCOUNT OVERVIEW -->
 <section class="dashboard-welcome" aria-labelledby="dashboardGreeting">
@@ -4937,6 +4955,55 @@ loadMegaStorage();
   a.href=url;a.download="DATAONE-workspace-"+new Date().toISOString().slice(0,10)+".txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
  });
  renderTasks();
+})();
+</script>
+
+
+<script>
+/* DATAONE QUICK LAUNCHER — keyboard and touch navigation */
+(function(){
+ const entries=[
+  {name:"Home",detail:"Return to your dashboard",icon:"⌂",run:()=>document.querySelector('.sb-nav [data-target="top"]')?.click()},
+  {name:"Gmail",detail:"Open connected Gmail accounts",icon:"✉",run:()=>document.getElementById("quickOpenGmail")?.click()},
+  {name:"Storage",detail:"Open MEGA and storage accounts",icon:"☁",run:()=>document.querySelector('.sb-nav [data-target="megaCard"]')?.click()},
+  {name:"Media",detail:"Open photos and files",icon:"▧",run:()=>document.getElementById("quickOpenMedia")?.click()},
+  {name:"Notes & Tasks",detail:"Open your personal notes and to-do list",icon:"✎",run:()=>document.getElementById("quickOpenWorkspace")?.click()},
+  {name:"VPN",detail:"Choose SuperVPN Pro or Proton VPN",icon:"🛡",run:()=>document.getElementById("vpnButton")?.click()},
+  {name:"DATAONE Telegram",detail:"Open the Telegram workspace",icon:"➤",run:()=>document.getElementById("dataoneTelegramButton")?.click()},
+  {name:"Accounts",detail:"Manage connected accounts",icon:"▦",run:()=>document.getElementById("quickOpenAccounts")?.click()}
+ ];
+ const trigger=document.getElementById("openDataoneLauncher");
+ if(!trigger||trigger.dataset.ready==="1")return;
+ trigger.dataset.ready="1";
+ let overlay=null,input=null,results=null;
+ function close(){if(!overlay)return;overlay.remove();overlay=null;input=null;results=null;trigger.focus();}
+ function render(){
+  const q=input.value.trim().toLowerCase();
+  const matches=entries.filter(e=>(e.name+" "+e.detail).toLowerCase().includes(q));
+  results.replaceChildren();
+  if(!matches.length){const empty=document.createElement("div");empty.className="launcher-empty";empty.textContent="No matching DATAONE page or tool.";results.appendChild(empty);return;}
+  matches.forEach(entry=>{
+   const button=document.createElement("button");button.type="button";button.className="launcher-result";
+   const icon=document.createElement("span");icon.textContent=entry.icon;icon.setAttribute("aria-hidden","true");
+   const label=document.createElement("span");label.append(document.createTextNode(entry.name));
+   const detail=document.createElement("small");detail.textContent=entry.detail;label.appendChild(detail);
+   button.append(icon,label);button.addEventListener("click",()=>{close();entry.run();});results.appendChild(button);
+  });
+ }
+ function open(){
+  if(overlay){input.focus();return;}
+  overlay=document.createElement("div");overlay.className="launcher-overlay";overlay.setAttribute("role","presentation");
+  const dialog=document.createElement("section");dialog.className="launcher-dialog";dialog.setAttribute("role","dialog");dialog.setAttribute("aria-modal","true");dialog.setAttribute("aria-label","Search DATAONE");
+  input=document.createElement("input");input.className="launcher-input";input.type="search";input.placeholder="Search pages and tools…";input.setAttribute("aria-label","Search DATAONE pages and tools");
+  results=document.createElement("div");results.className="launcher-results";
+  const help=document.createElement("div");help.className="launcher-help";help.textContent="Enter to open a result · Esc to close";
+  input.addEventListener("input",render);
+  input.addEventListener("keydown",e=>{if(e.key==="Escape"){e.preventDefault();close();}if(e.key==="Enter"){e.preventDefault();results.querySelector("button")?.click();}});
+  overlay.addEventListener("click",e=>{if(e.target===overlay)close();});
+  dialog.append(input,results,help);overlay.appendChild(dialog);document.body.appendChild(overlay);render();input.focus();
+ }
+ trigger.addEventListener("click",open);
+ document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();open();}if(e.key==="Escape"&&overlay)close();});
 })();
 </script>
 
